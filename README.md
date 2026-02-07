@@ -1,4 +1,4 @@
-# Simple Beauty
+# Anor Donate
 
 ## Установка
 
