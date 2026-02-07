@@ -9,7 +9,3 @@
 body {
   font-family: 'Montserrat', sans-serif;
 }
-
-.mantine-ScrollArea-thumb {
-  background-color: var(--border-color);
-}
