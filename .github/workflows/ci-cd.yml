@@ -109,11 +109,11 @@ jobs:
           ssh-keyscan -H "${SERVER_HOST}" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Ensure remote directory exists
-        shell: bash
-        run: |
-          set -euo pipefail
-          ssh "${SERVER_USER}@${SERVER_HOST}" "mkdir -p '${RESOLVED_DEPLOY_PATH}'"
+#      - name: Ensure remote directory exists
+#        shell: bash
+#        run: |
+#          set -euo pipefail
+#          ssh "${SERVER_USER}@${SERVER_HOST}" "mkdir -p '${RESOLVED_DEPLOY_PATH}'"
 
       - name: Sync dist to server
         shell: bash
