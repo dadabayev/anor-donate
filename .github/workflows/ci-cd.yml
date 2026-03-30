@@ -1,0 +1,120 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22"
+  DIST_ARTIFACT_NAME: web-dist
+  DEPLOY_PATH: ${{ vars.DEPLOY_PATH || '/var/www/anor-donate' }}
+  SERVER_HOST: ${{ vars.SERVER_HOST || secrets.SERVER_HOST }}
+  SERVER_USER: ${{ vars.SERVER_USER || secrets.SERVER_USER }}
+  SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY || vars.SERVER_SSH_KEY }}
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Build and validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          HUSKY: 0
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.DIST_ARTIFACT_NAME }}
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.DIST_ARTIFACT_NAME }}
+          path: deploy-artifact
+
+      - name: Validate deployment variables
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SERVER_HOST}" || { echo "SERVER_HOST is not configured"; exit 1; }
+          test -n "${SERVER_USER}" || { echo "SERVER_USER is not configured"; exit 1; }
+          test -n "${SERVER_SSH_KEY}" || { echo "SERVER_SSH_KEY is not configured"; exit 1; }
+          test -n "${DEPLOY_PATH}" || { echo "DEPLOY_PATH is not configured"; exit 1; }
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ env.SERVER_SSH_KEY }}
+
+      - name: Add server to known_hosts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H "${SERVER_HOST}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Ensure remote directory exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh "${SERVER_USER}@${SERVER_HOST}" "mkdir -p '${DEPLOY_PATH}'"
+
+      - name: Sync dist to server
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_DIR="deploy-artifact"
+          if [ -d "deploy-artifact/dist" ]; then
+            SOURCE_DIR="deploy-artifact/dist"
+          fi
+
+          rsync -az --delete "${SOURCE_DIR}/" "${SERVER_USER}@${SERVER_HOST}:${DEPLOY_PATH}/"
