@@ -17,7 +17,7 @@ permissions:
 env:
   NODE_VERSION: "22"
   DIST_ARTIFACT_NAME: web-dist
-  DEPLOY_PATH: ${{ vars.DEPLOY_PATH || '/var/www/anor-donate' }}
+  DEPLOY_PATH: ${{ vars.DEPLOY_PATH || secrets.DEPLOY_PATH || '' }}
   SERVER_HOST: ${{ vars.SERVER_HOST || secrets.SERVER_HOST }}
   SERVER_USER: ${{ vars.SERVER_USER || secrets.SERVER_USER }}
   SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY || vars.SERVER_SSH_KEY }}
@@ -86,7 +86,14 @@ jobs:
           test -n "${SERVER_HOST}" || { echo "SERVER_HOST is not configured"; exit 1; }
           test -n "${SERVER_USER}" || { echo "SERVER_USER is not configured"; exit 1; }
           test -n "${SERVER_SSH_KEY}" || { echo "SERVER_SSH_KEY is not configured"; exit 1; }
-          test -n "${DEPLOY_PATH}" || { echo "DEPLOY_PATH is not configured"; exit 1; }
+
+      - name: Resolve deployment path
+        shell: bash
+        run: |
+          set -euo pipefail
+          RESOLVED_DEPLOY_PATH="${DEPLOY_PATH:-/home/${SERVER_USER}/anor-donate}"
+          echo "RESOLVED_DEPLOY_PATH=${RESOLVED_DEPLOY_PATH}" >> "$GITHUB_ENV"
+          echo "Using remote deploy path: ${RESOLVED_DEPLOY_PATH}"
 
       - name: Start SSH agent
         uses: webfactory/ssh-agent@v0.9.0
@@ -106,7 +113,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ssh "${SERVER_USER}@${SERVER_HOST}" "mkdir -p '${DEPLOY_PATH}'"
+          ssh "${SERVER_USER}@${SERVER_HOST}" "mkdir -p '${RESOLVED_DEPLOY_PATH}'"
 
       - name: Sync dist to server
         shell: bash
@@ -117,4 +124,4 @@ jobs:
             SOURCE_DIR="deploy-artifact/dist"
           fi
 
-          rsync -az --delete "${SOURCE_DIR}/" "${SERVER_USER}@${SERVER_HOST}:${DEPLOY_PATH}/"
+          rsync -az --delete "${SOURCE_DIR}/" "${SERVER_USER}@${SERVER_HOST}:${RESOLVED_DEPLOY_PATH}/"
