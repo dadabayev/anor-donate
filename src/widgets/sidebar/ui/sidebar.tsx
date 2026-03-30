@@ -6,6 +6,7 @@ import {
   SECONDARY_ITEMS,
 } from '../model/navigation-items'
 import { Image } from '@mantine/core'
+import { ASSETS } from '@shared/constants'
 import classNames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -14,15 +15,13 @@ const isNavItemActive = (path: string, pathname: string) => {
     return false
   }
   if (path === '/donations') {
-    return (
-      pathname === '/donations' ||
-      pathname === '/donations/settings' ||
-      pathname === '/donatlar' ||
-      pathname === '/donatlar/sozlamalar'
-    )
+    return pathname === '/donations' || pathname === '/donations/settings'
   }
   if (path === '/profile') {
-    return pathname === '/profile' || pathname === '/donatlar/profil'
+    return pathname === '/profile'
+  }
+  if (path === '/widgets') {
+    return pathname === '/widgets' || pathname.startsWith('/widgets/')
   }
   if (path === '/dashboard') {
     return pathname === '/dashboard' || pathname === '/'
@@ -36,11 +35,7 @@ export const Sidebar = () => {
   return (
     <aside className={cn.container}>
       <header className={cn.header}>
-        <Image
-          className={cn.logo}
-          src={'/assets/logo.png'}
-          alt={'Anor Donate logo'}
-        />
+        <Image className={cn.logo} src={ASSETS.LOGO} alt={'Anor Donate logo'} />
         <p className={cn.brand}>AndySmith</p>
       </header>
 

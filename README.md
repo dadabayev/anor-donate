@@ -1,48 +1,49 @@
 # Anor Donate
 
-## Установка
+## Setup
 
 ```bash
 npm install
 ```
 
-### Разработка
+## Development
 
 ```bash
 npm run dev
 ```
 
-### Сборка
+## Build
 
 ```bash
 npm run build
 ```
 
-### Превью сборки
+## Preview
 
 ```bash
 npm run preview
 ```
 
-### Тестирование
+## Testing
 
 ```bash
-npm run test              # Запуск тестов
-npm run test:watch        # Тесты в watch-режиме
-npm run test:ui           # UI для тестов
-npm run test:coverage     # Тесты с покрытием
+npm run test
+npm run test:watch
+npm run test:ui
+npm run test:coverage
 ```
 
-### Линтинг
+## Quality
 
 ```bash
-npm run lint              # Проверка кода
-npm run lint:fix          # Исправление ошибок
-npm run type-check        # Проверка типов
+npm run lint
+npm run lint:fix
+npm run type-check
+npm run steiger
 ```
 
-### Архитектура
+## Latest updates
 
-```bash
-npm run steiger           # Проверка FSD архитектуры
-```
+- Added dedicated widget create/edit pages at `/widgets/create` and `/widgets/:widgetId/edit`
+- Removed modal-based widget create/update flow from the widgets feature
+- App routes use English paths only (`/donations`, `/widgets`, `/profile`, etc.); sidebar links match those paths

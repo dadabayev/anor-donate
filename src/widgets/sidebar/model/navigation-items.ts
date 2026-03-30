@@ -23,7 +23,7 @@ export const PRIMARY_ITEMS: SidebarItem[] = [
   { icon: IconLayoutGrid, label: 'Bosh menyu', path: '/dashboard' },
   { icon: IconMessageCircle, label: 'Donatlar', path: '/donations' },
   { icon: IconHistory, label: 'Donatlar Tarixi' },
-  { icon: IconPhoto, label: 'Vidjetlar' },
+  { icon: IconPhoto, label: 'Vidjetlar', path: '/widgets' },
   { icon: IconBrandYoutube, label: 'Memlar' },
   { icon: IconChartBar, label: 'Stream statistikasi' },
   { icon: IconWallet, label: "Pul yig'ish" },
