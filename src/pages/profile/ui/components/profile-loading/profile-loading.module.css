@@ -1,0 +1,55 @@
+﻿.page {
+  composes: page from '../../profile-page.module.css';
+}
+
+.column {
+  composes: column from '../../profile-page.module.css';
+}
+
+.header {
+  composes: header from '../../profile-page.module.css';
+}
+
+.title {
+  composes: title from '../../profile-page.module.css';
+}
+
+.card {
+  composes: card from '../../profile-page.module.css';
+}
+
+.skeleton {
+  composes: skeleton from '../../profile-page.module.css';
+}
+
+.skeletonHeader {
+  composes: skeletonHeader from '../../profile-page.module.css';
+}
+
+.skeletonGrid {
+  composes: skeletonGrid from '../../profile-page.module.css';
+}
+
+.skeletonField {
+  composes: skeletonField from '../../profile-page.module.css';
+}
+
+.sectionSpacer {
+  composes: sectionSpacer from '../../profile-page.module.css';
+}
+
+.skeletonRows {
+  composes: skeletonRows from '../../profile-page.module.css';
+}
+
+.skeletonRow {
+  composes: skeletonRow from '../../profile-page.module.css';
+}
+
+.skeletonRowFull {
+  composes: skeletonRowFull from '../../profile-page.module.css';
+}
+
+.skeletonButton {
+  composes: skeletonButton from '../../profile-page.module.css';
+}

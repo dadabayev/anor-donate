@@ -1,0 +1,729 @@
+.page {
+  padding: 40px 20px 56px 0;
+  background-color: #f4f4f6;
+}
+
+.column {
+  width: min(100%, 1038px);
+  min-width: 0;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 48px;
+  line-height: 54px;
+  font-weight: 600;
+  color: #1e1e1e;
+  letter-spacing: -0.02em;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 35px;
+  padding: 32px 32px 40px;
+  box-shadow: 0 2px 16px rgba(30, 30, 30, 0.06);
+}
+
+.cardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: nowrap;
+}
+
+.avatar {
+  width: 100px;
+  height: 89px;
+  border-radius: 16px;
+  background: #eaeaea;
+  border: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarInitials {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.45);
+}
+
+.profileMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 2px;
+  min-width: 0;
+}
+
+.profileName {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.buttonRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.secondaryButton,
+.rowActionButton,
+.retryButton,
+.saveButton,
+.fileButton,
+.socialButton {
+  border: 0;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+}
+
+.secondaryButton,
+.fileButton,
+.retryButton,
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondaryButton {
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.secondaryButton:hover {
+  background: #76002f;
+}
+
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.form {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.label {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.inputShell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 16px;
+  background: #eaeaea;
+  padding: 0 5px 0 16px;
+  transition:
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.inputShell:focus-within {
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.16);
+  background: #e6e6e6;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  color: rgba(30, 30, 30, 0.7);
+}
+
+.fileButton {
+  min-height: 44px;
+  min-width: 112px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.fileButton:hover {
+  background: #76002f;
+}
+
+.fileButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.errorText {
+  margin: -2px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: #b42318;
+}
+
+.fileName,
+.profileFileName {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(30, 30, 30, 0.68);
+  word-break: break-word;
+}
+
+.sectionSpacer {
+  height: 4px;
+}
+
+.socialGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 15px;
+}
+
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  border-radius: 12px;
+  padding: 0 16px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.socialConnectedButton {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 8px;
+}
+
+.socialConnectedButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+.socialRow:hover {
+  transform: translateY(-1px);
+}
+
+.socialRow:focus-visible,
+.rowActionButton:focus-visible,
+.secondaryButton:focus-visible,
+.fileButton:focus-visible,
+.retryButton:focus-visible,
+.saveButton:focus-visible,
+.socialButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.2);
+}
+
+.socialRowConnected {
+  background: #8b0037;
+  color: #ffffff;
+}
+
+.socialRowAvailable {
+  background: #eaeaea;
+  color: #1e1e1e;
+}
+
+.socialIconWrap {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socialLabel {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.rowActionButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: transparent;
+  color: currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rowActionButton:hover {
+  background: rgba(30, 30, 30, 0.08);
+}
+
+.rowActionButtonDanger:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.socialButton {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+  background: #eaeaea;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #1e1e1e;
+  text-align: left;
+}
+
+.socialButton:hover {
+  background: #e2e2e2;
+}
+
+.socialButtonConnected {
+  background: #8b0037;
+  color: #ffffff;
+}
+
+.socialButtonConnected:hover {
+  background: #76002f;
+}
+
+.socialButtonFullWidth {
+  grid-column: 1 / -1;
+}
+
+.gridFullWidth {
+  grid-column: 1 / -1;
+}
+
+.iconYoutube {
+  color: #ff0033;
+}
+
+.iconTiktok {
+  color: #0f0f10;
+}
+
+.iconTwitch {
+  color: #9146ff;
+}
+
+.iconTelegram {
+  color: #2aabee;
+}
+
+.iconDiscord {
+  color: #5865f2;
+}
+
+.rowChevron {
+  color: currentColor;
+}
+
+.statusRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.statusMessage {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(17, 159, 92, 0.12);
+  color: #0f7a45;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.statusMessageError {
+  background: rgba(180, 35, 24, 0.12);
+  color: #b42318;
+}
+
+.footer {
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.saveButton {
+  min-width: 265px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.modalSaveButton {
+  min-width: 170px;
+  min-height: 48px;
+  border: 0;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    opacity 150ms ease;
+}
+
+.modalSaveButton:hover {
+  background: #76002f;
+}
+
+.modalSaveButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.2);
+}
+
+.modalSaveButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.saveButton:hover {
+  background: #76002f;
+}
+
+.saveButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skeletonHeader,
+.skeletonField,
+.skeletonRow,
+.skeletonButton {
+  border-radius: 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(234, 234, 234, 0.85) 0%,
+    rgba(242, 242, 242, 0.95) 50%,
+    rgba(234, 234, 234, 0.85) 100%
+  );
+  background-size: 200% 100%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeletonHeader {
+  height: 104px;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+}
+
+.skeletonField {
+  height: 79px;
+}
+
+.skeletonRows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 15px;
+}
+
+.skeletonRow {
+  height: 48px;
+}
+
+.skeletonRowFull {
+  grid-column: 1 / -1;
+}
+
+.skeletonButton {
+  width: 265px;
+  height: 48px;
+  margin-left: auto;
+}
+
+.stateCard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.stateTitle {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.stateText {
+  margin: 0;
+  max-width: 520px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(30, 30, 30, 0.72);
+}
+
+.stateArtwork {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+}
+
+.retryButton {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.retryButton:hover {
+  background: #76002f;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1100px) {
+  .page {
+    padding-right: 0;
+  }
+
+  .column {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 40px;
+    line-height: 46px;
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    border-radius: 28px;
+    padding: 24px 20px 28px;
+  }
+
+  .grid,
+  .socialGrid,
+  .skeletonGrid,
+  .skeletonRows {
+    grid-template-columns: 1fr;
+  }
+
+  .socialButtonFullWidth,
+  .skeletonRowFull {
+    grid-column: auto;
+  }
+
+  .footer {
+    justify-content: stretch;
+  }
+
+  .saveButton,
+  .skeletonButton {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 16px 40px;
+  }
+
+  .title {
+    font-size: 32px;
+    line-height: 38px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .profileHeader {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .profileName {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  .buttonRow {
+    width: 100%;
+  }
+
+  .secondaryButton,
+  .fileButton,
+  .retryButton,
+  .saveButton {
+    width: 100%;
+  }
+}

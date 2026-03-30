@@ -1,0 +1,39 @@
+﻿.page {
+  composes: page from '../../profile-page.module.css';
+}
+
+.column {
+  composes: column from '../../profile-page.module.css';
+}
+
+.header {
+  composes: header from '../../profile-page.module.css';
+}
+
+.title {
+  composes: title from '../../profile-page.module.css';
+}
+
+.card {
+  composes: card from '../../profile-page.module.css';
+}
+
+.stateCard {
+  composes: stateCard from '../../profile-page.module.css';
+}
+
+.stateArtwork {
+  composes: stateArtwork from '../../profile-page.module.css';
+}
+
+.stateTitle {
+  composes: stateTitle from '../../profile-page.module.css';
+}
+
+.stateText {
+  composes: stateText from '../../profile-page.module.css';
+}
+
+.retryButton {
+  composes: retryButton from '../../profile-page.module.css';
+}

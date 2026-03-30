@@ -1,0 +1,15 @@
+﻿.statusRow {
+  composes: statusRow from '../../profile-page.module.css';
+}
+
+.statusMessage {
+  composes: statusMessage from '../../profile-page.module.css';
+}
+
+.statusMessageError {
+  composes: statusMessageError from '../../profile-page.module.css';
+}
+
+.spin {
+  composes: spin from '../../profile-page.module.css';
+}

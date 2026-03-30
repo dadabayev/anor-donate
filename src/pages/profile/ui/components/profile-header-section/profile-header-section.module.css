@@ -1,0 +1,47 @@
+﻿.cardSection {
+  composes: cardSection from '../../profile-page.module.css';
+}
+
+.sectionTitle {
+  composes: sectionTitle from '../../profile-page.module.css';
+}
+
+.profileHeader {
+  composes: profileHeader from '../../profile-page.module.css';
+}
+
+.avatar {
+  composes: avatar from '../../profile-page.module.css';
+}
+
+.avatarImage {
+  composes: avatarImage from '../../profile-page.module.css';
+}
+
+.avatarInitials {
+  composes: avatarInitials from '../../profile-page.module.css';
+}
+
+.profileMeta {
+  composes: profileMeta from '../../profile-page.module.css';
+}
+
+.profileName {
+  composes: profileName from '../../profile-page.module.css';
+}
+
+.buttonRow {
+  composes: buttonRow from '../../profile-page.module.css';
+}
+
+.fileButton {
+  composes: fileButton from '../../profile-page.module.css';
+}
+
+.srOnly {
+  composes: srOnly from '../../profile-page.module.css';
+}
+
+.profileFileName {
+  composes: profileFileName from '../../profile-page.module.css';
+}

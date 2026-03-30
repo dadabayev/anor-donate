@@ -1,0 +1,31 @@
+﻿.page {
+  composes: page from '../../profile-page.module.css';
+}
+
+.column {
+  composes: column from '../../profile-page.module.css';
+}
+
+.header {
+  composes: header from '../../profile-page.module.css';
+}
+
+.title {
+  composes: title from '../../profile-page.module.css';
+}
+
+.card {
+  composes: card from '../../profile-page.module.css';
+}
+
+.form {
+  composes: form from '../../profile-page.module.css';
+}
+
+.footer {
+  composes: footer from '../../profile-page.module.css';
+}
+
+.saveButton {
+  composes: saveButton from '../../profile-page.module.css';
+}

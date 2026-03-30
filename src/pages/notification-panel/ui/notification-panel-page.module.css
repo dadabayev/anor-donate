@@ -1,0 +1,348 @@
+.page {
+  padding: 40px 20px 0 0px;
+  color: #1e1e1e;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 48px;
+  line-height: 54px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #1e1e1e;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.searchField {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: min(366px, 100%);
+  border-radius: 16px;
+  padding: 12px 16px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 0 rgba(30, 30, 30, 0.04),
+    0 8px 28px rgba(30, 30, 30, 0.04);
+}
+
+.searchInput {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0 40px 0 0;
+  color: #1e1e1e;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.searchInput::placeholder {
+  color: rgba(30, 30, 30, 0.58);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 16px;
+  color: #1e1e1e;
+}
+
+.toolbarActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.primaryAction,
+.secondaryAction,
+.strongAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 13px;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    opacity 120ms ease,
+    background-color 120ms ease;
+}
+
+.primaryAction:hover,
+.secondaryAction:hover,
+.strongAction:hover {
+  transform: translateY(-1px);
+}
+
+.primaryAction {
+  background: #8b0037;
+  color: #ffffff;
+}
+
+.secondaryAction {
+  background: #e8e8eb;
+  color: #1e1e1e;
+}
+
+.strongAction {
+  background: #8b0037;
+  color: #ffffff;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 0 rgba(30, 30, 30, 0.02),
+    0 18px 36px rgba(30, 30, 30, 0.05);
+}
+
+.musicCard {
+  min-height: 340px;
+}
+
+.cardBody {
+  padding: 30px 34px 28px;
+  padding-right: 154px;
+}
+
+.musicCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 340px;
+  padding: 36px 40px 34px;
+  padding-right: 40px;
+}
+
+.cardTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 24px;
+  line-height: 34px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.cardTitleIcon {
+  flex-shrink: 0;
+  color: #000000;
+}
+
+.description {
+  margin: 10px 0 0;
+  max-width: 980px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.timestamp {
+  margin: 16px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  color: rgba(30, 30, 30, 0.6);
+}
+
+.cardActions {
+  position: absolute;
+  top: 30px;
+  right: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.musicPlayerWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: auto;
+}
+
+.waveRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.waveTime {
+  flex-shrink: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 500;
+  color: #111111;
+}
+
+.staticWaveform {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 100px;
+  flex: 1;
+  min-width: 0;
+}
+
+.waveBar {
+  width: 6px;
+  min-height: 4px;
+  border-radius: 999px;
+  background: var(--wave-accent, #1e1e1e);
+  opacity: 1;
+  transition:
+    height 80ms linear,
+    background-color 120ms ease;
+}
+
+.waveBar[data-played='true'] {
+  background: #8b0037;
+}
+
+.waveBarPlaying {
+  animation: wavePulse 1.15s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes wavePulse {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  25% {
+    transform: scaleY(0.62);
+  }
+
+  50% {
+    transform: scaleY(1.15);
+  }
+
+  75% {
+    transform: scaleY(0.82);
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 28px 0 40px;
+  }
+
+  .toolbar {
+    align-items: stretch;
+  }
+
+  .toolbarActions {
+    justify-content: flex-end;
+  }
+
+  .cardBody {
+    padding-right: 34px;
+  }
+
+  .musicCardBody {
+    min-height: 300px;
+    padding: 30px 34px 28px;
+    padding-right: 34px;
+  }
+
+  .cardActions {
+    position: static;
+    justify-content: flex-end;
+    padding: 0 34px 28px;
+  }
+
+  .waveRow {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .toolbarActions {
+    width: 100%;
+  }
+
+  .primaryAction,
+  .secondaryAction,
+  .strongAction {
+    width: 44px;
+    height: 44px;
+    padding: 12px;
+  }
+
+  .cardBody {
+    padding: 24px 22px 20px;
+  }
+
+  .musicCardBody {
+    padding: 24px 22px 22px;
+    padding-right: 22px;
+  }
+
+  .cardTitle {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .description {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .cardActions {
+    padding: 0 22px 20px;
+  }
+}

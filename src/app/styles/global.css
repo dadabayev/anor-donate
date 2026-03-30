@@ -1,0 +1,21 @@
+:root[data-mantine-color-scheme='light'] {
+  --layout-bg: #fafafa;
+}
+
+:root[data-mantine-color-scheme='dark'] {
+  --layout-bg: #333333;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-optical-sizing: auto;
+  background: #f4f4f6;
+  color: #1e1e1e;
+}

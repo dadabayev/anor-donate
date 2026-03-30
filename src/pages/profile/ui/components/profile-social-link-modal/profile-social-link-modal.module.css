@@ -1,0 +1,3 @@
+﻿.modalSaveButton {
+  composes: modalSaveButton from '../../profile-page.module.css';
+}

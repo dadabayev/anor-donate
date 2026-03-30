@@ -1,0 +1,201 @@
+.label {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.inputShell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 16px;
+  background: #eaeaea;
+  padding: 0 5px 0 16px;
+  transition:
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.inputShell:focus-within {
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.16);
+  background: #e6e6e6;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  color: rgba(30, 30, 30, 0.7);
+}
+
+.errorText {
+  margin: -2px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: #b42318;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.modalSaveButton {
+  min-width: 170px;
+  min-height: 48px;
+  border: 0;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    opacity 150ms ease;
+}
+
+.modalSaveButton:hover {
+  background: #76002f;
+}
+
+.modalSaveButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.2);
+}
+
+.modalSaveButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.verifyModalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 304px;
+  max-width: 100%;
+}
+
+.modalFieldGrid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.otpGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 48px);
+  gap: 2px;
+  justify-content: flex-start;
+}
+
+.otpInput {
+  height: 64px;
+  border-radius: 8px;
+  border: 0;
+  background: #eaeaea;
+  text-align: center;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  color: #1e1e1e;
+  outline: none;
+}
+
+.otpInput:focus-visible {
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.2);
+}
+
+.otpInput:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.verifyMetaRow {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 304px;
+  max-width: 100%;
+}
+
+.verifyResendButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #1e1e1e;
+  cursor: pointer;
+}
+
+.verifyResendButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.verifyTimer {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #8b0037;
+}
+
+.verifyModalFooter {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media (max-width: 640px) {
+  .verifyModalBody {
+    width: 100%;
+  }
+
+  .modalFieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .otpGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}

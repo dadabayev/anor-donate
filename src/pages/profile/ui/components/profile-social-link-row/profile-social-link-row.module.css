@@ -1,0 +1,55 @@
+﻿.socialRow {
+  composes: socialRow from '../../profile-page.module.css';
+}
+
+.socialRowConnected {
+  composes: socialRowConnected from '../../profile-page.module.css';
+}
+
+.socialConnectedButton {
+  composes: socialConnectedButton from '../../profile-page.module.css';
+}
+
+.socialIconWrap {
+  composes: socialIconWrap from '../../profile-page.module.css';
+}
+
+.socialLabel {
+  composes: socialLabel from '../../profile-page.module.css';
+}
+
+.rowActionButton {
+  composes: rowActionButton from '../../profile-page.module.css';
+}
+
+.rowActionButtonDanger {
+  composes: rowActionButtonDanger from '../../profile-page.module.css';
+}
+
+.socialButton {
+  composes: socialButton from '../../profile-page.module.css';
+}
+
+.iconYoutube {
+  composes: iconYoutube from '../../profile-page.module.css';
+}
+
+.iconTwitch {
+  composes: iconTwitch from '../../profile-page.module.css';
+}
+
+.iconTiktok {
+  composes: iconTiktok from '../../profile-page.module.css';
+}
+
+.iconTelegram {
+  composes: iconTelegram from '../../profile-page.module.css';
+}
+
+.iconDiscord {
+  composes: iconDiscord from '../../profile-page.module.css';
+}
+
+.rowChevron {
+  composes: rowChevron from '../../profile-page.module.css';
+}

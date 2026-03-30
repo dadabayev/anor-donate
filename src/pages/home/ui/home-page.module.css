@@ -1,0 +1,489 @@
+.page {
+  padding: 40px 20px 0 0px;
+  background-color: #f4f4f6;
+}
+
+.column {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 48px;
+  line-height: 54px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.subtitle {
+  margin: 16px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.filters {
+  display: flex;
+  gap: 24px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.filterItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 34px;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.dateButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-height: 48px;
+  width: 173px;
+  justify-content: flex-start;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 500;
+  color: #1e1e1e;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(30, 30, 30, 0.06);
+}
+
+.dateButton:hover {
+  background-color: #fafafa;
+}
+
+.summaryGrid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.summaryCard {
+  border-radius: 32px;
+  padding: 36px 32px 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 16px rgba(30, 30, 30, 0.06);
+  text-align: center;
+}
+
+.summaryCard p {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 24px;
+  line-height: 34px;
+  font-weight: 400;
+  color: rgba(30, 30, 30, 0.6);
+}
+
+.summaryCard strong {
+  display: block;
+  margin-top: 20px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 42px;
+  line-height: 52px;
+  font-weight: 600;
+  color: #1e1e1e;
+  letter-spacing: -0.02em;
+}
+
+.lineCard {
+  margin-top: 26px;
+  border-radius: 35px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 16px rgba(30, 30, 30, 0.06);
+  padding: 28px 24px 20px;
+}
+
+.lineCardTitle {
+  margin: 0 0 8px;
+  padding: 0 8px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 32px;
+  line-height: 34px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.lineChartWrap {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lineChartStage {
+  position: relative;
+  overflow: visible;
+}
+
+.lineChart {
+  width: 100%;
+  height: auto;
+  min-height: 280px;
+  display: block;
+}
+
+.highlight {
+  fill: #fde1ec;
+}
+
+.mainLine {
+  fill: none;
+  stroke: #1e1e1e;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.secondaryLine {
+  fill: none;
+  stroke: #8b0037;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.markerRing {
+  fill: #ffffff;
+  stroke: #8b0037;
+  stroke-width: 3.5;
+}
+
+.chartOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chartGuide {
+  position: absolute;
+  top: 16px;
+  bottom: 32px;
+  width: 1px;
+  margin-left: -0.5px;
+  background: rgba(139, 0, 55, 0.22);
+}
+
+.xAxis {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-top: 4px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: #5f5c5c;
+}
+
+.xAxisActive {
+  color: #5f5c5c;
+  font-weight: 600;
+}
+
+.bottomGrid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 297px);
+  gap: 36px;
+  align-items: start;
+}
+
+.donationCard {
+  border-radius: 35px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 16px rgba(30, 30, 30, 0.06);
+  padding: 28px 28px 32px;
+  position: relative;
+}
+
+.donationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.donationHeader h2 {
+  margin: 0;
+  padding-top: 4px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.badge {
+  position: relative;
+  flex-shrink: 0;
+  width: 77px;
+  height: 77px;
+  border-radius: 50%;
+  background-color: #8b0037;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 400;
+  outline: none;
+}
+
+.donationBody {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.bars {
+  display: flex;
+  gap: 52px;
+  align-items: flex-end;
+  padding-left: 8px;
+}
+
+.barItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  outline: none;
+}
+
+.barTrack {
+  width: 21px;
+  height: 232px;
+  border-radius: 16px;
+  background-color: #fceef4;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.barFill {
+  width: 100%;
+  border-radius: 16px;
+  background-color: #8b0037;
+}
+
+.barItem span {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: #434141;
+}
+
+.goalChart {
+  position: relative;
+  width: min(334px, 100%);
+  min-width: 200px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  outline: none;
+}
+
+.goalRing {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #ffffff 54%, transparent 55%),
+    conic-gradient(#8b0037 0 65%, #fceef4 65% 100%);
+}
+
+.goalLabels {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.goalTitle,
+.goalPercent {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.donationTooltip {
+  z-index: 7;
+}
+
+.badge:focus-visible,
+.barItem:focus-visible,
+.goalChart:focus-visible {
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.2);
+  border-radius: 12px;
+}
+
+.topDonors {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.topDonorCard {
+  border-radius: 35px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 16px rgba(30, 30, 30, 0.06);
+  padding: 24px 20px 22px;
+  min-height: 120px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.topDonorCard h3 {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.topDonorCard p {
+  margin: 12px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 300;
+  color: #1e1e1e;
+}
+
+@media (max-width: 1200px) {
+  .bottomGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .topDonors {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .topDonorCard {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .donationBody {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .goalChart {
+    width: 280px;
+  }
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 24px 0 40px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .dateButton {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryCard strong {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .bars {
+    gap: 28px;
+    justify-content: center;
+    padding-left: 0;
+  }
+
+  .barTrack {
+    height: 200px;
+  }
+
+  .topDonors {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 700px) {
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .subtitle {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .lineCardTitle {
+    font-size: 26px;
+  }
+
+  .barTrack {
+    height: 180px;
+  }
+
+  .goalChart {
+    width: 240px;
+  }
+}

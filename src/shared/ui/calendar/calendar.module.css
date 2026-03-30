@@ -1,0 +1,286 @@
+.container {
+  --calendar-day-size: clamp(42px, 11vw, 64px);
+  width: 100%;
+  max-width: 520px;
+  border: 0;
+  padding: clamp(16px, 4vw, 24px);
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 18px 48px rgba(16, 18, 24, 0.08);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.monthSelect {
+  appearance: none;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: auto;
+  padding: 0 28px 0 0;
+  background: transparent;
+  font-size: clamp(20px, 4.8vw, 34px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  font-family: inherit;
+  color: #1f2329;
+  cursor: pointer;
+  text-align: left;
+}
+
+.monthSelect:hover {
+  background: transparent;
+  color: #1f2329;
+}
+
+.monthSelect:focus-visible {
+  border-radius: 12px;
+  outline: 2px solid rgba(151, 0, 71, 0.18);
+  outline-offset: 4px;
+}
+
+.monthSelect[data-static] {
+  cursor: default;
+}
+
+.monthSelect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #1f2329;
+  border-bottom: 2px solid #1f2329;
+  transform: translateY(-60%) rotate(45deg);
+}
+
+.navAction {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #8f95a3;
+  border-radius: 999px;
+  color: #6f7480;
+  background: #ffffff;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.navAction:hover {
+  border-color: #5e6471;
+  color: #2d323b;
+}
+
+.navAction:active {
+  transform: scale(0.96);
+}
+
+.navIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.levelsGroup {
+  gap: 12px;
+}
+
+.month {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  table-layout: fixed;
+}
+
+.weekdaysRow {
+  height: 28px;
+}
+
+.weekdayLabel {
+  padding-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b4f58;
+  text-align: center;
+}
+
+.monthRow {
+  height: var(--calendar-day-size);
+}
+
+.monthCell {
+  padding: 0;
+}
+
+.day {
+  width: 100%;
+  min-width: 0;
+  height: var(--calendar-day-size);
+  min-height: var(--calendar-day-size);
+  border: 0;
+  border-radius: 20px;
+  background: #ffffff;
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 500;
+  color: #242830;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.day:hover:not([data-disabled]) {
+  background: #ffffff;
+}
+
+.day:active:not([data-disabled]) {
+  transform: scale(0.98);
+}
+
+.day[data-outside] {
+  color: #b8bec8;
+}
+
+.day[data-in-range] {
+  background: #fde1ec;
+  border-radius: 0;
+}
+
+.day[data-selected] {
+  background: #970047;
+  color: #ffffff;
+}
+
+.day[data-selected]:not([data-in-range]) {
+  border-radius: 20px;
+}
+
+.day[data-first-in-range][data-in-range] {
+  border-radius: 22px 0 0 22px;
+}
+
+.day[data-last-in-range][data-in-range] {
+  border-radius: 0 22px 22px 0;
+}
+
+.day[data-first-in-range][data-last-in-range] {
+  border-radius: 22px;
+}
+
+.pickerRow {
+  height: 52px;
+}
+
+.pickerCell {
+  padding: 4px;
+}
+
+.monthsList,
+.yearsList {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.pickerControl {
+  appearance: none;
+  border: 1px solid #d4dae3;
+  outline: 0;
+  box-shadow: none;
+  width: 100%;
+  min-height: 44px;
+  border-radius: 16px;
+  background: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  color: #242830;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.pickerControl:hover {
+  border-color: #bcc4d0;
+  background: #ffffff;
+}
+
+.pickerControl:focus-visible {
+  outline: 2px solid rgba(151, 0, 71, 0.18);
+  outline-offset: 2px;
+}
+
+.pickerControl[data-selected] {
+  border-color: #970047;
+  background: #970047;
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  .container {
+    --calendar-day-size: clamp(38px, 11.5vw, 48px);
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .header {
+    margin-bottom: 10px;
+  }
+
+  .monthSelect {
+    padding-right: 18px;
+    font-size: 18px;
+  }
+
+  .monthSelect::after {
+    width: 8px;
+    height: 8px;
+  }
+
+  .navAction {
+    width: 32px;
+    height: 32px;
+  }
+
+  .weekdayLabel {
+    font-size: 12px;
+  }
+
+  .day {
+    border-radius: 16px;
+    font-size: 16px;
+  }
+
+  .day[data-first-in-range][data-in-range] {
+    border-radius: 18px 0 0 18px;
+  }
+
+  .day[data-last-in-range][data-in-range] {
+    border-radius: 0 18px 18px 0;
+  }
+
+  .day[data-first-in-range][data-last-in-range] {
+    border-radius: 18px;
+  }
+
+  .pickerControl {
+    min-height: 40px;
+    font-size: 14px;
+  }
+}

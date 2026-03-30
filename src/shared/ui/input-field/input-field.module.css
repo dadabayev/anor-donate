@@ -1,0 +1,94 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.label {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.shell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 16px;
+  background: #eaeaea;
+  padding: 0 5px 0 16px;
+  transition:
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.shell:focus-within {
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.16);
+  background: #e6e6e6;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #1e1e1e;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  color: rgba(30, 30, 30, 0.7);
+}
+
+.action {
+  flex-shrink: 0;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 0;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    opacity 150ms ease;
+}
+
+.action:hover {
+  background: #76002f;
+}
+
+.action:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.error {
+  margin: -2px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: #b42318;
+}
+
+.fullWidth {
+  width: 100%;
+}

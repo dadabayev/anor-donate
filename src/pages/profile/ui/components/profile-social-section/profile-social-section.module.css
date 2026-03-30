@@ -1,0 +1,31 @@
+﻿.cardSection {
+  composes: cardSection from '../../profile-page.module.css';
+}
+
+.sectionTitle {
+  composes: sectionTitle from '../../profile-page.module.css';
+}
+
+.socialGrid {
+  composes: socialGrid from '../../profile-page.module.css';
+}
+
+.stateCard {
+  composes: stateCard from '../../profile-page.module.css';
+}
+
+.socialButtonFullWidth {
+  composes: socialButtonFullWidth from '../../profile-page.module.css';
+}
+
+.stateTitle {
+  composes: stateTitle from '../../profile-page.module.css';
+}
+
+.stateText {
+  composes: stateText from '../../profile-page.module.css';
+}
+
+.retryButton {
+  composes: retryButton from '../../profile-page.module.css';
+}

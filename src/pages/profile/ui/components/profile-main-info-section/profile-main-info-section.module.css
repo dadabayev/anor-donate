@@ -1,0 +1,15 @@
+﻿.cardSection {
+  composes: cardSection from '../../profile-page.module.css';
+}
+
+.sectionTitle {
+  composes: sectionTitle from '../../profile-page.module.css';
+}
+
+.grid {
+  composes: grid from '../../profile-page.module.css';
+}
+
+.gridFullWidth {
+  composes: gridFullWidth from '../../profile-page.module.css';
+}
