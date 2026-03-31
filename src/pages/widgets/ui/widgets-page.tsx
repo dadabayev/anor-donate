@@ -2,7 +2,6 @@ import cn from './widgets-page.module.css'
 
 import {
   loadWidgetsDashboard,
-  WIDGET_WAVEFORM,
   type WidgetConfig,
   WIDGETS_COPY_ACTION,
   WIDGETS_CREATE_ACTION,
@@ -19,6 +18,8 @@ import {
 } from '../model/widgets'
 import { WidgetsLoading, WidgetsState } from './components'
 import { ASSETS } from '@shared/constants'
+import { useAudioWaveform } from '@shared/lib/audio/use-audio-waveform'
+import { formatAudioTime } from '@shared/lib/audio/waveform'
 import {
   IconChevronDown,
   IconCopy,
@@ -31,21 +32,12 @@ import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const AUDIO_WINDOW_START_SECONDS = 8
-const AUDIO_WINDOW_END_SECONDS = 30
+const AUDIO_SOURCE = ASSETS.NOTIFICATION_SAMPLE_WAV
 
 const formatAmount = (value: number) =>
   new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0,
   }).format(value)
-
-const formatTimestamp = (value: number) => {
-  const clampedValue = Math.max(0, Math.round(value))
-  const minutes = Math.floor(clampedValue / 60)
-  const seconds = clampedValue % 60
-
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-}
 
 const PreviewCard = ({ widget }: { widget: WidgetConfig }) => {
   return (
@@ -70,6 +62,8 @@ const PreviewCard = ({ widget }: { widget: WidgetConfig }) => {
 }
 
 interface AudioPreviewProps {
+  bars: number[]
+  durationSeconds: number
   isPlaying: boolean
   progress: number
   elapsedSeconds: number
@@ -77,12 +71,14 @@ interface AudioPreviewProps {
 }
 
 const AudioPreview = ({
+  bars,
+  durationSeconds,
   isPlaying,
   progress,
   elapsedSeconds,
   onToggle,
 }: Readonly<AudioPreviewProps>) => {
-  const activeBars = Math.round(progress * WIDGET_WAVEFORM.length)
+  const activeBars = Math.round(progress * bars.length)
 
   return (
     <div className={cn.audioRow}>
@@ -102,9 +98,9 @@ const AudioPreview = ({
           <IconPlayerPlayFilled size={16} />
         )}
       </button>
-      <span className={cn.audioTime}>{formatTimestamp(elapsedSeconds)}</span>
+      <span className={cn.audioTime}>{formatAudioTime(elapsedSeconds)}</span>
       <div className={cn.waveform} aria-hidden="true">
-        {WIDGET_WAVEFORM.map((barHeight: number, index: number) => (
+        {bars.map((barHeight: number, index: number) => (
           <span
             key={`${barHeight}-${index}`}
             className={classNames(
@@ -115,9 +111,7 @@ const AudioPreview = ({
           />
         ))}
       </div>
-      <span className={cn.audioTime}>
-        {formatTimestamp(AUDIO_WINDOW_END_SECONDS)}
-      </span>
+      <span className={cn.audioTime}>{formatAudioTime(durationSeconds)}</span>
     </div>
   )
 }
@@ -148,6 +142,8 @@ const AppearanceSwatch = ({
 
 interface WidgetCardProps {
   widget: WidgetConfig
+  waveformBars: number[]
+  audioDurationSeconds: number
   isExpanded: boolean
   isPlaying: boolean
   playbackProgress: number
@@ -160,6 +156,8 @@ interface WidgetCardProps {
 
 const WidgetCard = ({
   widget,
+  waveformBars,
+  audioDurationSeconds,
   isExpanded,
   isPlaying,
   playbackProgress,
@@ -256,6 +254,8 @@ const WidgetCard = ({
               </div>
 
               <AudioPreview
+                bars={waveformBars}
+                durationSeconds={audioDurationSeconds}
                 isPlaying={isPlaying}
                 progress={playbackProgress}
                 elapsedSeconds={playbackSeconds}
@@ -315,11 +315,16 @@ export const WidgetsPage = () => {
   >(null)
   const [playingWidgetId, setPlayingWidgetId] = useState<string | null>(null)
   const [playbackProgress, setPlaybackProgress] = useState(0)
-  const [playbackSeconds, setPlaybackSeconds] = useState(
-    AUDIO_WINDOW_START_SECONDS,
-  )
+  const [playbackSeconds, setPlaybackSeconds] = useState(0)
+  const [audioDurationSeconds, setAudioDurationSeconds] = useState(0)
   const [copyFeedback, setCopyFeedback] = useState('')
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const waveformBars = useAudioWaveform({
+    barCount: 32,
+    maxHeight: 26,
+    minHeight: 8,
+    src: AUDIO_SOURCE,
+  })
   const dashboard = dashboardState ?? query.data ?? null
   const widgets = dashboard?.widgets ?? []
   const streamLink = dashboard?.streamLink ?? ''
@@ -345,33 +350,33 @@ export const WidgetsPage = () => {
     const audio = audioRef.current
 
     const handleTimeUpdate = () => {
-      const rawSeconds = audio.currentTime
-      const clampedSeconds = Math.min(rawSeconds, AUDIO_WINDOW_END_SECONDS)
-      const progress =
-        (clampedSeconds - AUDIO_WINDOW_START_SECONDS) /
-        (AUDIO_WINDOW_END_SECONDS - AUDIO_WINDOW_START_SECONDS)
+      const currentSeconds = Math.max(0, audio.currentTime)
+      const duration = audio.duration || 0
 
-      setPlaybackSeconds(clampedSeconds)
-      setPlaybackProgress(Math.max(0, Math.min(progress, 1)))
-
-      if (clampedSeconds >= AUDIO_WINDOW_END_SECONDS) {
-        audio.pause()
-        setPlayingWidgetId(null)
-      }
+      setPlaybackSeconds(currentSeconds)
+      setPlaybackProgress(
+        duration > 0 ? Math.max(0, Math.min(currentSeconds / duration, 1)) : 0,
+      )
     }
 
     const handlePause = () => {
       setPlayingWidgetId(null)
     }
 
+    const handleLoadedMetadata = () => {
+      setAudioDurationSeconds(audio.duration || 0)
+    }
+
     audio.addEventListener('timeupdate', handleTimeUpdate)
     audio.addEventListener('pause', handlePause)
     audio.addEventListener('ended', handlePause)
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata)
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('pause', handlePause)
       audio.removeEventListener('ended', handlePause)
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
     }
   }, [])
 
@@ -435,8 +440,8 @@ export const WidgetsPage = () => {
     }
 
     try {
-      audio.currentTime = AUDIO_WINDOW_START_SECONDS
-      setPlaybackSeconds(AUDIO_WINDOW_START_SECONDS)
+      audio.currentTime = 0
+      setPlaybackSeconds(0)
       setPlaybackProgress(0)
       setPlayingWidgetId(widgetId)
       await audio.play()
@@ -479,12 +484,7 @@ export const WidgetsPage = () => {
 
   return (
     <section className={cn.page}>
-      <audio
-        ref={audioRef}
-        src={ASSETS.NOTIFICATION_SAMPLE_WAV}
-        preload="metadata"
-        hidden
-      />
+      <audio ref={audioRef} src={AUDIO_SOURCE} preload="metadata" hidden />
 
       <div className={cn.column}>
         <header className={cn.hero}>
@@ -541,15 +541,15 @@ export const WidgetsPage = () => {
             <WidgetCard
               key={widget.id}
               widget={widget}
+              waveformBars={waveformBars}
+              audioDurationSeconds={audioDurationSeconds}
               isExpanded={expandedWidgetId === widget.id}
               isPlaying={playingWidgetId === widget.id}
               playbackProgress={
                 playingWidgetId === widget.id ? playbackProgress : 0
               }
               playbackSeconds={
-                playingWidgetId === widget.id
-                  ? playbackSeconds
-                  : AUDIO_WINDOW_START_SECONDS
+                playingWidgetId === widget.id ? playbackSeconds : 0
               }
               onEdit={(widgetId) => {
                 void navigate(`/widgets/${widgetId}/edit`)

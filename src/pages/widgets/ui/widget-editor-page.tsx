@@ -7,7 +7,6 @@ import {
   loadWidgetsDashboard,
   WIDGET_FONT_OPTIONS,
   WIDGET_VOICE_OPTIONS,
-  WIDGET_WAVEFORM,
   type WidgetFormValues,
   WIDGETS_CREATE_PAGE_SUBTITLE,
   WIDGETS_EDIT_PAGE_SUBTITLE,
@@ -18,14 +17,17 @@ import {
 } from '../model/widgets'
 import { WidgetsLoading, WidgetsState } from './components'
 import { ASSETS } from '@shared/constants'
+import { useAudioWaveform } from '@shared/lib/audio/use-audio-waveform'
+import { formatAudioTime } from '@shared/lib/audio/waveform'
 import {
   IconArrowLeft,
   IconChevronDown,
+  IconPlayerPauseFilled,
   IconPlayerPlayFilled,
 } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 type EditorMode = 'create' | 'edit'
@@ -212,61 +214,92 @@ const UploadPlaceholder = ({
 
 interface AudioPreviewProps {
   disabled?: boolean
+  durationSeconds: number
+  elapsedSeconds: number
   fileName: string
+  isPlaying: boolean
+  waveformBars: number[]
   inputId: string
-  onFileSelect: (fileName: string) => void
+  onFileSelect: (file: File | null) => void
+  onTogglePlayback: () => void
 }
 
 const AudioPreview = ({
   disabled,
+  durationSeconds,
+  elapsedSeconds,
   fileName,
+  isPlaying,
+  waveformBars,
   inputId,
   onFileSelect,
-}: Readonly<AudioPreviewProps>) => (
-  <section className={cn.uploadSection}>
-    <h2 className={cn.uploadTitle}>Audio faylni yuklash</h2>
-    <div className={cn.audioZone}>
-      <div className={cn.audioPlayColumn}>
-        <button type="button" className={cn.audioPlay} disabled={disabled}>
-          <IconPlayerPlayFilled size={18} />
-        </button>
-      </div>
-      <div className={cn.audioBody}>
-        <div className={cn.audioWaveRow}>
-          <span className={cn.audioTime}>00:00</span>
-          <div className={cn.waveform} aria-hidden="true">
-            {WIDGET_WAVEFORM.map((height, index) => (
-              <span
-                key={`${height}-${index}`}
-                className={cn.waveBar}
-                style={{ height: `${height}px` }}
-              />
-            ))}
-          </div>
-          <span className={cn.audioTime}>00:00</span>
+  onTogglePlayback,
+}: Readonly<AudioPreviewProps>) => {
+  const progress = durationSeconds > 0 ? elapsedSeconds / durationSeconds : 0
+  const activeBars = Math.round(progress * waveformBars.length)
+
+  return (
+    <section className={cn.uploadSection}>
+      <h2 className={cn.uploadTitle}>Audio faylni yuklash</h2>
+      <div className={cn.audioZone}>
+        <div className={cn.audioPlayColumn}>
+          <button
+            type="button"
+            className={cn.audioPlay}
+            disabled={disabled}
+            onClick={onTogglePlayback}
+          >
+            {isPlaying ? (
+              <IconPlayerPauseFilled size={18} />
+            ) : (
+              <IconPlayerPlayFilled size={18} />
+            )}
+          </button>
         </div>
-        <label
-          htmlFor={inputId}
-          className={classNames(
-            cn.uploadButton,
-            disabled && cn.uploadButtonDisabled,
-          )}
-        >
-          Faylni tanlash
-        </label>
-        {fileName ? <p className={cn.uploadFileName}>{fileName}</p> : null}
+        <div className={cn.audioBody}>
+          <div className={cn.audioWaveRow}>
+            <span className={cn.audioTime}>
+              {formatAudioTime(elapsedSeconds)}
+            </span>
+            <div className={cn.waveform} aria-hidden="true">
+              {waveformBars.map((height, index) => (
+                <span
+                  key={`${height}-${index}`}
+                  className={classNames(
+                    cn.waveBar,
+                    index < activeBars && cn.waveBarActive,
+                  )}
+                  style={{ height: `${height}px` }}
+                />
+              ))}
+            </div>
+            <span className={cn.audioTime}>
+              {formatAudioTime(durationSeconds)}
+            </span>
+          </div>
+          <label
+            htmlFor={inputId}
+            className={classNames(
+              cn.uploadButton,
+              disabled && cn.uploadButtonDisabled,
+            )}
+          >
+            Faylni tanlash
+          </label>
+          {fileName ? <p className={cn.uploadFileName}>{fileName}</p> : null}
+        </div>
+        <input
+          id={inputId}
+          className={cn.uploadInput}
+          type="file"
+          accept="audio/*"
+          disabled={disabled}
+          onChange={(event) => onFileSelect(event.target.files?.[0] ?? null)}
+        />
       </div>
-      <input
-        id={inputId}
-        className={cn.uploadInput}
-        type="file"
-        accept="audio/*"
-        disabled={disabled}
-        onChange={(event) => onFileSelect(event.target.files?.[0]?.name ?? '')}
-      />
-    </div>
-  </section>
-)
+    </section>
+  )
+}
 
 interface WidgetEditorFormProps {
   mode: EditorMode
@@ -298,6 +331,105 @@ const WidgetEditorForm = ({
       : WIDGETS_EDIT_PAGE_SUBTITLE
   const [imageFileName, setImageFileName] = useState('')
   const [audioFileName, setAudioFileName] = useState('')
+  const [audioFileUrl, setAudioFileUrl] = useState<string | null>(null)
+  const [audioDurationSeconds, setAudioDurationSeconds] = useState(0)
+  const [audioElapsedSeconds, setAudioElapsedSeconds] = useState(0)
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const previewAudioSource = audioFileUrl ?? ASSETS.NOTIFICATION_SAMPLE_WAV
+  const waveformBars = useAudioWaveform({
+    barCount: 32,
+    maxHeight: 20,
+    minHeight: 5,
+    src: previewAudioSource,
+  })
+
+  useEffect(() => {
+    if (!audioRef.current) {
+      return
+    }
+
+    const audio = audioRef.current
+
+    const handleLoadedMetadata = () => {
+      setAudioDurationSeconds(audio.duration || 0)
+    }
+
+    const handleTimeUpdate = () => {
+      setAudioElapsedSeconds(audio.currentTime || 0)
+    }
+
+    const handlePlay = () => {
+      setIsAudioPlaying(true)
+    }
+
+    const handlePause = () => {
+      setIsAudioPlaying(false)
+    }
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('timeupdate', handleTimeUpdate)
+    audio.addEventListener('play', handlePlay)
+    audio.addEventListener('pause', handlePause)
+    audio.addEventListener('ended', handlePause)
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('timeupdate', handleTimeUpdate)
+      audio.removeEventListener('play', handlePlay)
+      audio.removeEventListener('pause', handlePause)
+      audio.removeEventListener('ended', handlePause)
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (audioFileUrl) {
+        URL.revokeObjectURL(audioFileUrl)
+      }
+    }
+  }, [audioFileUrl])
+
+  const handleAudioFileSelect = (file: File | null) => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+
+    if (audioFileUrl) {
+      URL.revokeObjectURL(audioFileUrl)
+    }
+
+    if (!file) {
+      setAudioFileName('')
+      setAudioFileUrl(null)
+      setAudioElapsedSeconds(0)
+      setAudioDurationSeconds(0)
+      setIsAudioPlaying(false)
+      return
+    }
+
+    setAudioFileName(file.name)
+    setAudioFileUrl(URL.createObjectURL(file))
+    setAudioElapsedSeconds(0)
+    setIsAudioPlaying(false)
+  }
+
+  const handleToggleAudioPlayback = async () => {
+    if (!audioRef.current || isSaving) {
+      return
+    }
+
+    if (audioRef.current.paused) {
+      try {
+        await audioRef.current.play()
+      } catch {
+        setIsAudioPlaying(false)
+      }
+    } else {
+      audioRef.current.pause()
+    }
+  }
 
   return (
     <section className={cn.page}>
@@ -413,9 +545,14 @@ const WidgetEditorForm = ({
           <div className={cn.uploadColumnRight}>
             <AudioPreview
               disabled={isSaving}
+              durationSeconds={audioDurationSeconds}
+              elapsedSeconds={audioElapsedSeconds}
               fileName={audioFileName}
+              isPlaying={isAudioPlaying}
+              waveformBars={waveformBars}
               inputId={audioFileId}
-              onFileSelect={setAudioFileName}
+              onFileSelect={handleAudioFileSelect}
+              onTogglePlayback={handleToggleAudioPlayback}
             />
             <div className={cn.colorsRow}>
               <ColorField
@@ -435,6 +572,13 @@ const WidgetEditorForm = ({
             </div>
           </div>
         </div>
+
+        <audio
+          ref={audioRef}
+          src={previewAudioSource}
+          preload="metadata"
+          hidden
+        />
       </form>
 
       <div className={cn.actions}>

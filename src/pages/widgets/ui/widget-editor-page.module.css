@@ -1,6 +1,5 @@
 .page {
   width: 100%;
-  max-width: 1038px;
   padding: 40px 20px 56px 0;
   color: #1e1e1e;
 }
@@ -454,6 +453,10 @@
     rgba(139, 0, 55, 0.36),
     rgba(25, 24, 21, 0.2)
   );
+}
+
+.waveBarActive {
+  background: linear-gradient(180deg, #df5a93, #8b0037);
 }
 
 .colorsRow {

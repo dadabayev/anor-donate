@@ -60,11 +60,6 @@ export const WIDGET_FONT_OPTIONS = [
 
 export const WIDGET_VOICE_OPTIONS = ['Erkak', 'Ayol', 'Robot']
 
-export const WIDGET_WAVEFORM = [
-  8, 14, 12, 17, 18, 20, 16, 22, 26, 24, 18, 16, 20, 24, 28, 25, 18, 12, 10, 13,
-  16, 19, 23, 21, 18, 15, 13, 10, 8, 12, 16, 20,
-] as const
-
 const DEFAULT_STREAM_LINK = 'https://anordonate.uz/examplelink'
 
 const DEFAULT_WIDGETS: WidgetConfig[] = [

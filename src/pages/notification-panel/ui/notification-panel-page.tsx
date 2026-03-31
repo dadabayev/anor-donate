@@ -1,5 +1,8 @@
 import cn from './notification-panel-page.module.css'
 
+import { ASSETS } from '@shared/constants'
+import { useAudioWaveform } from '@shared/lib/audio/use-audio-waveform'
+import { formatAudioTime } from '@shared/lib/audio/waveform'
 import {
   IconExternalLink,
   IconHeart,
@@ -8,7 +11,7 @@ import {
   IconRefresh,
   IconSearch,
 } from '@tabler/icons-react'
-import { type CSSProperties, useEffect, useState } from 'react'
+import { type CSSProperties, useEffect, useRef, useState } from 'react'
 
 type CardType = 'notification' | 'music'
 
@@ -58,22 +61,7 @@ const actionButtons = [
   },
 ] as const
 
-const INITIAL_PROGRESS = 8
-const TOTAL_DURATION = 30
-const WAVE_STEP_SECONDS = 0.6
-
-const formatTime = (seconds: number) => {
-  const safeSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : 0
-  const minutes = Math.floor(safeSeconds / 60)
-  const remainder = Math.floor(safeSeconds % 60)
-
-  return `${String(minutes).padStart(2, '0')}:${String(remainder).padStart(2, '0')}`
-}
-
-const barHeights = [
-  14, 22, 30, 44, 36, 54, 64, 72, 68, 90, 100, 84, 72, 58, 46, 52, 74, 92, 70,
-  58, 48, 36, 28, 24, 30, 40, 52, 62, 48, 34,
-]
+const AUDIO_SOURCE = ASSETS.NOTIFICATION_SAMPLE_WAV
 
 interface AnimatedWaveBarProps {
   height: number
@@ -101,6 +89,7 @@ const AnimatedWaveBar = ({
 )
 
 interface MusicWaveformPlayerProps {
+  bars: number[]
   currentTime: number
   duration: number
   progress: number
@@ -109,6 +98,7 @@ interface MusicWaveformPlayerProps {
 }
 
 const MusicWaveformPlayer = ({
+  bars,
   currentTime,
   duration,
   progress,
@@ -117,72 +107,108 @@ const MusicWaveformPlayer = ({
 }: MusicWaveformPlayerProps) => (
   <div className={cn.musicPlayerWrapper}>
     <div className={cn.waveRow}>
-      <span className={cn.waveTime}>{formatTime(currentTime)}</span>
+      <span className={cn.waveTime}>{formatAudioTime(currentTime)}</span>
       <div className={cn.staticWaveform}>
-        {barHeights.map((height, index) => (
+        {bars.map((height, index) => (
           <AnimatedWaveBar
             key={`${cardId}-${index}`}
             height={height}
-            isPlayed={index / barHeights.length < progress}
+            isPlayed={index / bars.length < progress}
             isPlaying={isPlaying}
             delay={index * 40}
           />
         ))}
       </div>
-      <span className={cn.waveTime}>{formatTime(duration)}</span>
+      <span className={cn.waveTime}>{formatAudioTime(duration)}</span>
     </div>
   </div>
 )
 
-const NotificationCard = ({ card }: { card: MessageCard }) => {
-  const isMusic = card.type === 'music'
+const MusicNotificationCard = ({ card }: { card: MessageCard }) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const waveformBars = useAudioWaveform({
+    barCount: 30,
+    maxHeight: 100,
+    minHeight: 14,
+    src: AUDIO_SOURCE,
+  })
   const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(INITIAL_PROGRESS)
-  const duration = TOTAL_DURATION
-  const [progress, setProgress] = useState(INITIAL_PROGRESS / TOTAL_DURATION)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const progress = duration > 0 ? currentTime / duration : 0
 
   useEffect(() => {
-    if (!isMusic || !isPlaying) {
+    if (!audioRef.current) {
       return undefined
     }
 
-    const timer = window.setInterval(() => {
-      setCurrentTime((value) => {
-        const next = Math.min(value + WAVE_STEP_SECONDS, duration)
-        setProgress(duration > 0 ? next / duration : 0)
+    const audio = audioRef.current
 
-        if (next >= duration) {
-          setIsPlaying(false)
-        }
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime)
+    }
 
-        return next
-      })
-    }, 600)
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration || 0)
+    }
 
-    return () => window.clearInterval(timer)
-  }, [duration, isMusic, isPlaying])
+    const handlePause = () => {
+      setIsPlaying(false)
+    }
 
-  const handleTogglePlayback = () => {
-    if (!isMusic) {
+    const handlePlay = () => {
+      setIsPlaying(true)
+    }
+
+    audio.addEventListener('timeupdate', handleTimeUpdate)
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('pause', handlePause)
+    audio.addEventListener('ended', handlePause)
+    audio.addEventListener('play', handlePlay)
+
+    return () => {
+      audio.removeEventListener('timeupdate', handleTimeUpdate)
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('pause', handlePause)
+      audio.removeEventListener('ended', handlePause)
+      audio.removeEventListener('play', handlePlay)
+    }
+  }, [])
+
+  const handleTogglePlayback = async () => {
+    if (!audioRef.current) {
       return
     }
 
-    setIsPlaying((value) => !value)
+    if (audioRef.current.paused) {
+      try {
+        await audioRef.current.play()
+      } catch {
+        setIsPlaying(false)
+      }
+    } else {
+      audioRef.current.pause()
+    }
   }
 
-  const handleRestart = () => {
-    if (!isMusic) {
+  const handleRestart = async () => {
+    if (!audioRef.current) {
       return
     }
 
-    setCurrentTime(INITIAL_PROGRESS)
-    setProgress(INITIAL_PROGRESS / duration)
-    setIsPlaying(true)
+    audioRef.current.currentTime = 0
+    setCurrentTime(0)
+
+    try {
+      await audioRef.current.play()
+    } catch {
+      setIsPlaying(false)
+    }
   }
 
   return (
-    <article className={`${cn.card} ${isMusic ? cn.musicCard : ''}`}>
-      <div className={`${cn.cardBody} ${isMusic ? cn.musicCardBody : ''}`}>
+    <article className={`${cn.card} ${cn.musicCard}`}>
+      <div className={`${cn.cardBody} ${cn.musicCardBody}`}>
         <h2 className={cn.cardTitle}>
           <IconHeart size={17} stroke={2} className={cn.cardTitleIcon} />
           <span>{card.title}</span>
@@ -192,15 +218,16 @@ const NotificationCard = ({ card }: { card: MessageCard }) => {
           <p className={cn.description}>{card.description}</p>
         ) : null}
 
-        {isMusic ? (
-          <MusicWaveformPlayer
-            cardId={card.id}
-            currentTime={currentTime}
-            duration={duration}
-            progress={progress}
-            isPlaying={isPlaying}
-          />
-        ) : null}
+        <MusicWaveformPlayer
+          cardId={card.id}
+          bars={waveformBars}
+          currentTime={currentTime}
+          duration={duration}
+          progress={progress}
+          isPlaying={isPlaying}
+        />
+
+        <audio ref={audioRef} src={AUDIO_SOURCE} preload="metadata" hidden />
 
         <p className={cn.timestamp}>{card.timestamp}</p>
       </div>
@@ -209,35 +236,67 @@ const NotificationCard = ({ card }: { card: MessageCard }) => {
         <button
           type="button"
           className={cn.secondaryAction}
-          aria-label={isMusic ? 'Restart audio' : 'Refresh message'}
-          onClick={isMusic ? handleRestart : undefined}
+          aria-label="Restart audio"
+          onClick={handleRestart}
         >
           <IconRefresh size={20} stroke={2.1} />
         </button>
         <button
           type="button"
           className={cn.strongAction}
-          aria-label={
-            isMusic
-              ? isPlaying
-                ? 'Pause playback'
-                : 'Play playback'
-              : 'Pause playback'
-          }
-          onClick={isMusic ? handleTogglePlayback : undefined}
+          aria-label={isPlaying ? 'Pause playback' : 'Play playback'}
+          onClick={handleTogglePlayback}
         >
-          {isMusic && isPlaying ? (
+          {isPlaying ? (
             <IconPlayerPauseFilled size={20} />
-          ) : isMusic ? (
-            <IconPlayerPlayFilled size={20} />
           ) : (
-            <IconPlayerPauseFilled size={20} />
+            <IconPlayerPlayFilled size={20} />
           )}
         </button>
       </div>
     </article>
   )
 }
+
+const NotificationMessageCard = ({ card }: { card: MessageCard }) => (
+  <article className={cn.card}>
+    <div className={cn.cardBody}>
+      <h2 className={cn.cardTitle}>
+        <IconHeart size={17} stroke={2} className={cn.cardTitleIcon} />
+        <span>{card.title}</span>
+      </h2>
+
+      {card.description ? (
+        <p className={cn.description}>{card.description}</p>
+      ) : null}
+      <p className={cn.timestamp}>{card.timestamp}</p>
+    </div>
+
+    <div className={cn.cardActions} aria-label="Xabar amallari">
+      <button
+        type="button"
+        className={cn.secondaryAction}
+        aria-label="Refresh message"
+      >
+        <IconRefresh size={20} stroke={2.1} />
+      </button>
+      <button
+        type="button"
+        className={cn.strongAction}
+        aria-label="Pause playback"
+      >
+        <IconPlayerPauseFilled size={20} />
+      </button>
+    </div>
+  </article>
+)
+
+const NotificationCard = ({ card }: { card: MessageCard }) =>
+  card.type === 'music' ? (
+    <MusicNotificationCard card={card} />
+  ) : (
+    <NotificationMessageCard card={card} />
+  )
 
 export const NotificationPanelPage = () => {
   return (

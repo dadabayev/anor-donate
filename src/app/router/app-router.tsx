@@ -2,6 +2,7 @@ import { MainLayout } from '../layouts/main-layout'
 import { donationSettingsRoutes } from './routes/donation-settings-routes'
 import { donationsRoutes } from './routes/donations-routes'
 import { homeRoutes } from './routes/home-routes'
+import { memesRoutes } from './routes/memes-routes'
 import { notificationPanelRoutes } from './routes/notification-panel-routes'
 import { profileRoutes } from './routes/profile-routes'
 import { widgetsRoutes } from './routes/widgets-routes'
@@ -20,6 +21,7 @@ export const appRouter: RouteObject[] = [
       donationSettingsRoutes,
       notificationPanelRoutes,
       profileRoutes,
+      ...memesRoutes,
       ...widgetsRoutes,
     ],
   },

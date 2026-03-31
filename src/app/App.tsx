@@ -2,6 +2,7 @@ import './config/i18n'
 
 import '@mantine/core/styles.css'
 import '@mantine/dates/styles.css'
+import '@mantine/notifications/styles.css'
 import './styles/global.css'
 
 import { WithMantine } from './providers/with-mantine'

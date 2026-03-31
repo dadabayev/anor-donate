@@ -47,3 +47,6 @@ npm run steiger
 - Added dedicated widget create/edit pages at `/widgets/create` and `/widgets/:widgetId/edit`
 - Removed modal-based widget create/update flow from the widgets feature
 - App routes use English paths only (`/donations`, `/widgets`, `/profile`, etc.); sidebar links match those paths
+- Notification panel and widgets audio previews now use real waveform bars decoded from WAV audio data
+- Widget editor audio upload now supports real play/pause preview with live elapsed/duration timing
+- Added full memes feature flow: `/memes`, `/memes/create`, `/memes/:memeId/edit`, ready memes tab, and selection modal

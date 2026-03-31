@@ -1,0 +1,32 @@
+.root {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.pageDot {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.05);
+  color: #6c6c70;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.pageDotArrow {
+  background: #8b0037;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageDotActive {
+  border: 1px solid #8b0037;
+  background: #ffffff;
+  color: #8b0037;
+}

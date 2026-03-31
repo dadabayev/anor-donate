@@ -7,6 +7,7 @@ export { ErrorMessage } from './error-message/error-message'
 export { InputField, type InputFieldProps } from './input-field/input-field'
 export { Loader } from './loader/loader'
 export { Modal } from './modal/modal'
+export { PaginationStepper } from './pagination-stepper/pagination-stepper'
 export {
   Table,
   type TableAlign,

@@ -1,0 +1,250 @@
+.page {
+  padding: 40px 20px 64px 0;
+  color: #1e1e1e;
+  background: #f4f4f6;
+  min-height: 100%;
+}
+
+.column {
+  width: 100%;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 48px;
+  line-height: 54px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 500;
+}
+
+.primaryButton {
+  margin-top: 24px;
+  width: 211px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.linkCard,
+.listCard,
+.stateCard,
+.skeletonCard,
+.skeletonGrid {
+  margin-top: 24px;
+  border-radius: 35px;
+  background: #ffffff;
+}
+
+.linkCard {
+  padding: 32px;
+}
+
+.linkSectionTitle {
+  margin: 0 0 16px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.linkRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  gap: 24px;
+}
+
+.linkInputWrap {
+  border-radius: 16px;
+  background: #eaeaea;
+  min-height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.linkInput {
+  border: 0;
+  background: transparent;
+  width: 100%;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.linkInput:focus {
+  outline: none;
+}
+
+.copyButton {
+  border: 0;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.listCard {
+  padding: 32px;
+}
+
+.listCardFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.cardTitle {
+  margin: 0 0 16px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.stateCard {
+  min-height: 420px;
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.stateImage {
+  width: min(280px, 100%);
+}
+
+.stateTitle {
+  margin: 28px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 30px;
+  line-height: 38px;
+  font-weight: 600;
+}
+
+.stateText {
+  margin: 12px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(30, 30, 30, 0.72);
+}
+
+.skeletonCard {
+  padding: 32px;
+  display: grid;
+  gap: 16px;
+}
+
+.skeletonLine,
+.skeletonInput,
+.skeletonMeme {
+  border-radius: 16px;
+  background: #ececf0;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeletonLine {
+  width: 260px;
+  height: 28px;
+}
+
+.skeletonInput {
+  width: 100%;
+  height: 48px;
+}
+
+.skeletonGrid {
+  margin-top: 24px;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.skeletonMeme {
+  height: 270px;
+}
+
+.skeletonLine::after,
+.skeletonInput::after,
+.skeletonMeme::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.76),
+    transparent
+  );
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 24px 0 40px;
+  }
+
+  .title {
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .subtitle {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .linkCard,
+  .listCard {
+    padding: 20px;
+  }
+
+  .linkRow {
+    grid-template-columns: 1fr;
+  }
+
+  .skeletonGrid {
+    grid-template-columns: 1fr;
+  }
+}

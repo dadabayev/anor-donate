@@ -1,0 +1,98 @@
+.body {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(30, 30, 30, 0.85);
+}
+
+.errorBox {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(208, 69, 69, 0.1);
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #b42318;
+}
+
+.footer {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cancelButton {
+  min-height: 48px;
+  min-width: 140px;
+  padding: 0 20px;
+  border: 1px solid #d2d2d2;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1e1e1e;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #f4f4f6;
+  border-color: #c4c4c4;
+}
+
+.cancelButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.deleteButton {
+  min-height: 48px;
+  min-width: 140px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b0037;
+  color: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: #76002f;
+}
+
+.deleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.deleteButton:focus-visible,
+.cancelButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.2);
+}
+
+@media (max-width: 520px) {
+  .footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .cancelButton,
+  .deleteButton {
+    width: 100%;
+  }
+}

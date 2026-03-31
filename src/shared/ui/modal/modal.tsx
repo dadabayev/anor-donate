@@ -13,6 +13,9 @@ interface ModalProps {
   onClose: () => void
   closeAriaLabel?: string
   width?: 'sm' | 'md' | 'lg'
+  /** When false, backdrop click and Escape do not close (header X still calls onClose unless disabled). */
+  dismissible?: boolean
+  closeButtonDisabled?: boolean
 }
 
 export const Modal = ({
@@ -23,6 +26,8 @@ export const Modal = ({
   onClose,
   closeAriaLabel = 'Close modal',
   width = 'lg',
+  dismissible = true,
+  closeButtonDisabled = false,
 }: Readonly<ModalProps>) => {
   useEffect(() => {
     if (!isOpen) {
@@ -43,14 +48,14 @@ export const Modal = ({
     }
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && dismissible) {
         onClose()
       }
     }
 
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, dismissible])
 
   const root = useMemo(() => {
     if (typeof document === 'undefined') {
@@ -64,6 +69,9 @@ export const Modal = ({
   }
 
   const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!dismissible) {
+      return
+    }
     if (event.target === event.currentTarget) {
       onClose()
     }
@@ -91,6 +99,7 @@ export const Modal = ({
             type="button"
             className={cn.closeButton}
             aria-label={closeAriaLabel}
+            disabled={closeButtonDisabled}
             onClick={onClose}
           >
             <IconX size={28} stroke={1.9} />
