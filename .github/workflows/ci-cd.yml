@@ -1,43 +1,127 @@
-name: Deploy to GitHub Pages
+name: CI/CD
 
 on:
+  pull_request:
+    branches:
+      - main
+      - master
   push:
-    branches: [main]
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
+env:
+  NODE_VERSION: "22"
+  DIST_ARTIFACT_NAME: web-dist
+  DEPLOY_PATH: ${{ vars.DEPLOY_PATH || secrets.DEPLOY_PATH || '' }}
+  SERVER_HOST: ${{ vars.SERVER_HOST || secrets.SERVER_HOST }}
+  SERVER_USER: ${{ vars.SERVER_USER || secrets.SERVER_USER }}
+  SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY || vars.SERVER_SSH_KEY }}
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  ci:
+    name: Build and validate
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
+        env:
+          HUSKY: 0
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
         with:
+          name: ${{ env.DIST_ARTIFACT_NAME }}
           path: dist
+          if-no-files-found: error
 
   deploy:
-    needs: build
+    name: Deploy
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    needs: ci
+    if: github.event_name != 'pull_request'
+
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.DIST_ARTIFACT_NAME }}
+          path: deploy-artifact
+
+      - name: Validate deployment variables
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SERVER_HOST}" || { echo "SERVER_HOST is not configured"; exit 1; }
+          test -n "${SERVER_USER}" || { echo "SERVER_USER is not configured"; exit 1; }
+          test -n "${SERVER_SSH_KEY}" || { echo "SERVER_SSH_KEY is not configured"; exit 1; }
+
+      - name: Resolve deployment path
+        shell: bash
+        run: |
+          set -euo pipefail
+          RESOLVED_DEPLOY_PATH="${DEPLOY_PATH:-/home/${SERVER_USER}/anor-donate}"
+          echo "RESOLVED_DEPLOY_PATH=${RESOLVED_DEPLOY_PATH}" >> "$GITHUB_ENV"
+          echo "Using remote deploy path: ${RESOLVED_DEPLOY_PATH}"
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ env.SERVER_SSH_KEY }}
+
+      - name: Add server to known_hosts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H "${SERVER_HOST}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+#      - name: Ensure remote directory exists
+#        shell: bash
+#        run: |
+#          set -euo pipefail
+#          ssh "${SERVER_USER}@${SERVER_HOST}" "mkdir -p '${RESOLVED_DEPLOY_PATH}'"
+
+      - name: Sync dist to server
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_DIR="deploy-artifact"
+          if [ -d "deploy-artifact/dist" ]; then
+            SOURCE_DIR="deploy-artifact/dist"
+          fi
+
+          rsync -az --delete "${SOURCE_DIR}/" "${SERVER_USER}@${SERVER_HOST}:${RESOLVED_DEPLOY_PATH}/"
