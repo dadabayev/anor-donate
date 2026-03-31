@@ -67,7 +67,7 @@ export const saveMeme = async (
   return values
 }
 
-export const deleteMeme = async (memeId: string): Promise<void> => {
+export const deleteMeme = async (_memeId: string): Promise<void> => {
   await delay(550)
   if (
     typeof window !== 'undefined' &&
@@ -76,5 +76,4 @@ export const deleteMeme = async (memeId: string): Promise<void> => {
     window.sessionStorage.removeItem(MEMES_DELETE_FAIL_ONCE_KEY)
     throw new Error('memes-delete-failed')
   }
-  void memeId
 }
