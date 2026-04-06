@@ -1,8 +1,7 @@
 import cn from './notification-panel-page.module.css'
 
 import { ASSETS } from '@shared/constants'
-import { useAudioWaveform } from '@shared/lib/audio/use-audio-waveform'
-import { formatAudioTime } from '@shared/lib/audio/waveform'
+import { formatAudioTime, useAudioWaveform } from '@shared/lib/audio'
 import {
   IconExternalLink,
   IconHeart,

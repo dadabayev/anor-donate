@@ -17,8 +17,7 @@ import {
 } from '../model/widgets'
 import { WidgetsLoading, WidgetsState } from './components'
 import { ASSETS } from '@shared/constants'
-import { useAudioWaveform } from '@shared/lib/audio/use-audio-waveform'
-import { formatAudioTime } from '@shared/lib/audio/waveform'
+import { formatAudioTime, useAudioWaveform } from '@shared/lib/audio'
 import {
   IconArrowLeft,
   IconChevronDown,
