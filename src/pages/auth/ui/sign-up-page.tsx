@@ -5,9 +5,9 @@ import {
   UZBEKISTAN_PHONE_PLACEHOLDER,
 } from '../lib/format-uzbekistan-phone'
 import {
+  createSignUpSchema,
   type SignUpFormInputValues,
   type SignUpFormValues,
-  signUpSchema,
 } from '../model/auth-schema'
 import { AuthSubmissionError, submitSignUp } from '../model/auth-service'
 import {
@@ -19,11 +19,13 @@ import {
   AuthTextareaField,
 } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { startTransition, useId, useState } from 'react'
+import { startTransition, useId, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 
 export const SignUpPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const firstNameId = useId()
   const lastNameId = useId()
@@ -38,6 +40,7 @@ export const SignUpPage = () => {
   const acceptTermsId = useId()
   const marketingConsentId = useId()
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const signUpSchema = useMemo(() => createSignUpSchema(t), [t])
   const {
     register,
     control,
@@ -86,12 +89,12 @@ export const SignUpPage = () => {
         return
       }
 
-      setSubmitError('Ro‘yxatdan o‘tishda kutilmagan xatolik yuz berdi.')
+      setSubmitError(t('auth.signUp.unexpectedError'))
     }
   })
 
   return (
-    <AuthShell title="Ro’yxatdan o’tish" align="top">
+    <AuthShell title={t('auth.signUp.title')} align="top">
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}
@@ -103,22 +106,22 @@ export const SignUpPage = () => {
           <AuthInputField
             {...register('firstName')}
             id={firstNameId}
-            label="Ism"
-            placeholder="Ism"
+            label={t('auth.signUp.firstName')}
+            placeholder={t('auth.signUp.firstNamePlaceholder')}
             error={errors.firstName?.message}
           />
           <AuthInputField
             {...register('lastName')}
             id={lastNameId}
-            label="Familya"
-            placeholder="Familya"
+            label={t('auth.signUp.lastName')}
+            placeholder={t('auth.signUp.lastNamePlaceholder')}
             error={errors.lastName?.message}
           />
           <AuthInputField
             {...register('username')}
             id={usernameId}
-            label="Username"
-            placeholder="Username"
+            label={t('auth.signUp.username')}
+            placeholder={t('auth.signUp.usernamePlaceholder')}
             autoComplete="username"
             error={errors.username?.message}
           />
@@ -126,31 +129,31 @@ export const SignUpPage = () => {
             {...register('email')}
             id={emailId}
             type="email"
-            label="Elektron pochta"
-            placeholder="example@email.com"
+            label={t('auth.signUp.email')}
+            placeholder={t('auth.signUp.emailPlaceholder')}
             autoComplete="email"
             error={errors.email?.message}
           />
           <AuthInputField
             {...register('channelName')}
             id={channelNameId}
-            label="Kanalingiz nomi"
-            placeholder="Kanal nomi"
+            label={t('auth.signUp.channelName')}
+            placeholder={t('auth.signUp.channelPlaceholder')}
             error={errors.channelName?.message}
           />
           <AuthInputField
             {...register('channelLink')}
             id={channelLinkId}
             type="url"
-            label="Kanalingiz havolasi (ssilkasi)"
-            placeholder="https://www.youtube.com/@your_channel"
+            label={t('auth.signUp.channelLink')}
+            placeholder={t('auth.signUp.channelLinkPlaceholder')}
             error={errors.channelLink?.message}
           />
           <AuthTextareaField
             {...register('about')}
             id={aboutId}
-            label="Kanal haqida"
-            placeholder="Kanal kontenti haqida qisqacha yozing"
+            label={t('auth.signUp.about')}
+            placeholder={t('auth.signUp.aboutPlaceholder')}
             error={errors.about?.message}
             className={cn.wideField}
           />
@@ -160,7 +163,7 @@ export const SignUpPage = () => {
             render={({ field }) => (
               <div className={cn.wideField}>
                 <AuthFileUploadField
-                  label="Kanalingiz sozlamalaridan rasm (screenshot)"
+                  label={t('auth.signUp.screenshotLabel')}
                   fileName={field.value?.name}
                   error={errors.screenshot?.message}
                   disabled={isSubmitting}
@@ -175,7 +178,7 @@ export const SignUpPage = () => {
             render={({ field }) => (
               <AuthInputField
                 id={phoneId}
-                label="Telefon raqam"
+                label={t('auth.signUp.phone')}
                 placeholder={UZBEKISTAN_PHONE_PLACEHOLDER}
                 inputMode="numeric"
                 autoComplete="tel"
@@ -192,8 +195,8 @@ export const SignUpPage = () => {
             {...register('password')}
             id={passwordId}
             type="password"
-            label="Parol"
-            placeholder="Password"
+            label={t('auth.signUp.password')}
+            placeholder={t('auth.signUp.passwordPlaceholder')}
             autoComplete="new-password"
             error={errors.password?.message}
           />
@@ -201,8 +204,8 @@ export const SignUpPage = () => {
             {...register('confirmPassword')}
             id={confirmPasswordId}
             type="password"
-            label="Parol takrolang"
-            placeholder="Password"
+            label={t('auth.signUp.confirmPassword')}
+            placeholder={t('auth.signUp.passwordPlaceholder')}
             autoComplete="new-password"
             error={errors.confirmPassword?.message}
           />
@@ -221,12 +224,11 @@ export const SignUpPage = () => {
               onChange={(event) => field.onChange(event.target.checked)}
               label={
                 <>
-                  Men{' '}
+                  {t('auth.signUp.acceptTermsPrefix')}{' '}
                   <Link to="/" className={cn.inlineLink}>
-                    Anor Donate xizmat ko‘rsatish shartlari va maxfiylik
-                    siyosati
-                  </Link>{' '}
-                  bilan tanishib, ularga rozilik bildiraman.
+                    {t('auth.signUp.acceptTermsLink')}
+                  </Link>
+                  {t('auth.signUp.acceptTermsSuffix')}
                 </>
               }
             />
@@ -243,20 +245,20 @@ export const SignUpPage = () => {
               name={field.name}
               onBlur={field.onBlur}
               onChange={(event) => field.onChange(event.target.checked)}
-              label="Men Anor Donate’dan maxsus takliflar, foydali maslahatlar va yangiliklarni olishga roziman."
+              label={t('auth.signUp.marketingConsent')}
             />
           )}
         />
 
         <AuthSubmitButton loading={isSubmitting}>
-          Ro’yxatdan o’tish
+          {t('auth.signUp.submit')}
         </AuthSubmitButton>
       </form>
 
       <div className={cn.bottomRow}>
-        <span>Hisobingiz mavjudmi?</span>
+        <span>{t('auth.signUp.bottomPrompt')}</span>
         <Link to="/sign-in" className={cn.bottomLink}>
-          Kirish
+          {t('auth.signUp.bottomLink')}
         </Link>
       </div>
     </AuthShell>

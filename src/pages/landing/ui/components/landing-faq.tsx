@@ -2,16 +2,10 @@
 
 import { IconChevronDown } from '@tabler/icons-react'
 import { useId, useState } from 'react'
-
-const FAQ_QUESTION = 'Bu platforma nima uchun kerak?'
-
-const FAQ_ANSWER =
-  'Strimer va muxlislar o‘rtasida oson aloqa o‘rnatish va qo‘llab-quvvatlashni qulay tarzda qabul qilish uchun.'
-
-const FAQ_INTRO =
-  'Platforma haqida eng ko‘p beriladigan savollarga javoblarni shu yerda topishingiz mumkin. Barcha asosiy funksiyalar va foydalanish jarayoni oddiy va tushunarli tarzda tushuntirilgan.'
+import { useTranslation } from 'react-i18next'
 
 export const LandingFaq = () => {
+  const { t } = useTranslation()
   const [faqOpen, setFaqOpen] = useState<number | null>(0)
   const faqBaseId = useId()
 
@@ -20,9 +14,9 @@ export const LandingFaq = () => {
       <div className={cn.inner}>
         <div className={cn.faqInner}>
           <h2 id="faq-title" className={cn.faqTitle}>
-            Tez-tez so‘raladigan savollar
+            {t('landing.faq.title')}
           </h2>
-          <p className={cn.faqIntro}>{FAQ_INTRO}</p>
+          <p className={cn.faqIntro}>{t('landing.faq.intro')}</p>
           <div className={cn.faqList}>
             {Array.from({ length: 7 }, (_, index) => {
               const panelId = `${faqBaseId}-panel-${index}`
@@ -39,7 +33,7 @@ export const LandingFaq = () => {
                     aria-controls={panelId}
                     onClick={() => setFaqOpen(open ? null : index)}
                   >
-                    {FAQ_QUESTION}
+                    {t('landing.faq.question')}
                     <IconChevronDown
                       size={24}
                       stroke={1.75}
@@ -54,7 +48,7 @@ export const LandingFaq = () => {
                       aria-labelledby={triggerId}
                       className={cn.faqPanel}
                     >
-                      {FAQ_ANSWER}
+                      {t('landing.faq.answer')}
                     </div>
                   ) : null}
                 </div>

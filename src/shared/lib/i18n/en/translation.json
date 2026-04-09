@@ -66,5 +66,424 @@
     "socialModalClose": "Close social link modal",
     "socialModalInvalidUrl": "Enter a valid URL",
     "socialModalNetworkError": "Failed to save social link. Please try again."
+  },
+  "landing": {
+    "brandName": "Anor Donate",
+    "header": {
+      "nav": {
+        "home": "Home",
+        "howItWorks": "How it works",
+        "faq": "Questions",
+        "bloggers": "Creators"
+      },
+      "menuButtonSrOnly": "Menu",
+      "mainNavAriaLabel": "Main",
+      "mobileNavAriaLabel": "Mobile menu",
+      "signIn": "Sign in"
+    },
+    "hero": {
+      "badge": "Stream chat",
+      "title": "A platform that makes interaction and support between streamers and their viewers easier",
+      "subtitle": "Support the creators you love!",
+      "signIn": "Sign in",
+      "signUp": "Sign up"
+    },
+    "about": {
+      "title": "How does it work?",
+      "modesTablistAriaLabel": "Modes",
+      "tabs": {
+        "textDonation": "Text donation",
+        "voiceDonation": "Voice donation",
+        "sendMeme": "Send a meme"
+      },
+      "widgetLabel": "Widget",
+      "featureTitle": "Receive messages",
+      "featureBody": "Accept financial support from viewers and show it on your stream. Customize how notifications look with flexible settings.",
+      "tags": {
+        "easy": "Easy",
+        "fast": "Fast",
+        "convenient": "Convenient",
+        "realTime": "Real time"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "intro": "Find answers to the most common questions about the platform. All core features and the user flow are explained in a simple, clear way.",
+      "question": "Why is this platform useful?",
+      "answer": "To make communication between streamers and viewers easy and to receive support conveniently."
+    },
+    "bloggers": {
+      "titleLine1": "Anor Donate",
+      "titleLine2": "Creators who use the platform",
+      "photoPlaceholder": "Photo",
+      "nicknamePlaceholder": "Nickname",
+      "linkPlaceholder": "Link"
+    },
+    "footer": {
+      "brandText": "A platform that makes it easy for streamers and creators to receive donations from their audience.",
+      "signIn": "Sign in",
+      "columns": {
+        "platform": "Platform",
+        "help": "Help",
+        "contact": "Contact"
+      },
+      "links": {
+        "howItWorks": "How it works",
+        "publicOffer": "Public offer",
+        "faq": "FAQ",
+        "support": "Support",
+        "privacy": "Privacy policy"
+      },
+      "social": {
+        "telegram": "Telegram",
+        "instagram": "Instagram",
+        "youtube": "YouTube"
+      },
+      "emailLine": "Email: support@anordonate.uz",
+      "copyright": "© {{year}} Anor Donate. All rights reserved."
+    },
+    "donation": {
+      "title": "Donation amount",
+      "lead": "Enter an amount — digits are formatted automatically (som).",
+      "amountLabel": "Amount",
+      "currencySuffix": "som",
+      "hint": "Minimum and maximum limits are validated.",
+      "submit": "Continue",
+      "success": "Amount received. Sign in to your account for the next step.",
+      "validation": {
+        "required": "Enter an amount",
+        "min": "Minimum amount {{amount}} {{currency}}",
+        "max": "Maximum amount {{amount}} {{currency}}"
+      }
+    }
+  },
+  "auth": {
+    "shell": {
+      "streamerPhotoCaption": "Streamer photo"
+    },
+    "signIn": {
+      "title": "Sign in to your account",
+      "loginLabel": "Login / Email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "forgotPassword": "Forgot password?",
+      "rememberMe": "Remember me",
+      "submit": "Sign in",
+      "bottomPrompt": "Don't have an account yet?",
+      "bottomLink": "Sign up",
+      "unexpectedError": "An unexpected error occurred while signing in."
+    },
+    "signUp": {
+      "title": "Sign up",
+      "firstName": "First name",
+      "firstNamePlaceholder": "First name",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Last name",
+      "username": "Username",
+      "usernamePlaceholder": "Username",
+      "email": "Email",
+      "emailPlaceholder": "example@email.com",
+      "channelName": "Channel name",
+      "channelPlaceholder": "Channel name",
+      "channelLink": "Channel link",
+      "channelLinkPlaceholder": "https://www.youtube.com/@your_channel",
+      "about": "About the channel",
+      "aboutPlaceholder": "Briefly describe your channel content",
+      "screenshotLabel": "Screenshot from your channel settings",
+      "phone": "Phone number",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordPlaceholder": "Password",
+      "acceptTermsPrefix": "I have read and agree to the",
+      "acceptTermsLink": "Anor Donate terms of service and privacy policy",
+      "acceptTermsSuffix": ".",
+      "marketingConsent": "I agree to receive special offers, tips, and news from Anor Donate.",
+      "submit": "Sign up",
+      "bottomPrompt": "Already have an account?",
+      "bottomLink": "Sign in",
+      "unexpectedError": "An unexpected error occurred while signing up."
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "phoneLabel": "Phone number",
+      "submit": "Get code",
+      "unexpectedError": "An unexpected error occurred while sending the code."
+    },
+    "otp": {
+      "title": "Verify your number",
+      "codeLabel": "Enter the code",
+      "resend": "Resend",
+      "confirm": "Confirm",
+      "resendSuccess": "Verification code sent again",
+      "resendError": "Could not resend the code. Try again later.",
+      "unexpectedError": "An unexpected error occurred during verification."
+    },
+    "fileUpload": {
+      "chooseFile": "Choose file",
+      "hint": "Upload an image in PNG, JPG, or WEBP format"
+    },
+    "validation": {
+      "loginRequired": "Enter login or email",
+      "passwordRequired": "Enter password",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "emailRequired": "Enter email",
+      "emailInvalid": "Enter a valid email",
+      "channelLinkRequired": "Enter channel link",
+      "channelLinkInvalid": "Enter a valid channel link",
+      "phoneRequired": "Enter phone number",
+      "phoneInvalid": "Phone must be in +998 (00) 000-00-00 format",
+      "screenshotRequired": "Screenshot is required",
+      "firstNameRequired": "Enter first name",
+      "lastNameRequired": "Enter last name",
+      "usernameRequired": "Enter username",
+      "usernameFormat": "Username may only contain letters, numbers, dot, and underscore",
+      "channelNameRequired": "Enter channel name",
+      "aboutRequired": "Write briefly about the channel",
+      "aboutMin": "Channel description must be at least 20 characters",
+      "aboutMax": "Channel description must not exceed 500 characters",
+      "confirmPasswordRequired": "Repeat password",
+      "acceptTerms": "Accept the terms to continue",
+      "passwordsMismatch": "Passwords must match",
+      "otpDigit": "Digits only",
+      "otpComplete": "Enter the 6-digit code"
+    },
+    "errors": {
+      "signIn": {
+        "dataInvalid": "The information could not be verified.",
+        "loginNotFound": "This login or email was not found",
+        "accountBlocked": "This account is temporarily blocked. Contact support.",
+        "wrongPassword": "Incorrect password. Try again."
+      },
+      "signUp": {
+        "retryFields": "Please check some fields again.",
+        "emailTaken": "This email is already registered",
+        "usernameTaken": "This username is taken",
+        "phoneTaken": "This phone number is already in use"
+      },
+      "reset": {
+        "phoneNotFound": "No account found for this phone number."
+      },
+      "otp": {
+        "verifyFailed": "Verification failed.",
+        "wrongCode": "Incorrect code. Try again."
+      }
+    }
+  },
+  "common": {
+    "currencyUzs": "UZS",
+    "percent": "%",
+    "units": "units"
+  },
+  "sidebar": {
+    "brandPlaceholder": "AndySmith",
+    "logoAlt": "Anor Donate logo",
+    "mainNavAria": "Main navigation",
+    "secondaryNavAria": "Secondary navigation",
+    "primary": {
+      "dashboard": "Home",
+      "donations": "Donations",
+      "donationHistory": "Donation history",
+      "widgets": "Widgets",
+      "memes": "Memes",
+      "streamStatistics": "Stream statistics",
+      "fundraising": "Fundraising",
+      "settings": "Settings",
+      "profile": "Profile"
+    },
+    "secondary": {
+      "admin": "Admin panel"
+    },
+    "logout": "Log out"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Donation statistics",
+    "dateFrom": "From",
+    "dateTo": "To",
+    "totalDonationsAmount": "Total donations amount",
+    "totalDonationsCount": "Total donations count",
+    "lineChartAria": "Donation statistics line chart",
+    "statistics": "Statistics",
+    "tooltipYear": "{{day}} / {{year}}",
+    "seriesPrimary": "Primary series",
+    "seriesSecondary": "Secondary series",
+    "donationsCount": "Donations count",
+    "tooltipTotalDonations": "Total donations",
+    "count": "Count",
+    "donationShare": "Donation share",
+    "goal": "Goal",
+    "weeklyGoal": "Weekly goal",
+    "done": "Done",
+    "remaining": "Remaining",
+    "weekdays": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday"
+    },
+    "weekdaysShort": {
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F"
+    },
+    "topDonorName": "Top donor {{index}}"
+  },
+  "donationsPage": {
+    "pageTitle": "Donation history",
+    "emptyText": "No donation history yet",
+    "errorTitle": "Could not load data",
+    "errorText": "An error occurred while loading donation history. Please try again.",
+    "emptyTitle": "No donation history found",
+    "emptyHint": "New donations will appear here after they arrive.",
+    "retry": "Try again",
+    "colNo": "No.",
+    "colName": "Name",
+    "colPaymentAmount": "Payment amount",
+    "colCommission": "Commission",
+    "colPaymentTime": "Payment time",
+    "paginationAria": "Donation history pages"
+  },
+  "donationSettings": {
+    "pageTitle": "Donation settings",
+    "linkForDonation": "Link for donations",
+    "linkInputAria": "Donation link",
+    "copyLinkAria": "Copy link",
+    "minAmounts": "Minimum amounts",
+    "minTextDonation": "Minimum text donation:",
+    "minVoiceDonation": "Minimum voice donation:",
+    "voiceMessage": "Voice message:",
+    "textDonationSettings": "Text donation settings",
+    "pageText": "Page text:",
+    "buttonText": "Donation button text:",
+    "colorSettings": "Color settings",
+    "buttonColor": "Button color",
+    "buttonTextColor": "Button text color",
+    "buttonColorAria": "Button color",
+    "buttonTextColorAria": "Button text color",
+    "blurBackground": "Background image blur (%)",
+    "extraSettings": "Additional settings",
+    "standardFilter": "Use standard filter:",
+    "uploadFileAria": "Upload file",
+    "removeFileAria": "Remove file",
+    "chooseFile": "Choose file",
+    "addWord": "Add word",
+    "wordLabel": "Enter a word:",
+    "wordPlaceholder": "Type a word",
+    "bannedWordAria": "Banned word",
+    "addWordButton": "Add",
+    "removeWordAria": "Remove {{word}}",
+    "save": "Save changes",
+    "banDefault": "Ban"
+  },
+  "widgetsPage": {
+    "pageTitle": "Widgets",
+    "pageSubtitle": "All widgets",
+    "createSubtitle": "Create widgets",
+    "editSubtitle": "Edit widget",
+    "emptyTitle": "No widgets yet",
+    "emptyText": "Create your first widget for your stream and manage it from this page.",
+    "emptyAction": "Create widget",
+    "errorTitle": "Could not load widgets",
+    "errorText": "Reload data or try again later.",
+    "retry": "Reload",
+    "createAction": "Add widget",
+    "copyStreamLink": "Copy stream link",
+    "streamLinkPrefix": "Stream link:",
+    "minimumAmount": "Minimum amount",
+    "volume": "Volume",
+    "duration": "Duration",
+    "autoRead": "Auto-read",
+    "voiceTone": "Voice",
+    "appearance": "Appearance",
+    "nameColor": "Name color",
+    "textColor": "Text color",
+    "font": "Font",
+    "edit": "Edit",
+    "notFoundTitle": "Widget not found",
+    "notFoundText": "We could not find this widget. It may have been deleted.",
+    "back": "Back",
+    "saving": "Saving…",
+    "save": "Save changes",
+    "voiceMale": "Male",
+    "voiceFemale": "Female",
+    "voiceRobot": "Robot"
+  },
+  "memesPage": {
+    "pageTitle": "Memes",
+    "myMemes": "My memes",
+    "streamLinkPrefix": "Stream link:",
+    "copyDone": "Done",
+    "copyUpdating": "Updating…",
+    "createMeme": "Create meme",
+    "deleteTitle": "Delete meme?",
+    "deleteConfirm": "Delete",
+    "deleteCancel": "Cancel"
+  },
+  "fundraising": {
+    "pageTitle": "Fundraising",
+    "pageSubtitle": "Fundraising on stream",
+    "errorTitle": "Could not load data",
+    "errorText": "Reload data or try again later.",
+    "retry": "Reload",
+    "saveSuccess": "Fundraising settings saved",
+    "saved": "Saved",
+    "saveError": "Save error",
+    "saveErrorDetail": "Could not save settings. Try again.",
+    "copyOk": "Link copied",
+    "copyFail": "Could not copy",
+    "streamLink": "Stream link",
+    "totalTop": "Overall top",
+    "name": "Name",
+    "volume": "Volume",
+    "duration": "Duration",
+    "showAmount": "Show amount",
+    "pickAnimation": "Choose animation",
+    "select": "Select",
+    "saving": "Saving…",
+    "save": "Save",
+    "copyAria": "Copy link",
+    "nameAria": "Name",
+    "volumeAria": "Volume",
+    "durationAria": "Duration"
+  },
+  "streamStatistics": {
+    "pageTitle": "Stream statistics",
+    "pageSubtitle": "Statistics settings",
+    "errorTitle": "Could not load settings",
+    "errorText": "Reload data or try again later.",
+    "retry": "Reload",
+    "saveSuccess": "Stream statistics settings saved",
+    "saved": "Saved",
+    "saveError": "Save error",
+    "saveErrorDetail": "Could not save settings. Try again.",
+    "copyOk": "Link copied",
+    "copyFail": "Could not copy",
+    "copyAria": "Copy stream link",
+    "streamLink": "Stream link",
+    "displayMethod": "Display method",
+    "font": "Font",
+    "elementCount": "Number of elements",
+    "unit": "pcs",
+    "saving": "Saving…",
+    "save": "Save",
+    "sectionGeneral": "Overall top",
+    "sectionMonthly": "Monthly top",
+    "sectionRecent": "Latest donations",
+    "displayRow": "Row",
+    "displayColumn": "Column",
+    "displayGrid": "Grid"
+  },
+  "notificationPanel": {
+    "pageTitle": "Notifications",
+    "searchPlaceholder": "Search…",
+    "searchAria": "Search notifications",
+    "refresh": "Refresh",
+    "openNewWindow": "Open in new window",
+    "playAria": "Play",
+    "pauseAria": "Pause",
+    "likeAria": "Like"
   }
 }

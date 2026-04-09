@@ -1,6 +1,8 @@
-import { signUpSchema } from './auth-schema'
+import { createSignUpSchema } from './auth-schema'
+import type { TFunction } from 'i18next'
 import { describe, expect, it } from 'vitest'
 
+/* eslint-disable sonarjs/no-hardcoded-passwords -- test fixtures */
 const createScreenshotFile = () =>
   new File(['demo'], 'channel-settings.png', { type: 'image/png' })
 
@@ -22,7 +24,16 @@ const validSignUpData = {
   marketingConsent: false,
 }
 
-describe('signUpSchema', () => {
+const uzMessages: Record<string, string> = {
+  'auth.validation.passwordsMismatch': 'Parollar bir xil bo‘lishi kerak',
+  'auth.validation.acceptTerms': 'Davom etish uchun shartlarga rozilik bering',
+}
+
+const mockT = ((key: string) => uzMessages[key] ?? key) as TFunction
+
+const signUpSchema = createSignUpSchema(mockT)
+
+describe('createSignUpSchema', () => {
   it('rejects mismatched passwords', () => {
     const result = signUpSchema.safeParse({
       ...validSignUpData,

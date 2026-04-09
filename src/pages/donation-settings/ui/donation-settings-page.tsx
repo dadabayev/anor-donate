@@ -3,6 +3,7 @@ import cn from './donation-settings-page.module.css'
 import { IconFile, IconLink, IconX } from '@tabler/icons-react'
 import classNames from 'classnames'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const DEFAULT_LINK = 'https://anordonate.uz/examplelink'
 
@@ -94,6 +95,7 @@ const Toggle = ({
 )
 
 export const DonationSettingsPage = () => {
+  const { t } = useTranslation()
   const uploadFieldId = useId()
   const [donationLink, setDonationLink] = useState(DEFAULT_LINK)
   const [minTextAmount, setMinTextAmount] = useState(1_000_000)
@@ -108,6 +110,11 @@ export const DonationSettingsPage = () => {
   const [banInput, setBanInput] = useState('')
   const [bannedWords, setBannedWords] = useState<string[]>(() =>
     Array.from({ length: 6 }, () => 'Ban'),
+  )
+  const banDisplay = useCallback(
+    (word: string) =>
+      word === 'Ban' ? t('donationSettings.banDefault') : word,
+    [t],
   )
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
@@ -179,10 +186,12 @@ export const DonationSettingsPage = () => {
   return (
     <section className={cn.page}>
       <div className={cn.column}>
-        <h1 className={cn.title}>Donat Sozlamalari</h1>
+        <h1 className={cn.title}>{t('donationSettings.pageTitle')}</h1>
 
         <div className={cn.linkBlock}>
-          <p className={cn.linkLabel}>Donat Uchun Havola</p>
+          <p className={cn.linkLabel}>
+            {t('donationSettings.linkForDonation')}
+          </p>
           <div className={cn.linkRow}>
             <div className={cn.linkInputWrap}>
               <input
@@ -190,14 +199,14 @@ export const DonationSettingsPage = () => {
                 type="url"
                 value={donationLink}
                 onChange={(e) => setDonationLink(e.target.value)}
-                aria-label="Donat havolasi"
+                aria-label={t('donationSettings.linkInputAria')}
               />
             </div>
             <button
               type="button"
               className={cn.linkCopy}
               onClick={copyLink}
-              aria-label="Havolani nusxalash"
+              aria-label={t('donationSettings.copyLinkAria')}
             >
               <IconLink size={22} stroke={2} />
             </button>
@@ -206,24 +215,24 @@ export const DonationSettingsPage = () => {
 
         <div className={cn.cardsGrid}>
           <article className={cn.card}>
-            <h2 className={cn.cardTitle}>Minimal summalar</h2>
+            <h2 className={cn.cardTitle}>{t('donationSettings.minAmounts')}</h2>
             <AmountSlider
-              label="Min summa matnli donat uchun:"
+              label={t('donationSettings.minTextDonation')}
               value={minTextAmount}
               onChange={setMinTextAmount}
               max={10_000_000}
-              suffix="UZS"
+              suffix={t('common.currencyUzs')}
             />
             <AmountSlider
-              label="Min summa ovozli donat uchun:"
+              label={t('donationSettings.minVoiceDonation')}
               value={minVoiceAmount}
               onChange={setMinVoiceAmount}
               max={10_000_000}
-              suffix="UZS"
+              suffix={t('common.currencyUzs')}
             />
             <div className={cn.toggleRow}>
               <span className={cn.toggleLabel} id="voice-toggle-label">
-                Ovozli Xabar:
+                {t('donationSettings.voiceMessage')}
               </span>
               <Toggle
                 labelledBy="voice-toggle-label"
@@ -234,10 +243,12 @@ export const DonationSettingsPage = () => {
           </article>
 
           <article className={cn.card}>
-            <h2 className={cn.cardTitle}>Matnli donat sozlamalari</h2>
+            <h2 className={cn.cardTitle}>
+              {t('donationSettings.textDonationSettings')}
+            </h2>
             <div className={cn.field}>
               <label className={cn.fieldLabel} htmlFor="page-text">
-                Sahifa matni:
+                {t('donationSettings.pageText')}
               </label>
               <textarea
                 id="page-text"
@@ -249,7 +260,7 @@ export const DonationSettingsPage = () => {
             </div>
             <div className={cn.field}>
               <label className={cn.fieldLabel} htmlFor="btn-text">
-                Donat uchun knopka matni:
+                {t('donationSettings.buttonText')}
               </label>
               <input
                 id="btn-text"
@@ -262,17 +273,21 @@ export const DonationSettingsPage = () => {
           </article>
 
           <article className={cn.card}>
-            <h2 className={cn.cardTitle}>Ranglar sozlamalari</h2>
+            <h2 className={cn.cardTitle}>
+              {t('donationSettings.colorSettings')}
+            </h2>
             <div className={cn.colorRow}>
               <input
                 className={cn.swatch}
                 type="color"
                 value={buttonColor}
                 onChange={(e) => setButtonColor(e.target.value)}
-                aria-label="Tugma rangi"
+                aria-label={t('donationSettings.buttonColorAria')}
               />
               <div className={cn.colorMeta}>
-                <p className={cn.colorName}>Tugma rangi</p>
+                <p className={cn.colorName}>
+                  {t('donationSettings.buttonColor')}
+                </p>
                 <p className={cn.colorHex}>{buttonColor.toUpperCase()}</p>
               </div>
             </div>
@@ -282,27 +297,31 @@ export const DonationSettingsPage = () => {
                 type="color"
                 value={buttonTextColor}
                 onChange={(e) => setButtonTextColor(e.target.value)}
-                aria-label="Tugmadagi matn rangi"
+                aria-label={t('donationSettings.buttonTextColorAria')}
               />
               <div className={cn.colorMeta}>
-                <p className={cn.colorName}>Tugmadagi matn rangi</p>
+                <p className={cn.colorName}>
+                  {t('donationSettings.buttonTextColor')}
+                </p>
                 <p className={cn.colorHex}>{buttonTextColor.toUpperCase()}</p>
               </div>
             </div>
             <AmountSlider
-              label="Orqa fondagi rasm blur (%)"
+              label={t('donationSettings.blurBackground')}
               value={blurPercent}
               onChange={setBlurPercent}
               max={100}
-              suffix="%"
+              suffix={t('common.percent')}
             />
           </article>
 
           <article className={cn.card}>
-            <h2 className={cn.cardTitle}>{"Qo'shimcha sozlamalar"}</h2>
+            <h2 className={cn.cardTitle}>
+              {t('donationSettings.extraSettings')}
+            </h2>
             <div className={cn.toggleRow}>
               <span className={cn.toggleLabel} id="filter-toggle-label">
-                Standart filterdan foydalanish:
+                {t('donationSettings.standardFilter')}
               </span>
               <Toggle
                 labelledBy="filter-toggle-label"
@@ -316,7 +335,7 @@ export const DonationSettingsPage = () => {
                 ref={fileInputRef}
                 className={cn.uploadInputHidden}
                 type="file"
-                aria-label="Fayl yuklash"
+                aria-label={t('donationSettings.uploadFileAria')}
                 onChange={(e) => {
                   applySelectedFile(e.target.files?.[0])
                 }}
@@ -344,7 +363,7 @@ export const DonationSettingsPage = () => {
                         type="button"
                         className={cn.previewRemove}
                         onClick={clearUploadedFile}
-                        aria-label={'Faylni olib tashlash'}
+                        aria-label={t('donationSettings.removeFileAria')}
                       >
                         <IconX size={16} stroke={2.5} />
                       </button>
@@ -356,12 +375,16 @@ export const DonationSettingsPage = () => {
                       htmlFor={uploadFieldId}
                       className={cn.uploadBtnLabel}
                     >
-                      <span className={cn.uploadBtn}>Faylni tanlash</span>
+                      <span className={cn.uploadBtn}>
+                        {t('donationSettings.chooseFile')}
+                      </span>
                     </label>
                   </>
                 ) : (
                   <label htmlFor={uploadFieldId} className={cn.uploadBtnLabel}>
-                    <span className={cn.uploadBtn}>Faylni tanlash</span>
+                    <span className={cn.uploadBtn}>
+                      {t('donationSettings.chooseFile')}
+                    </span>
                   </label>
                 )}
               </div>
@@ -370,8 +393,8 @@ export const DonationSettingsPage = () => {
         </div>
 
         <article className={`${cn.card} ${cn.banCard}`}>
-          <h2 className={cn.cardTitle}>{"So'z qo'shish"}</h2>
-          <p className={cn.fieldLabel}>{"So'zni kiriting:"}</p>
+          <h2 className={cn.cardTitle}>{t('donationSettings.addWord')}</h2>
+          <p className={cn.fieldLabel}>{t('donationSettings.wordLabel')}</p>
           <div className={cn.wordInputRow}>
             <input
               className={cn.wordInput}
@@ -384,26 +407,28 @@ export const DonationSettingsPage = () => {
                   addBannedWord()
                 }
               }}
-              placeholder="So'zni yozing"
-              aria-label={"Taqiqlangan so'z"}
+              placeholder={t('donationSettings.wordPlaceholder')}
+              aria-label={t('donationSettings.bannedWordAria')}
             />
             <button
               type="button"
               className={cn.addWordBtn}
               onClick={addBannedWord}
             >
-              Qo&apos;shish
+              {t('donationSettings.addWordButton')}
             </button>
           </div>
           <div className={cn.chips}>
             {bannedWords.map((word, index) => (
               <div key={`ban-chip-${index}`} className={cn.chip}>
-                <span className={cn.chipText}>{word}</span>
+                <span className={cn.chipText}>{banDisplay(word)}</span>
                 <button
                   type="button"
                   className={cn.chipRemove}
                   onClick={() => removeBannedWord(index)}
-                  aria-label={`${word} ni olib tashlash`}
+                  aria-label={t('donationSettings.removeWordAria', {
+                    word: banDisplay(word),
+                  })}
                 >
                   <span className={cn.chipRemoveInner}>
                     <IconX size={12} stroke={2.5} />
@@ -416,7 +441,7 @@ export const DonationSettingsPage = () => {
 
         <div className={cn.saveWrap}>
           <button type="button" className={cn.saveBtn}>
-            {"O'zgarishlarni Saqlash"}
+            {t('donationSettings.save')}
           </button>
         </div>
       </div>

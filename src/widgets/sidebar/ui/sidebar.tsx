@@ -1,13 +1,14 @@
 import cn from './sidebar.module.css'
 
 import {
-  LOGOUT_ITEM,
-  PRIMARY_ITEMS,
-  SECONDARY_ITEMS,
+  LOGOUT_NAV_KEY,
+  PRIMARY_NAV_KEYS,
+  SECONDARY_NAV_KEYS,
 } from '../model/navigation-items'
 import { Image } from '@mantine/core'
 import { ASSETS } from '@shared/constants'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
 const isNavItemActive = (path: string, pathname: string) => {
@@ -31,18 +32,23 @@ const isNavItemActive = (path: string, pathname: string) => {
 
 export const Sidebar = () => {
   const { pathname } = useLocation()
+  const { t } = useTranslation()
 
   return (
     <aside className={cn.container}>
       <header className={cn.header}>
-        <Image className={cn.logo} src={ASSETS.LOGO} alt={'Anor Donate logo'} />
-        <p className={cn.brand}>AndySmith</p>
+        <Image
+          className={cn.logo}
+          src={ASSETS.LOGO}
+          alt={t('sidebar.logoAlt')}
+        />
+        <p className={cn.brand}>{t('sidebar.brandPlaceholder')}</p>
       </header>
 
       <hr className={cn.divider} />
 
-      <nav className={cn.nav} aria-label={'Main navigation'}>
-        {PRIMARY_ITEMS.map((item, index) => {
+      <nav className={cn.nav} aria-label={t('sidebar.mainNavAria')}>
+        {PRIMARY_NAV_KEYS.map((item, index) => {
           const Icon = item.icon
 
           if (item.path) {
@@ -50,7 +56,7 @@ export const Sidebar = () => {
 
             return (
               <Link
-                key={item.label}
+                key={item.labelKey}
                 to={item.path}
                 className={classNames(
                   cn.item,
@@ -60,19 +66,19 @@ export const Sidebar = () => {
                 aria-current={active ? 'page' : undefined}
               >
                 <Icon className={cn.icon} size={16} stroke={2} />
-                <span>{item.label}</span>
+                <span>{t(item.labelKey)}</span>
               </Link>
             )
           }
 
           return (
             <button
-              key={item.label}
+              key={item.labelKey}
               className={classNames(cn.item, index === 0 && cn.itemActive)}
               type={'button'}
             >
               <Icon className={cn.icon} size={16} stroke={2} />
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </button>
           )
         })}
@@ -80,14 +86,14 @@ export const Sidebar = () => {
 
       <div className={cn.spacer} />
 
-      <nav className={cn.nav} aria-label={'Secondary navigation'}>
-        {SECONDARY_ITEMS.map((item) => {
+      <nav className={cn.nav} aria-label={t('sidebar.secondaryNavAria')}>
+        {SECONDARY_NAV_KEYS.map((item) => {
           const Icon = item.icon
 
           return (
-            <button key={item.label} className={cn.item} type={'button'}>
+            <button key={item.labelKey} className={cn.item} type={'button'}>
               <Icon className={cn.icon} size={16} stroke={2} />
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </button>
           )
         })}
@@ -97,8 +103,8 @@ export const Sidebar = () => {
 
       <footer className={cn.footer}>
         <button className={classNames(cn.item, cn.logout)} type={'button'}>
-          <LOGOUT_ITEM.icon className={cn.icon} size={16} stroke={2} />
-          <span>{LOGOUT_ITEM.label}</span>
+          <LOGOUT_NAV_KEY.icon className={cn.icon} size={16} stroke={2} />
+          <span>{t(LOGOUT_NAV_KEY.labelKey)}</span>
         </button>
       </footer>
     </aside>

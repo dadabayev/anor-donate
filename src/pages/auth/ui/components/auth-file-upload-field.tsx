@@ -2,6 +2,7 @@ import cn from '../auth-page.module.css'
 
 import classNames from 'classnames'
 import { useId, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface AuthFileUploadFieldProps {
   label: string
@@ -18,6 +19,7 @@ export const AuthFileUploadField = ({
   disabled,
   onChange,
 }: Readonly<AuthFileUploadFieldProps>) => {
+  const { t } = useTranslation()
   const inputId = useId()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -43,10 +45,10 @@ export const AuthFileUploadField = ({
           disabled={disabled}
           onClick={() => inputRef.current?.click()}
         >
-          Faylni tanlash
+          {t('auth.fileUpload.chooseFile')}
         </button>
         <span className={cn.fileHint}>
-          {fileName ?? 'PNG, JPG yoki WEBP formatidagi rasmni yuklang'}
+          {fileName ?? t('auth.fileUpload.hint')}
         </span>
       </div>
       {error ? <span className={cn.error}>{error}</span> : null}

@@ -1,15 +1,8 @@
 import cn from './donations-page.module.css'
 
 import {
-  DONATION_HISTORY_EMPTY_HINT,
-  DONATION_HISTORY_EMPTY_TEXT,
-  DONATION_HISTORY_EMPTY_TITLE,
-  DONATION_HISTORY_ERROR_TEXT,
-  DONATION_HISTORY_ERROR_TITLE,
-  DONATION_HISTORY_RETRY_LABEL,
   type DonationHistoryRow,
   DONATIONS_MODE_KEY,
-  DONATIONS_PAGE_TITLE,
   readDonationHistory,
 } from '../model/donations'
 import { DonationsLoading, DonationsState } from './components'
@@ -17,7 +10,8 @@ import { Pagination } from '@mantine/core'
 import { Table, type TableColumn } from '@shared/ui'
 import { IconAlertTriangle, IconArrowsUpDown } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const headerLabel = (label: string) => (
   <span className={cn.headerLabel}>
@@ -25,36 +19,6 @@ const headerLabel = (label: string) => (
     <IconArrowsUpDown size={14} stroke={1.8} />
   </span>
 )
-
-const columns: TableColumn<DonationHistoryRow>[] = [
-  {
-    key: 'number',
-    header: headerLabel('No'),
-    render: (row) => row.number,
-  },
-  {
-    key: 'name',
-    header: headerLabel('Ism'),
-    render: (row) => row.name,
-  },
-  {
-    key: 'paymentAmount',
-    header: headerLabel("To'lov Summasi"),
-    render: (row) => row.paymentAmount,
-  },
-  {
-    key: 'commission',
-    header: headerLabel('Komissiya'),
-    render: (row) => row.commission,
-  },
-  {
-    key: 'paymentTime',
-    header: headerLabel("To'lov Vaqti"),
-    render: (row) => (
-      <strong className={cn.timeValue}>{row.paymentTime}</strong>
-    ),
-  },
-]
 
 const TOTAL_PAGES = 33
 
@@ -64,23 +28,57 @@ const loadDonationHistory = async (): Promise<DonationHistoryRow[]> => {
 }
 
 export const DonationsPage = () => {
+  const { t } = useTranslation()
   const [page, setPage] = useState(1)
   const query = useQuery({
     queryKey: ['donations-history'],
     queryFn: loadDonationHistory,
   })
 
+  const columns: TableColumn<DonationHistoryRow>[] = useMemo(
+    () => [
+      {
+        key: 'number',
+        header: headerLabel(t('donationsPage.colNo')),
+        render: (row) => row.number,
+      },
+      {
+        key: 'name',
+        header: headerLabel(t('donationsPage.colName')),
+        render: (row) => row.name,
+      },
+      {
+        key: 'paymentAmount',
+        header: headerLabel(t('donationsPage.colPaymentAmount')),
+        render: (row) => row.paymentAmount,
+      },
+      {
+        key: 'commission',
+        header: headerLabel(t('donationsPage.colCommission')),
+        render: (row) => row.commission,
+      },
+      {
+        key: 'paymentTime',
+        header: headerLabel(t('donationsPage.colPaymentTime')),
+        render: (row) => (
+          <strong className={cn.timeValue}>{row.paymentTime}</strong>
+        ),
+      },
+    ],
+    [t],
+  )
+
   if (query.isLoading) {
-    return <DonationsLoading title={DONATIONS_PAGE_TITLE} />
+    return <DonationsLoading title={t('donationsPage.pageTitle')} />
   }
 
   if (query.isError) {
     return (
       <DonationsState
-        title={DONATIONS_PAGE_TITLE}
-        stateTitle={DONATION_HISTORY_ERROR_TITLE}
-        text={DONATION_HISTORY_ERROR_TEXT}
-        actionLabel={DONATION_HISTORY_RETRY_LABEL}
+        title={t('donationsPage.pageTitle')}
+        stateTitle={t('donationsPage.errorTitle')}
+        text={t('donationsPage.errorText')}
+        actionLabel={t('donationsPage.retry')}
         onAction={() => {
           window.localStorage.removeItem(DONATIONS_MODE_KEY)
           void query.refetch()
@@ -93,10 +91,10 @@ export const DonationsPage = () => {
   if ((query.data?.length ?? 0) === 0) {
     return (
       <DonationsState
-        title={DONATIONS_PAGE_TITLE}
-        stateTitle={DONATION_HISTORY_EMPTY_TITLE}
-        text={DONATION_HISTORY_EMPTY_HINT}
-        actionLabel={DONATION_HISTORY_RETRY_LABEL}
+        title={t('donationsPage.pageTitle')}
+        stateTitle={t('donationsPage.emptyTitle')}
+        text={t('donationsPage.emptyHint')}
+        actionLabel={t('donationsPage.retry')}
         onAction={() => {
           window.localStorage.removeItem(DONATIONS_MODE_KEY)
           void query.refetch()
@@ -109,7 +107,7 @@ export const DonationsPage = () => {
   return (
     <section className={cn.page}>
       <header className={cn.header}>
-        <h1 className={cn.title}>{DONATIONS_PAGE_TITLE}</h1>
+        <h1 className={cn.title}>{t('donationsPage.pageTitle')}</h1>
       </header>
 
       <section className={cn.tableWrap}>
@@ -118,7 +116,7 @@ export const DonationsPage = () => {
           columns={columns}
           rows={query.data ?? []}
           getRowKey={(row) => row.id}
-          emptyState={DONATION_HISTORY_EMPTY_TEXT}
+          emptyState={t('donationsPage.emptyText')}
         />
       </section>
 
@@ -134,7 +132,7 @@ export const DonationsPage = () => {
         siblings={1}
         boundaries={1}
         gap="9px"
-        aria-label="Donation history pagination"
+        aria-label={t('donationsPage.paginationAria')}
       />
     </section>
   )

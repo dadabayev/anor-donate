@@ -3,7 +3,8 @@ import cn from './home-page.module.css'
 import { ChartTooltip } from '@shared/ui'
 import { IconCalendar } from '@tabler/icons-react'
 import type { PointerEvent } from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface LinePoint {
   x: number
@@ -100,20 +101,6 @@ const lineSeries: LineSeries[] = [
   },
 ]
 
-const barData: BarDatum[] = [
-  { label: 'M', value: 70, fullLabel: 'Dushanba' },
-  { label: 'T', value: 47, fullLabel: 'Seshanba' },
-  { label: 'W', value: 28, fullLabel: 'Chorshanba' },
-  { label: 'T', value: 74, fullLabel: 'Payshanba' },
-  { label: 'F', value: 46, fullLabel: 'Juma' },
-]
-
-const topDonors = [
-  { name: 'Top Donater - 1', amount: '1 200 000 UZS' },
-  { name: 'Top Donater - 1', amount: '1 200 000 UZS' },
-  { name: 'Top Donater - 1', amount: '1 200 000 UZS' },
-]
-
 const toChartPoint = (value: number, index: number, total: number) => {
   const innerWidth = lineChartWidth - chartPadding.left - chartPadding.right
   const innerHeight = lineChartHeight - chartPadding.top - chartPadding.bottom
@@ -190,6 +177,45 @@ const buildPath = (points: LinePoint[]) => {
 }
 
 export const HomePage = () => {
+  const { t } = useTranslation()
+  const barData: BarDatum[] = useMemo(
+    () => [
+      {
+        label: t('dashboard.weekdaysShort.mon'),
+        value: 70,
+        fullLabel: t('dashboard.weekdays.mon'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.tue'),
+        value: 47,
+        fullLabel: t('dashboard.weekdays.tue'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.wed'),
+        value: 28,
+        fullLabel: t('dashboard.weekdays.wed'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.thu'),
+        value: 74,
+        fullLabel: t('dashboard.weekdays.thu'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.fri'),
+        value: 46,
+        fullLabel: t('dashboard.weekdays.fri'),
+      },
+    ],
+    [t],
+  )
+  const topDonors = useMemo(
+    () =>
+      [1, 2, 3].map((i) => ({
+        name: t('dashboard.topDonorName', { index: i }),
+        amount: `1 200 000 ${t('common.currencyUzs')}`,
+      })),
+    [t],
+  )
   const [hoveredTickIndex, setHoveredTickIndex] = useState<number | null>(null)
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null)
   const [isGoalChartHovered, setIsGoalChartHovered] = useState(false)
@@ -237,19 +263,19 @@ export const HomePage = () => {
       <div className={cn.column}>
         <header className={cn.header}>
           <div>
-            <h1 className={cn.title}>Boshqaruv paneli</h1>
-            <p className={cn.subtitle}>Donatlar Statistikasi</p>
+            <h1 className={cn.title}>{t('dashboard.title')}</h1>
+            <p className={cn.subtitle}>{t('dashboard.subtitle')}</p>
           </div>
           <div className={cn.filters}>
             <div className={cn.filterItem}>
-              <span>Dan</span>
+              <span>{t('dashboard.dateFrom')}</span>
               <button type="button" className={cn.dateButton}>
                 <IconCalendar size={24} stroke={1.75} />
                 23.03.2026
               </button>
             </div>
             <div className={cn.filterItem}>
-              <span>Gacha</span>
+              <span>{t('dashboard.dateTo')}</span>
               <button type="button" className={cn.dateButton}>
                 <IconCalendar size={24} stroke={1.75} />
                 23.03.2026
@@ -260,24 +286,24 @@ export const HomePage = () => {
 
         <section className={cn.summaryGrid}>
           <article className={cn.summaryCard}>
-            <p>Jami donatlar summasi</p>
-            <strong>99 999 999 UZS</strong>
+            <p>{t('dashboard.totalDonationsAmount')}</p>
+            <strong>99 999 999 {t('common.currencyUzs')}</strong>
           </article>
           <article className={cn.summaryCard}>
-            <p>Jami donatlar soni</p>
-            <strong>25 000 000 UZS</strong>
+            <p>{t('dashboard.totalDonationsCount')}</p>
+            <strong>25 000 000 {t('common.currencyUzs')}</strong>
           </article>
         </section>
 
         <section className={cn.lineCard}>
-          <h2 className={cn.lineCardTitle}>Statistika</h2>
+          <h2 className={cn.lineCardTitle}>{t('dashboard.statistics')}</h2>
           <div className={cn.lineChartWrap}>
             <div className={cn.lineChartStage}>
               <svg
                 className={cn.lineChart}
                 viewBox={`0 0 ${lineChartWidth} ${lineChartHeight}`}
                 xmlns="http://www.w3.org/2000/svg"
-                aria-label="Donation statistics line chart"
+                aria-label={t('dashboard.lineChartAria')}
                 onPointerMove={handleLinePointerMove}
                 onPointerLeave={() => setHoveredTickIndex(null)}
               >
@@ -317,18 +343,21 @@ export const HomePage = () => {
                     />
                     <ChartTooltip
                       visible={tooltipVisible}
-                      title={`${activeTick.label} / 2026`}
+                      title={t('dashboard.tooltipYear', {
+                        day: activeTick.label,
+                        year: 2026,
+                      })}
                       align={lineTooltipAlign}
                       left={clampedTooltipLeft}
                       top={Math.max(tooltipTop - 1, 12)}
                       items={[
                         {
-                          label: 'Asosiy chiziq',
+                          label: t('dashboard.seriesPrimary'),
                           value: `${getChartValue(primaryPoint)}`,
                           color: '#1e1e1e',
                         },
                         {
-                          label: 'Ikkinchi chiziq',
+                          label: t('dashboard.seriesSecondary'),
                           value: `${getChartValue(secondaryPoint)}`,
                           color: '#8b0037',
                         },
@@ -356,7 +385,7 @@ export const HomePage = () => {
         <section className={cn.bottomGrid}>
           <article className={cn.donationCard}>
             <div className={cn.donationHeader}>
-              <h2>Donatlar Soni</h2>
+              <h2>{t('dashboard.donationsCount')}</h2>
               <span
                 className={cn.badge}
                 onMouseEnter={() => setIsBadgeHovered(true)}
@@ -368,14 +397,14 @@ export const HomePage = () => {
                 85
                 <ChartTooltip
                   visible={isBadgeHovered}
-                  title="Jami donatlar"
+                  title={t('dashboard.tooltipTotalDonations')}
                   left={50}
                   top={0}
                   align="center"
                   className={cn.donationTooltip}
                   items={[
                     {
-                      label: 'Soni',
+                      label: t('dashboard.count'),
                       value: '85',
                       color: '#8b0037',
                     },
@@ -416,7 +445,7 @@ export const HomePage = () => {
                       className={cn.donationTooltip}
                       items={[
                         {
-                          label: 'Donat foizi',
+                          label: t('dashboard.donationShare'),
                           value: `${bar.value}%`,
                           color: '#8b0037',
                         },
@@ -442,24 +471,24 @@ export const HomePage = () => {
               >
                 <div className={cn.goalRing} />
                 <div className={cn.goalLabels}>
-                  <span className={cn.goalTitle}>Maqsad</span>
+                  <span className={cn.goalTitle}>{t('dashboard.goal')}</span>
                   <span className={cn.goalPercent}>65%</span>
                 </div>
                 <ChartTooltip
                   visible={isGoalChartHovered}
-                  title="Haftalik maqsad"
+                  title={t('dashboard.weeklyGoal')}
                   left={50}
                   top={16}
                   align="center"
                   className={cn.donationTooltip}
                   items={[
                     {
-                      label: 'Bajarildi',
+                      label: t('dashboard.done'),
                       value: '65%',
                       color: '#8b0037',
                     },
                     {
-                      label: 'Qoldi',
+                      label: t('dashboard.remaining'),
                       value: '35%',
                       color: '#fceef4',
                     },

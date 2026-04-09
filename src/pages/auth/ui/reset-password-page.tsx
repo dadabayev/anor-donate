@@ -5,8 +5,8 @@ import {
   UZBEKISTAN_PHONE_PLACEHOLDER,
 } from '../lib/format-uzbekistan-phone'
 import {
+  createResetPasswordSchema,
   type ResetPasswordFormValues,
-  resetPasswordSchema,
 } from '../model/auth-schema'
 import {
   AuthSubmissionError,
@@ -14,14 +14,17 @@ import {
 } from '../model/auth-service'
 import { AuthInputField, AuthShell, AuthSubmitButton } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { startTransition, useId, useState } from 'react'
+import { startTransition, useId, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 export const ResetPasswordPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const phoneId = useId()
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const resetPasswordSchema = useMemo(() => createResetPasswordSchema(t), [t])
   const {
     control,
     handleSubmit,
@@ -57,12 +60,12 @@ export const ResetPasswordPage = () => {
         return
       }
 
-      setSubmitError('Kod yuborishda kutilmagan xatolik yuz berdi.')
+      setSubmitError(t('auth.resetPassword.unexpectedError'))
     }
   })
 
   return (
-    <AuthShell title="Parolni tiklash">
+    <AuthShell title={t('auth.resetPassword.title')}>
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}
@@ -76,7 +79,7 @@ export const ResetPasswordPage = () => {
           render={({ field }) => (
             <AuthInputField
               id={phoneId}
-              label="Telefon raqam"
+              label={t('auth.resetPassword.phoneLabel')}
               placeholder={UZBEKISTAN_PHONE_PLACEHOLDER}
               inputMode="numeric"
               autoComplete="tel"
@@ -89,7 +92,9 @@ export const ResetPasswordPage = () => {
           )}
         />
 
-        <AuthSubmitButton loading={isSubmitting}>Kodni olish</AuthSubmitButton>
+        <AuthSubmitButton loading={isSubmitting}>
+          {t('auth.resetPassword.submit')}
+        </AuthSubmitButton>
       </form>
     </AuthShell>
   )

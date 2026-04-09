@@ -1,4 +1,4 @@
-﻿{
+{
   "home": "Ð“Ð»Ð°Ð²Ð½Ð°Ñ",
   "profile": {
     "pageTitle": "ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ",
@@ -66,5 +66,424 @@
     "socialModalClose": "Закрыть модальное окно соцсети",
     "socialModalInvalidUrl": "Введите корректный URL",
     "socialModalNetworkError": "Не удалось сохранить ссылку. Попробуйте еще раз."
+  },
+  "landing": {
+    "brandName": "Anor Donate",
+    "header": {
+      "nav": {
+        "home": "Главная",
+        "howItWorks": "Как это работает",
+        "faq": "Вопросы",
+        "bloggers": "Блогеры"
+      },
+      "menuButtonSrOnly": "Меню",
+      "mainNavAriaLabel": "Основная навигация",
+      "mobileNavAriaLabel": "Мобильное меню",
+      "signIn": "Войти"
+    },
+    "hero": {
+      "badge": "Стрим-чат",
+      "title": "Платформа, которая упрощает общение и поддержку между стримерами и зрителями",
+      "subtitle": "Поддержите любимых блогеров!",
+      "signIn": "Войти",
+      "signUp": "Регистрация"
+    },
+    "about": {
+      "title": "Как это работает?",
+      "modesTablistAriaLabel": "Режимы",
+      "tabs": {
+        "textDonation": "Текстовый донат",
+        "voiceDonation": "Голосовой донат",
+        "sendMeme": "Отправка мема"
+      },
+      "widgetLabel": "Виджет",
+      "featureTitle": "Получайте сообщения",
+      "featureBody": "Принимайте финансовую поддержку от зрителей и показывайте её на трансляции. Настройте внешний вид уведомлений с помощью гибких параметров.",
+      "tags": {
+        "easy": "Просто",
+        "fast": "Быстро",
+        "convenient": "Удобно",
+        "realTime": "В реальном времени"
+      }
+    },
+    "faq": {
+      "title": "Часто задаваемые вопросы",
+      "intro": "Здесь вы найдёте ответы на самые распространённые вопросы о платформе. Основные функции и процесс использования описаны простым и понятным языком.",
+      "question": "Зачем нужна эта платформа?",
+      "answer": "Чтобы легко общаться между стримером и зрителями и удобно получать поддержку."
+    },
+    "bloggers": {
+      "titleLine1": "Anor Donate",
+      "titleLine2": "Блогеры, которые пользуются платформой",
+      "photoPlaceholder": "Фото",
+      "nicknamePlaceholder": "Ник",
+      "linkPlaceholder": "Ссылка"
+    },
+    "footer": {
+      "brandText": "Платформа, которая упрощает приём донатов от зрителей для стримеров и блогеров.",
+      "signIn": "Войти",
+      "columns": {
+        "platform": "Платформа",
+        "help": "Помощь",
+        "contact": "Контакты"
+      },
+      "links": {
+        "howItWorks": "Как это работает",
+        "publicOffer": "Публичная оферта",
+        "faq": "FAQ",
+        "support": "Поддержка",
+        "privacy": "Политика конфиденциальности"
+      },
+      "social": {
+        "telegram": "Telegram",
+        "instagram": "Instagram",
+        "youtube": "YouTube"
+      },
+      "emailLine": "Email: support@anordonate.uz",
+      "copyright": "© {{year}} Anor Donate. Все права защищены."
+    },
+    "donation": {
+      "title": "Сумма доната",
+      "lead": "Введите сумму — цифры форматируются автоматически (сум).",
+      "amountLabel": "Сумма",
+      "currencySuffix": "сум",
+      "hint": "Проверяются минимальные и максимальные ограничения.",
+      "submit": "Продолжить",
+      "success": "Сумма принята. Войдите в аккаунт для следующего шага.",
+      "validation": {
+        "required": "Введите сумму",
+        "min": "Минимальная сумма {{amount}} {{currency}}",
+        "max": "Максимальная сумма {{amount}} {{currency}}"
+      }
+    }
+  },
+  "auth": {
+    "shell": {
+      "streamerPhotoCaption": "Фото стримера"
+    },
+    "signIn": {
+      "title": "Вход в аккаунт",
+      "loginLabel": "Логин / Email",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "Пароль",
+      "forgotPassword": "Забыли пароль?",
+      "rememberMe": "Запомнить меня",
+      "submit": "Войти",
+      "bottomPrompt": "Нет аккаунта?",
+      "bottomLink": "Регистрация",
+      "unexpectedError": "При входе произошла непредвиденная ошибка."
+    },
+    "signUp": {
+      "title": "Регистрация",
+      "firstName": "Имя",
+      "firstNamePlaceholder": "Имя",
+      "lastName": "Фамилия",
+      "lastNamePlaceholder": "Фамилия",
+      "username": "Имя пользователя",
+      "usernamePlaceholder": "Username",
+      "email": "Электронная почта",
+      "emailPlaceholder": "example@email.com",
+      "channelName": "Название канала",
+      "channelPlaceholder": "Название канала",
+      "channelLink": "Ссылка на канал",
+      "channelLinkPlaceholder": "https://www.youtube.com/@your_channel",
+      "about": "О канале",
+      "aboutPlaceholder": "Кратко опишите контент канала",
+      "screenshotLabel": "Скриншот из настроек канала",
+      "phone": "Номер телефона",
+      "password": "Пароль",
+      "confirmPassword": "Подтвердите пароль",
+      "passwordPlaceholder": "Пароль",
+      "acceptTermsPrefix": "Я ознакомился(ась) с",
+      "acceptTermsLink": "условиями сервиса и политикой конфиденциальности Anor Donate",
+      "acceptTermsSuffix": "и согласен(на).",
+      "marketingConsent": "Я согласен получать специальные предложения и новости от Anor Donate.",
+      "submit": "Зарегистрироваться",
+      "bottomPrompt": "Уже есть аккаунт?",
+      "bottomLink": "Войти",
+      "unexpectedError": "При регистрации произошла непредвиденная ошибка."
+    },
+    "resetPassword": {
+      "title": "Восстановление пароля",
+      "phoneLabel": "Номер телефона",
+      "submit": "Получить код",
+      "unexpectedError": "При отправке кода произошла ошибка."
+    },
+    "otp": {
+      "title": "Подтвердите номер",
+      "codeLabel": "Введите код",
+      "resend": "Отправить снова",
+      "confirm": "Подтвердить",
+      "resendSuccess": "Код подтверждения отправлен повторно",
+      "resendError": "Не удалось отправить код. Попробуйте позже.",
+      "unexpectedError": "При подтверждении произошла ошибка."
+    },
+    "fileUpload": {
+      "chooseFile": "Выбрать файл",
+      "hint": "Загрузите изображение в формате PNG, JPG или WEBP"
+    },
+    "validation": {
+      "loginRequired": "Введите логин или email",
+      "passwordRequired": "Введите пароль",
+      "passwordMinLength": "Пароль должен быть не короче 8 символов",
+      "emailRequired": "Введите email",
+      "emailInvalid": "Введите корректный email",
+      "channelLinkRequired": "Введите ссылку на канал",
+      "channelLinkInvalid": "Введите корректную ссылку на канал",
+      "phoneRequired": "Введите номер телефона",
+      "phoneInvalid": "Телефон должен быть в формате +998 (00) 000-00-00",
+      "screenshotRequired": "Требуется скриншот",
+      "firstNameRequired": "Введите имя",
+      "lastNameRequired": "Введите фамилию",
+      "usernameRequired": "Введите имя пользователя",
+      "usernameFormat": "Username может содержать только буквы, цифры, точку и подчёркивание",
+      "channelNameRequired": "Введите название канала",
+      "aboutRequired": "Кратко опишите канал",
+      "aboutMin": "Описание канала — минимум 20 символов",
+      "aboutMax": "Описание канала — не более 500 символов",
+      "confirmPasswordRequired": "Повторите пароль",
+      "acceptTerms": "Примите условия, чтобы продолжить",
+      "passwordsMismatch": "Пароли должны совпадать",
+      "otpDigit": "Только цифры",
+      "otpComplete": "Введите 6-значный код"
+    },
+    "errors": {
+      "signIn": {
+        "dataInvalid": "Не удалось проверить данные.",
+        "loginNotFound": "Такой логин или email не найден",
+        "accountBlocked": "Аккаунт временно заблокирован. Свяжитесь с поддержкой.",
+        "wrongPassword": "Неверный пароль. Попробуйте снова."
+      },
+      "signUp": {
+        "retryFields": "Проверьте некоторые поля ещё раз.",
+        "emailTaken": "Этот email уже зарегистрирован",
+        "usernameTaken": "Это имя пользователя занято",
+        "phoneTaken": "Этот номер телефона уже используется"
+      },
+      "reset": {
+        "phoneNotFound": "Аккаунт с этим номером телефона не найден."
+      },
+      "otp": {
+        "verifyFailed": "Подтверждение не удалось.",
+        "wrongCode": "Неверный код. Попробуйте снова"
+      }
+    }
+  },
+  "common": {
+    "currencyUzs": "UZS",
+    "percent": "%",
+    "units": "шт."
+  },
+  "sidebar": {
+    "brandPlaceholder": "AndySmith",
+    "logoAlt": "Логотип Anor Donate",
+    "mainNavAria": "Основная навигация",
+    "secondaryNavAria": "Дополнительная навигация",
+    "primary": {
+      "dashboard": "Главная",
+      "donations": "Донаты",
+      "donationHistory": "История донатов",
+      "widgets": "Виджеты",
+      "memes": "Мемы",
+      "streamStatistics": "Статистика стрима",
+      "fundraising": "Сбор средств",
+      "settings": "Настройки",
+      "profile": "Профиль"
+    },
+    "secondary": {
+      "admin": "Админ-панель"
+    },
+    "logout": "Выйти"
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "subtitle": "Статистика донатов",
+    "dateFrom": "С",
+    "dateTo": "По",
+    "totalDonationsAmount": "Сумма всех донатов",
+    "totalDonationsCount": "Количество донатов",
+    "lineChartAria": "Линейный график статистики донатов",
+    "statistics": "Статистика",
+    "tooltipYear": "{{day}} / {{year}}",
+    "seriesPrimary": "Основной ряд",
+    "seriesSecondary": "Второй ряд",
+    "donationsCount": "Количество донатов",
+    "tooltipTotalDonations": "Всего донатов",
+    "count": "Кол-во",
+    "donationShare": "Доля донатов",
+    "goal": "Цель",
+    "weeklyGoal": "Недельная цель",
+    "done": "Выполнено",
+    "remaining": "Осталось",
+    "weekdays": {
+      "mon": "Понедельник",
+      "tue": "Вторник",
+      "wed": "Среда",
+      "thu": "Четверг",
+      "fri": "Пятница"
+    },
+    "weekdaysShort": {
+      "mon": "П",
+      "tue": "В",
+      "wed": "С",
+      "thu": "Ч",
+      "fri": "П"
+    },
+    "topDonorName": "Топ донатер {{index}}"
+  },
+  "donationsPage": {
+    "pageTitle": "История донатов",
+    "emptyText": "История донатов пока пуста",
+    "errorTitle": "Не удалось загрузить данные",
+    "errorText": "Ошибка при загрузке истории донатов. Попробуйте снова.",
+    "emptyTitle": "История донатов не найдена",
+    "emptyHint": "Новые донаты появятся здесь после поступления.",
+    "retry": "Повторить",
+    "colNo": "№",
+    "colName": "Имя",
+    "colPaymentAmount": "Сумма платежа",
+    "colCommission": "Комиссия",
+    "colPaymentTime": "Время платежа",
+    "paginationAria": "Страницы истории донатов"
+  },
+  "donationSettings": {
+    "pageTitle": "Настройки донатов",
+    "linkForDonation": "Ссылка для донатов",
+    "linkInputAria": "Ссылка для доната",
+    "copyLinkAria": "Копировать ссылку",
+    "minAmounts": "Минимальные суммы",
+    "minTextDonation": "Мин. сумма текстового доната:",
+    "minVoiceDonation": "Мин. сумма голосового доната:",
+    "voiceMessage": "Голосовое сообщение:",
+    "textDonationSettings": "Настройки текстового доната",
+    "pageText": "Текст страницы:",
+    "buttonText": "Текст кнопки доната:",
+    "colorSettings": "Настройки цветов",
+    "buttonColor": "Цвет кнопки",
+    "buttonTextColor": "Цвет текста кнопки",
+    "buttonColorAria": "Цвет кнопки",
+    "buttonTextColorAria": "Цвет текста кнопки",
+    "blurBackground": "Размытие фона (%)",
+    "extraSettings": "Дополнительные настройки",
+    "standardFilter": "Использовать стандартный фильтр:",
+    "uploadFileAria": "Загрузить файл",
+    "removeFileAria": "Удалить файл",
+    "chooseFile": "Выбрать файл",
+    "addWord": "Добавить слово",
+    "wordLabel": "Введите слово:",
+    "wordPlaceholder": "Введите слово",
+    "bannedWordAria": "Запрещённое слово",
+    "addWordButton": "Добавить",
+    "removeWordAria": "Удалить {{word}}",
+    "save": "Сохранить изменения",
+    "banDefault": "Бан"
+  },
+  "widgetsPage": {
+    "pageTitle": "Виджеты",
+    "pageSubtitle": "Все виджеты",
+    "createSubtitle": "Создание виджетов",
+    "editSubtitle": "Редактирование виджета",
+    "emptyTitle": "Виджеты ещё не созданы",
+    "emptyText": "Создайте первый виджет для стрима и управляйте им на этой странице.",
+    "emptyAction": "Создать виджет",
+    "errorTitle": "Не удалось загрузить виджеты",
+    "errorText": "Перезагрузите данные или попробуйте позже.",
+    "retry": "Перезагрузить",
+    "createAction": "Добавить виджет",
+    "copyStreamLink": "Копировать ссылку стрима",
+    "streamLinkPrefix": "Ссылка на стрим:",
+    "minimumAmount": "Минимальная сумма",
+    "volume": "Громкость",
+    "duration": "Длительность",
+    "autoRead": "Автоозвучка",
+    "voiceTone": "Голос",
+    "appearance": "Оформление",
+    "nameColor": "Цвет имени",
+    "textColor": "Цвет текста",
+    "font": "Шрифт",
+    "edit": "Изменить",
+    "notFoundTitle": "Виджет не найден",
+    "notFoundText": "Не удалось найти этот виджет. Возможно, он удалён.",
+    "back": "Назад",
+    "saving": "Сохранение…",
+    "save": "Сохранить изменения",
+    "voiceMale": "Мужской",
+    "voiceFemale": "Женский",
+    "voiceRobot": "Робот"
+  },
+  "memesPage": {
+    "pageTitle": "Мемы",
+    "myMemes": "Мои мемы",
+    "streamLinkPrefix": "Ссылка на стрим:",
+    "copyDone": "Готово",
+    "copyUpdating": "Обновление…",
+    "createMeme": "Создать мем",
+    "deleteTitle": "Удалить мем?",
+    "deleteConfirm": "Удалить",
+    "deleteCancel": "Отмена"
+  },
+  "fundraising": {
+    "pageTitle": "Сбор средств",
+    "pageSubtitle": "Сбор на стриме",
+    "errorTitle": "Не удалось загрузить данные",
+    "errorText": "Перезагрузите данные или попробуйте позже.",
+    "retry": "Перезагрузить",
+    "saveSuccess": "Настройки сбора сохранены",
+    "saved": "Сохранено",
+    "saveError": "Ошибка сохранения",
+    "saveErrorDetail": "Не удалось сохранить настройки. Попробуйте снова.",
+    "copyOk": "Ссылка скопирована",
+    "copyFail": "Не удалось скопировать",
+    "streamLink": "Ссылка на стрим",
+    "totalTop": "Общий топ",
+    "name": "Название",
+    "volume": "Громкость",
+    "duration": "Длительность",
+    "showAmount": "Показывать сумму",
+    "pickAnimation": "Выберите анимацию",
+    "select": "Выбрать",
+    "saving": "Сохранение…",
+    "save": "Сохранить",
+    "copyAria": "Копировать ссылку",
+    "nameAria": "Название",
+    "volumeAria": "Громкость",
+    "durationAria": "Длительность"
+  },
+  "streamStatistics": {
+    "pageTitle": "Статистика стрима",
+    "pageSubtitle": "Настройки статистики",
+    "errorTitle": "Не удалось загрузить настройки",
+    "errorText": "Перезагрузите данные или попробуйте позже.",
+    "retry": "Перезагрузить",
+    "saveSuccess": "Настройки статистики стрима сохранены",
+    "saved": "Сохранено",
+    "saveError": "Ошибка сохранения",
+    "saveErrorDetail": "Не удалось сохранить настройки. Попробуйте снова.",
+    "copyOk": "Ссылка скопирована",
+    "copyFail": "Не удалось скопировать",
+    "copyAria": "Копировать ссылку стрима",
+    "streamLink": "Ссылка на стрим",
+    "displayMethod": "Способ отображения",
+    "font": "Шрифт",
+    "elementCount": "Количество элементов",
+    "unit": "шт.",
+    "saving": "Сохранение…",
+    "save": "Сохранить",
+    "sectionGeneral": "Общий топ",
+    "sectionMonthly": "Месячный топ",
+    "sectionRecent": "Последние донаты",
+    "displayRow": "Строка",
+    "displayColumn": "Столбец",
+    "displayGrid": "Сетка"
+  },
+  "notificationPanel": {
+    "pageTitle": "Уведомления",
+    "searchPlaceholder": "Поиск…",
+    "searchAria": "Поиск уведомлений",
+    "refresh": "Обновить",
+    "openNewWindow": "Открыть в новом окне",
+    "playAria": "Воспроизвести",
+    "pauseAria": "Пауза",
+    "likeAria": "Нравится"
   }
 }

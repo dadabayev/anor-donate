@@ -2,9 +2,11 @@
 
 import { useLandingHashNav } from '../../lib/use-landing-hash-nav'
 import { LANDING_ASSETS } from '../landing-assets'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 export const LandingFooter = () => {
+  const { t } = useTranslation()
   const onNavClick = useLandingHashNav()
 
   return (
@@ -21,57 +23,62 @@ export const LandingFooter = () => {
                 height={48}
                 decoding="async"
               />
-              <span className={cn.logoText}>Anor Donate</span>
+              <span className={cn.logoText}>{t('landing.brandName')}</span>
             </div>
             <p className={cn.footerBrandText}>
-              Strimerlar va blogerlar uchun muxlislaridan donat qabul qilishni
-              osonlashtiradigan platforma.
+              {t('landing.footer.brandText')}
             </p>
             <Link to="/dashboard" className={cn.btnPrimary}>
-              Kirish
+              {t('landing.footer.signIn')}
             </Link>
           </div>
           <div>
-            <h3 className={cn.footerColTitle}>Platforma</h3>
+            <h3 className={cn.footerColTitle}>
+              {t('landing.footer.columns.platform')}
+            </h3>
             <ul className={cn.footerLinks}>
               <li>
                 <a href="#how" onClick={(e) => onNavClick(e, '#how')}>
-                  Qanday ishlaydi
+                  {t('landing.footer.links.howItWorks')}
                 </a>
               </li>
               <li>
                 <a href="#top" onClick={(e) => onNavClick(e, '#top')}>
-                  Ommaviy oferta
+                  {t('landing.footer.links.publicOffer')}
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className={cn.footerColTitle}>Yordam</h3>
+            <h3 className={cn.footerColTitle}>
+              {t('landing.footer.columns.help')}
+            </h3>
             <ul className={cn.footerLinks}>
               <li>
                 <a href="#faq" onClick={(e) => onNavClick(e, '#faq')}>
-                  FAQ
+                  {t('landing.footer.links.faq')}
                 </a>
               </li>
               <li>
                 <a href="#top" onClick={(e) => onNavClick(e, '#top')}>
-                  Qo‘llab-quvvatlash
+                  {t('landing.footer.links.support')}
                 </a>
               </li>
               <li>
                 <a href="#top" onClick={(e) => onNavClick(e, '#top')}>
-                  Maxfiylik siyosati
+                  {t('landing.footer.links.privacy')}
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className={cn.footerColTitle}>Bog‘lanish</h3>
+            <h3 className={cn.footerColTitle}>
+              {t('landing.footer.columns.contact')}
+            </h3>
             <ul className={cn.footerLinks}>
               <li>
                 <a href="https://telegram.org" target="_blank" rel="noreferrer">
-                  Telegram
+                  {t('landing.footer.social.telegram')}
                 </a>
               </li>
               <li>
@@ -80,17 +87,17 @@ export const LandingFooter = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Instagram
+                  {t('landing.footer.social.instagram')}
                 </a>
               </li>
               <li>
                 <a href="https://youtube.com" target="_blank" rel="noreferrer">
-                  YouTube
+                  {t('landing.footer.social.youtube')}
                 </a>
               </li>
               <li>
                 <a href="mailto:support@anordonate.uz">
-                  Email: support@anordonate.uz
+                  {t('landing.footer.emailLine')}
                 </a>
               </li>
             </ul>
@@ -99,7 +106,7 @@ export const LandingFooter = () => {
       </div>
       <div className={cn.footerBar}>
         <p className={cn.footerCopy}>
-          © 2025 Anor Donate. Barcha huquqlar himoyalangan.
+          {t('landing.footer.copyright', { year: new Date().getFullYear() })}
         </p>
       </div>
     </footer>

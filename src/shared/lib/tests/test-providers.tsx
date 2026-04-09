@@ -1,8 +1,8 @@
-import { instance as i18n } from './i18n'
 import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import i18n from 'i18next'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 

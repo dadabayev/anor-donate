@@ -1,9 +1,9 @@
 import cn from './auth-page.module.css'
 
 import {
+  createOtpSmsSchema,
   EMPTY_OTP_CODE,
   type OtpSmsFormValues,
-  otpSmsSchema,
 } from '../model/auth-schema'
 import {
   AuthSubmissionError,
@@ -12,15 +12,18 @@ import {
 } from '../model/auth-service'
 import { AuthOtpField, AuthShell, AuthSubmitButton } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { startTransition, useState } from 'react'
+import { startTransition, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 export const OtpSmsPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [resendMessage, setResendMessage] = useState<string | null>(null)
   const [isResending, setIsResending] = useState(false)
+  const otpSmsSchema = useMemo(() => createOtpSmsSchema(t), [t])
   const {
     control,
     handleSubmit,
@@ -56,7 +59,7 @@ export const OtpSmsPage = () => {
         return
       }
 
-      setSubmitError('Tasdiqlash vaqtida kutilmagan xatolik yuz berdi.')
+      setSubmitError(t('auth.otp.unexpectedError'))
     }
   })
 
@@ -68,16 +71,16 @@ export const OtpSmsPage = () => {
     try {
       await resendOtpCode()
       setValue('code', [...EMPTY_OTP_CODE], { shouldValidate: true })
-      setResendMessage('Tasdiqlash kodi qayta yuborildi')
+      setResendMessage(t('auth.otp.resendSuccess'))
     } catch {
-      setSubmitError('Kodni qayta yuborib bo‘lmadi. Keyinroq urinib ko‘ring.')
+      setSubmitError(t('auth.otp.resendError'))
     } finally {
       setIsResending(false)
     }
   }
 
   return (
-    <AuthShell title="Raqamingizni tasdiqlang">
+    <AuthShell title={t('auth.otp.title')}>
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}
@@ -90,7 +93,7 @@ export const OtpSmsPage = () => {
           control={control}
           render={({ field }) => (
             <AuthOtpField
-              label="Kodni kiriting"
+              label={t('auth.otp.codeLabel')}
               value={field.value}
               error={errors.code?.message}
               disabled={isSubmitting || isResending}
@@ -106,14 +109,16 @@ export const OtpSmsPage = () => {
             disabled={isSubmitting || isResending}
             onClick={handleResend}
           >
-            Qayta yuborish
+            {t('auth.otp.resend')}
           </button>
           {resendMessage ? (
             <span className={cn.resendNote}>{resendMessage}</span>
           ) : null}
         </div>
 
-        <AuthSubmitButton loading={isSubmitting}>Tasdiqlash</AuthSubmitButton>
+        <AuthSubmitButton loading={isSubmitting}>
+          {t('auth.otp.confirm')}
+        </AuthSubmitButton>
       </form>
     </AuthShell>
   )

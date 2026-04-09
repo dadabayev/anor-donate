@@ -1,13 +1,7 @@
 import cn from './fundraising-page.module.css'
 
 import {
-  FUNDRAISING_ERROR_TEXT,
-  FUNDRAISING_ERROR_TITLE,
   FUNDRAISING_PAGE_MODE_KEY,
-  FUNDRAISING_PAGE_SUBTITLE,
-  FUNDRAISING_PAGE_TITLE,
-  FUNDRAISING_RETRY_ACTION,
-  FUNDRAISING_SAVE_SUCCESS,
   type FundraisingSettings,
   loadFundraisingSettings,
   readFundraisingPageMode,
@@ -19,18 +13,22 @@ import { ASSETS } from '@shared/constants'
 import { IconLink } from '@tabler/icons-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const UZS_MIN = 0
 const UZS_MAX = 100_000
 const UZS_STEP = 500
 
-const formatUzAmount = (value: number) =>
-  new Intl.NumberFormat('uz-UZ', {
-    maximumFractionDigits: 0,
-  })
-    .format(value)
-    .replace(/,/g, ' ')
+const localeTag = (language: string) => {
+  if (language.startsWith('ru')) {
+    return 'ru-RU'
+  }
+  if (language.startsWith('uz')) {
+    return 'uz-UZ'
+  }
+  return 'en-US'
+}
 
 const ANIMATION_OPTIONS = [
   { id: 'a' as const, label: '1' },
@@ -39,6 +37,16 @@ const ANIMATION_OPTIONS = [
 ]
 
 export const FundraisingPage = () => {
+  const { t, i18n } = useTranslation()
+  const formatUzAmount = useMemo(
+    () => (value: number) =>
+      new Intl.NumberFormat(localeTag(i18n.language), {
+        maximumFractionDigits: 0,
+      })
+        .format(value)
+        .replace(/,/g, ' '),
+    [i18n.language],
+  )
   const queryClient = useQueryClient()
   const query = useQuery({
     queryKey: ['fundraising-settings'],
@@ -63,15 +71,15 @@ export const FundraisingPage = () => {
       queryClient.setQueryData(['fundraising-settings'], data)
       setDraft(data)
       notifications.show({
-        title: 'Saqlandi',
-        message: FUNDRAISING_SAVE_SUCCESS,
+        title: t('fundraising.saved'),
+        message: t('fundraising.saveSuccess'),
         color: 'teal',
       })
     },
     onError: () => {
       notifications.show({
-        title: 'Saqlashda xato',
-        message: "Sozlamalarni saqlab bo'lmadi. Qayta urinib ko'ring.",
+        title: t('fundraising.saveError'),
+        message: t('fundraising.saveErrorDetail'),
         color: 'red',
       })
     },
@@ -89,9 +97,9 @@ export const FundraisingPage = () => {
     }
     try {
       await navigator.clipboard.writeText(settings.streamLink)
-      setCopyFeedback('Havola nusxalandi')
+      setCopyFeedback(t('fundraising.copyOk'))
     } catch {
-      setCopyFeedback("Nusxalab bo'lmadi")
+      setCopyFeedback(t('fundraising.copyFail'))
     }
   }
 
@@ -106,16 +114,16 @@ export const FundraisingPage = () => {
   }
 
   if (query.isLoading) {
-    return <FundraisingLoading title={FUNDRAISING_PAGE_TITLE} />
+    return <FundraisingLoading title={t('fundraising.pageTitle')} />
   }
 
   if (query.isError) {
     return (
       <FundraisingState
-        title={FUNDRAISING_PAGE_TITLE}
-        stateTitle={FUNDRAISING_ERROR_TITLE}
-        text={FUNDRAISING_ERROR_TEXT}
-        actionLabel={FUNDRAISING_RETRY_ACTION}
+        title={t('fundraising.pageTitle')}
+        stateTitle={t('fundraising.errorTitle')}
+        text={t('fundraising.errorText')}
+        actionLabel={t('fundraising.retry')}
         image={ASSETS.BUG_FIXING}
         onAction={handleRetry}
       />
@@ -135,13 +143,13 @@ export const FundraisingPage = () => {
     <section className={cn.page}>
       <div className={cn.column}>
         <header className={cn.hero}>
-          <h1 className={cn.title}>{FUNDRAISING_PAGE_TITLE}</h1>
-          <p className={cn.subtitle}>{FUNDRAISING_PAGE_SUBTITLE}</p>
+          <h1 className={cn.title}>{t('fundraising.pageTitle')}</h1>
+          <p className={cn.subtitle}>{t('fundraising.pageSubtitle')}</p>
         </header>
 
         <div className={cn.stack}>
           <section className={cn.linkCard}>
-            <h2 className={cn.cardTitle}>Strim uchun havola</h2>
+            <h2 className={cn.cardTitle}>{t('fundraising.streamLink')}</h2>
             <div className={cn.linkRow}>
               <div className={cn.linkField}>
                 <input
@@ -149,13 +157,13 @@ export const FundraisingPage = () => {
                   type="url"
                   value={settings.streamLink}
                   onChange={(e) => updateDraft({ streamLink: e.target.value })}
-                  aria-label="Strim uchun havola"
+                  aria-label={t('fundraising.streamLink')}
                 />
               </div>
               <button
                 type="button"
                 className={cn.copyButton}
-                aria-label="Havolani nusxalash"
+                aria-label={t('fundraising.copyAria')}
                 onClick={handleCopyLink}
               >
                 <IconLink size={22} stroke={2} />
@@ -167,27 +175,29 @@ export const FundraisingPage = () => {
           </section>
 
           <section className={cn.blockCard}>
-            <h2 className={cn.sectionTitle}>Umumiy top</h2>
+            <h2 className={cn.sectionTitle}>{t('fundraising.totalTop')}</h2>
 
             <div className={cn.nameField}>
-              <p className={cn.fieldLabel}>Nomi</p>
+              <p className={cn.fieldLabel}>{t('fundraising.name')}</p>
               <input
                 className={cn.textInput}
                 type="text"
                 value={settings.name}
                 onChange={(e) => updateDraft({ name: e.target.value })}
-                aria-label="Nomi"
+                aria-label={t('fundraising.nameAria')}
               />
             </div>
 
             <div className={cn.gridTwo}>
               <div className={cn.sliderField}>
-                <p className={cn.fieldLabel}>Tovush balandligi</p>
+                <p className={cn.fieldLabel}>{t('fundraising.volume')}</p>
                 <div className={cn.sliderValueRow}>
                   <p className={cn.sliderValue}>
                     {formatUzAmount(volumeValue)}
                   </p>
-                  <span className={cn.sliderUnit}>UZS</span>
+                  <span className={cn.sliderUnit}>
+                    {t('common.currencyUzs')}
+                  </span>
                 </div>
                 <input
                   className={cn.range}
@@ -202,17 +212,19 @@ export const FundraisingPage = () => {
                   aria-valuemin={UZS_MIN}
                   aria-valuemax={UZS_MAX}
                   aria-valuenow={volumeValue}
-                  aria-label="Tovush balandligi"
+                  aria-label={t('fundraising.volumeAria')}
                 />
               </div>
 
               <div className={cn.sliderField}>
-                <p className={cn.fieldLabel}>Donat davomiyligi</p>
+                <p className={cn.fieldLabel}>{t('fundraising.duration')}</p>
                 <div className={cn.sliderValueRow}>
                   <p className={cn.sliderValue}>
                     {formatUzAmount(durationValue)}
                   </p>
-                  <span className={cn.sliderUnit}>UZS</span>
+                  <span className={cn.sliderUnit}>
+                    {t('common.currencyUzs')}
+                  </span>
                 </div>
                 <input
                   className={cn.range}
@@ -227,13 +239,13 @@ export const FundraisingPage = () => {
                   aria-valuemin={UZS_MIN}
                   aria-valuemax={UZS_MAX}
                   aria-valuenow={durationValue}
-                  aria-label="Donat davomiyligi"
+                  aria-label={t('fundraising.durationAria')}
                 />
               </div>
             </div>
 
             <div className={cn.toggleRow}>
-              <p className={cn.toggleLabel}>{`Summani ko'rsatish`}</p>
+              <p className={cn.toggleLabel}>{t('fundraising.showAmount')}</p>
               <button
                 type="button"
                 role="switch"
@@ -252,7 +264,9 @@ export const FundraisingPage = () => {
           </section>
 
           <section className={cn.blockCard}>
-            <h2 className={cn.sectionTitle}>Animatsiyani tanlang</h2>
+            <h2 className={cn.sectionTitle}>
+              {t('fundraising.pickAnimation')}
+            </h2>
             <div className={cn.animationGrid}>
               {ANIMATION_OPTIONS.map((opt) => (
                 <div key={opt.id} className={cn.animationCell}>
@@ -265,7 +279,7 @@ export const FundraisingPage = () => {
                     )}
                     onClick={() => updateDraft({ selectedAnimationId: opt.id })}
                   >
-                    Tanlash
+                    {t('fundraising.select')}
                   </button>
                 </div>
               ))}
@@ -281,7 +295,9 @@ export const FundraisingPage = () => {
               }
               onClick={() => saveMutation.mutate(settings)}
             >
-              {saveMutation.isPending ? 'Saqlanmoqda…' : 'Saqlash'}
+              {saveMutation.isPending
+                ? t('fundraising.saving')
+                : t('fundraising.save')}
             </button>
           </div>
         </div>

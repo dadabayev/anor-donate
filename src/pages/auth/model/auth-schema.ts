@@ -1,115 +1,165 @@
+import type { TFunction } from 'i18next'
 import { z } from 'zod'
 
 export const UZBEKISTAN_PHONE_REGEX = /^\+998 \(\d{2}\) \d{3}-\d{2}-\d{2}$/
 export const EMPTY_OTP_CODE = ['', '', '', '', '', ''] as const
 
-const requiredText = (message: string) => z.string().trim().min(1, { message })
+export const createSignInSchema = (t: TFunction) => {
+  const passwordField = z
+    .string()
+    .trim()
+    .min(1, { message: t('auth.validation.passwordRequired') })
+    .refine((value) => value.length >= 8, {
+      message: t('auth.validation.passwordMinLength'),
+    })
 
-const passwordField = requiredText('Parolni kiriting').refine(
-  (value) => value.length >= 8,
-  {
-    message: 'Parol kamida 8 ta belgidan iborat bo‘lsin',
-  },
-)
-
-const emailField = requiredText('Elektron pochtani kiriting').refine(
-  (value) => z.email().safeParse(value).success,
-  {
-    message: 'Yaroqli elektron pochta kiriting',
-  },
-)
-
-const channelLinkField = requiredText('Kanal havolasini kiriting').refine(
-  (value) => {
-    try {
-      const url = new URL(value)
-
-      return ['http:', 'https:'].includes(url.protocol)
-    } catch {
-      return false
-    }
-  },
-  {
-    message: 'Yaroqli kanal havolasini kiriting',
-  },
-)
-
-const phoneField = requiredText('Telefon raqamini kiriting').refine(
-  (value) => UZBEKISTAN_PHONE_REGEX.test(value),
-  {
-    message: "Telefon raqami +998 (00) 000-00-00 formatida bo'lishi kerak",
-  },
-)
-
-const screenshotField = z
-  .custom<File | null>((value) => value === null || value instanceof File, {
-    message: 'Screenshot yuklash shart',
-  })
-  .refine((value) => value instanceof File, {
-    message: 'Screenshot yuklash shart',
-  })
-
-export const signInSchema = z.object({
-  login: requiredText('Login yoki pochtani kiriting'),
-  password: passwordField,
-  rememberMe: z.boolean(),
-})
-
-export const signUpSchema = z
-  .object({
-    firstName: requiredText('Ismni kiriting'),
-    lastName: requiredText('Familyani kiriting'),
-    username: requiredText('Usernameni kiriting').refine(
-      (value) => /^[a-zA-Z0-9_.]+$/.test(value),
-      {
-        message:
-          'Username faqat harf, raqam, nuqta va pastki chiziqdan iborat bo‘lishi kerak',
-      },
-    ),
-    email: emailField,
-    channelName: requiredText('Kanal nomini kiriting'),
-    channelLink: channelLinkField,
-    about: requiredText('Kanal haqida qisqacha yozing')
-      .refine((value) => value.length >= 20, {
-        message: 'Kanal tavsifi kamida 20 ta belgidan iborat bo‘lsin',
-      })
-      .refine((value) => value.length <= 500, {
-        message: 'Kanal tavsifi 500 ta belgidan oshmasin',
-      }),
-    screenshot: screenshotField,
-    phone: phoneField,
+  return z.object({
+    login: z
+      .string()
+      .trim()
+      .min(1, { message: t('auth.validation.loginRequired') }),
     password: passwordField,
-    confirmPassword: requiredText('Parolni takrorlang'),
-    acceptTerms: z.boolean().refine((value) => value, {
-      message: 'Davom etish uchun shartlarga rozilik bering',
-    }),
-    marketingConsent: z.boolean(),
+    rememberMe: z.boolean(),
   })
-  .superRefine((value, context) => {
-    if (value.password !== value.confirmPassword) {
-      context.addIssue({
-        code: 'custom',
-        message: 'Parollar bir xil bo‘lishi kerak',
-        path: ['confirmPassword'],
-      })
-    }
+}
+
+export const createSignUpSchema = (t: TFunction) => {
+  const passwordField = z
+    .string()
+    .trim()
+    .min(1, { message: t('auth.validation.passwordRequired') })
+    .refine((value) => value.length >= 8, {
+      message: t('auth.validation.passwordMinLength'),
+    })
+
+  const emailField = z
+    .string()
+    .trim()
+    .min(1, { message: t('auth.validation.emailRequired') })
+    .refine((value) => z.email().safeParse(value).success, {
+      message: t('auth.validation.emailInvalid'),
+    })
+
+  const channelLinkField = z
+    .string()
+    .trim()
+    .min(1, { message: t('auth.validation.channelLinkRequired') })
+    .refine(
+      (value) => {
+        try {
+          const url = new URL(value)
+          return ['http:', 'https:'].includes(url.protocol)
+        } catch {
+          return false
+        }
+      },
+      { message: t('auth.validation.channelLinkInvalid') },
+    )
+
+  const phoneField = z
+    .string()
+    .trim()
+    .min(1, { message: t('auth.validation.phoneRequired') })
+    .refine((value) => UZBEKISTAN_PHONE_REGEX.test(value), {
+      message: t('auth.validation.phoneInvalid'),
+    })
+
+  const screenshotField = z
+    .custom<File | null>((value) => value === null || value instanceof File, {
+      message: t('auth.validation.screenshotRequired'),
+    })
+    .refine((value) => value instanceof File, {
+      message: t('auth.validation.screenshotRequired'),
+    })
+
+  return z
+    .object({
+      firstName: z
+        .string()
+        .trim()
+        .min(1, { message: t('auth.validation.firstNameRequired') }),
+      lastName: z
+        .string()
+        .trim()
+        .min(1, { message: t('auth.validation.lastNameRequired') }),
+      username: z
+        .string()
+        .trim()
+        .min(1, { message: t('auth.validation.usernameRequired') })
+        .refine((value) => /^[a-zA-Z0-9_.]+$/.test(value), {
+          message: t('auth.validation.usernameFormat'),
+        }),
+      email: emailField,
+      channelName: z
+        .string()
+        .trim()
+        .min(1, { message: t('auth.validation.channelNameRequired') }),
+      channelLink: channelLinkField,
+      about: z
+        .string()
+        .trim()
+        .min(1, { message: t('auth.validation.aboutRequired') })
+        .refine((value) => value.length >= 20, {
+          message: t('auth.validation.aboutMin'),
+        })
+        .refine((value) => value.length <= 500, {
+          message: t('auth.validation.aboutMax'),
+        }),
+      screenshot: screenshotField,
+      phone: phoneField,
+      password: passwordField,
+      confirmPassword: z
+        .string()
+        .trim()
+        .min(1, { message: t('auth.validation.confirmPasswordRequired') }),
+      acceptTerms: z.boolean().refine((value) => value, {
+        message: t('auth.validation.acceptTerms'),
+      }),
+      marketingConsent: z.boolean(),
+    })
+    .superRefine((value, context) => {
+      if (value.password !== value.confirmPassword) {
+        context.addIssue({
+          code: 'custom',
+          message: t('auth.validation.passwordsMismatch'),
+          path: ['confirmPassword'],
+        })
+      }
+    })
+}
+
+export const createResetPasswordSchema = (t: TFunction) => {
+  const phoneField = z
+    .string()
+    .trim()
+    .min(1, { message: t('auth.validation.phoneRequired') })
+    .refine((value) => UZBEKISTAN_PHONE_REGEX.test(value), {
+      message: t('auth.validation.phoneInvalid'),
+    })
+
+  return z.object({
+    phone: phoneField,
+  })
+}
+
+export const createOtpSmsSchema = (t: TFunction) =>
+  z.object({
+    code: z
+      .array(
+        z.string().regex(/^\d?$/, { message: t('auth.validation.otpDigit') }),
+      )
+      .length(6)
+      .refine((digits) => digits.every((digit) => digit.length === 1), {
+        message: t('auth.validation.otpComplete'),
+      }),
   })
 
-export const resetPasswordSchema = z.object({
-  phone: phoneField,
-})
-
-export const otpSmsSchema = z.object({
-  code: z
-    .array(z.string().regex(/^\d?$/, { message: 'Faqat raqam kiriting' }))
-    .length(6)
-    .refine((digits) => digits.every((digit) => digit.length === 1), {
-      message: '6 xonali kodni kiriting',
-    }),
-})
-
-export type SignInFormValues = z.infer<typeof signInSchema>
-export type SignUpFormInputValues = z.input<typeof signUpSchema>
-export type SignUpFormValues = z.infer<typeof signUpSchema>
-export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>
-export type OtpSmsFormValues = z.infer<typeof otpSmsSchema>
+export type SignInFormValues = z.infer<ReturnType<typeof createSignInSchema>>
+export type SignUpFormInputValues = z.input<
+  ReturnType<typeof createSignUpSchema>
+>
+export type SignUpFormValues = z.infer<ReturnType<typeof createSignUpSchema>>
+export type ResetPasswordFormValues = z.infer<
+  ReturnType<typeof createResetPasswordSchema>
+>
+export type OtpSmsFormValues = z.infer<ReturnType<typeof createOtpSmsSchema>>

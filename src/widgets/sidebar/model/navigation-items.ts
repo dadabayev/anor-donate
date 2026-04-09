@@ -13,33 +13,67 @@ import {
 } from '@tabler/icons-react'
 import type { ComponentType } from 'react'
 
-export interface SidebarItem {
+export interface SidebarNavKey {
   icon: ComponentType<{ className?: string; size?: number; stroke?: number }>
-  label: string
+  labelKey:
+    | 'sidebar.primary.dashboard'
+    | 'sidebar.primary.donations'
+    | 'sidebar.primary.donationHistory'
+    | 'sidebar.primary.widgets'
+    | 'sidebar.primary.memes'
+    | 'sidebar.primary.streamStatistics'
+    | 'sidebar.primary.fundraising'
+    | 'sidebar.primary.settings'
+    | 'sidebar.primary.profile'
   path?: string
 }
 
-export const PRIMARY_ITEMS: SidebarItem[] = [
-  { icon: IconLayoutGrid, label: 'Bosh menyu', path: '/dashboard' },
-  { icon: IconMessageCircle, label: 'Donatlar', path: '/donations' },
-  { icon: IconHistory, label: 'Donatlar Tarixi' },
-  { icon: IconPhoto, label: 'Vidjetlar', path: '/widgets' },
-  { icon: IconBrandYoutube, label: 'Memlar', path: '/memes' },
+export const PRIMARY_NAV_KEYS: SidebarNavKey[] = [
+  {
+    icon: IconLayoutGrid,
+    labelKey: 'sidebar.primary.dashboard',
+    path: '/dashboard',
+  },
+  {
+    icon: IconMessageCircle,
+    labelKey: 'sidebar.primary.donations',
+    path: '/donations',
+  },
+  { icon: IconHistory, labelKey: 'sidebar.primary.donationHistory' },
+  { icon: IconPhoto, labelKey: 'sidebar.primary.widgets', path: '/widgets' },
+  { icon: IconBrandYoutube, labelKey: 'sidebar.primary.memes', path: '/memes' },
   {
     icon: IconChartBar,
-    label: 'Stream statistikasi',
+    labelKey: 'sidebar.primary.streamStatistics',
     path: '/stream-statistics',
   },
-  { icon: IconWallet, label: "Pul yig'ish", path: '/fundraising' },
-  { icon: IconSettings, label: 'Sozlamalar', path: '/donations/settings' },
-  { icon: IconUserCircle, label: 'Profil', path: '/profile' },
+  {
+    icon: IconWallet,
+    labelKey: 'sidebar.primary.fundraising',
+    path: '/fundraising',
+  },
+  {
+    icon: IconSettings,
+    labelKey: 'sidebar.primary.settings',
+    path: '/donations/settings',
+  },
+  {
+    icon: IconUserCircle,
+    labelKey: 'sidebar.primary.profile',
+    path: '/profile',
+  },
 ]
 
-export const SECONDARY_ITEMS: SidebarItem[] = [
-  { icon: IconEdit, label: 'Admin Panel' },
+export interface SidebarSecondaryKey {
+  icon: ComponentType<{ className?: string; size?: number; stroke?: number }>
+  labelKey: 'sidebar.secondary.admin'
+}
+
+export const SECONDARY_NAV_KEYS: SidebarSecondaryKey[] = [
+  { icon: IconEdit, labelKey: 'sidebar.secondary.admin' },
 ]
 
-export const LOGOUT_ITEM: SidebarItem = {
+export const LOGOUT_NAV_KEY = {
   icon: IconPower,
-  label: 'Chiqish',
+  labelKey: 'sidebar.logout' as const,
 }

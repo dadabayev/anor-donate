@@ -66,5 +66,424 @@
     "socialModalClose": "Ijtimoiy havola modalini yopish",
     "socialModalInvalidUrl": "To'g'ri URL kiriting",
     "socialModalNetworkError": "Havolani saqlashda xatolik yuz berdi. Qayta urinib ko'ring."
+  },
+  "landing": {
+    "brandName": "Anor Donate",
+    "header": {
+      "nav": {
+        "home": "Bosh menyu",
+        "howItWorks": "Bu qanday ishlaydi",
+        "faq": "Savollar",
+        "bloggers": "Blogerlar"
+      },
+      "menuButtonSrOnly": "Menyu",
+      "mainNavAriaLabel": "Asosiy",
+      "mobileNavAriaLabel": "Mobil menyu",
+      "signIn": "Kirish"
+    },
+    "hero": {
+      "badge": "Stream Aloqa",
+      "title": "Strimer va uning muxlislari uchun o‘zaro aloqa va qo‘llab-quvvatlashni osonlashtiradigan platforma",
+      "subtitle": "Yoqtirgan blogeringizni qo‘llab-quvvatlang!",
+      "signIn": "Kirish",
+      "signUp": "Ro‘yxatdan O‘tish"
+    },
+    "about": {
+      "title": "Bu qanday ishlaydi?",
+      "modesTablistAriaLabel": "Rejimlar",
+      "tabs": {
+        "textDonation": "Matnli donat",
+        "voiceDonation": "Ovozli donat",
+        "sendMeme": "Mem yuborish"
+      },
+      "widgetLabel": "Vidjet",
+      "featureTitle": "Xabarlarni qabul qiling",
+      "featureBody": "Tomoshabinlardan moliyaviy qo‘llab-quvvatlashlarni qabul qiling va ularni translatsiyangizda ko‘rsating. Ko‘plab sozlamalar yordamida bildirishnomalar ko‘rinishini o‘zingizga moslab sozlang.",
+      "tags": {
+        "easy": "Oson",
+        "fast": "Tez",
+        "convenient": "Qulay",
+        "realTime": "Real vaqt"
+      }
+    },
+    "faq": {
+      "title": "Tez-tez so‘raladigan savollar",
+      "intro": "Platforma haqida eng ko‘p beriladigan savollarga javoblarni shu yerda topishingiz mumkin. Barcha asosiy funksiyalar va foydalanish jarayoni oddiy va tushunarli tarzda tushuntirilgan.",
+      "question": "Bu platforma nima uchun kerak?",
+      "answer": "Strimer va muxlislar o‘rtasida oson aloqa o‘rnatish va qo‘llab-quvvatlashni qulay tarzda qabul qilish uchun."
+    },
+    "bloggers": {
+      "titleLine1": "Anor Donate",
+      "titleLine2": "dan foydalanadigan blogerlar",
+      "photoPlaceholder": "Photo",
+      "nicknamePlaceholder": "Nickname",
+      "linkPlaceholder": "Link"
+    },
+    "footer": {
+      "brandText": "Strimerlar va blogerlar uchun muxlislaridan donat qabul qilishni osonlashtiradigan platforma.",
+      "signIn": "Kirish",
+      "columns": {
+        "platform": "Platforma",
+        "help": "Yordam",
+        "contact": "Bog‘lanish"
+      },
+      "links": {
+        "howItWorks": "Qanday ishlaydi",
+        "publicOffer": "Ommaviy oferta",
+        "faq": "FAQ",
+        "support": "Qo‘llab-quvvatlash",
+        "privacy": "Maxfiylik siyosati"
+      },
+      "social": {
+        "telegram": "Telegram",
+        "instagram": "Instagram",
+        "youtube": "YouTube"
+      },
+      "emailLine": "Email: support@anordonate.uz",
+      "copyright": "© {{year}} Anor Donate. Barcha huquqlar himoyalangan."
+    },
+    "donation": {
+      "title": "Donat miqdori",
+      "lead": "Summani kiriting — raqamlar avtomatik ajratiladi (so‘m).",
+      "amountLabel": "Summa",
+      "currencySuffix": "so‘m",
+      "hint": "Minimal va maksimal cheklovlar tekshiriladi.",
+      "submit": "Davom etish",
+      "success": "Summa qabul qilindi. Keyingi qadam uchun akkauntingizga kiring.",
+      "validation": {
+        "required": "Summani kiriting",
+        "min": "Minimal summa {{amount}} {{currency}}",
+        "max": "Maksimal summa {{amount}} {{currency}}"
+      }
+    }
+  },
+  "auth": {
+    "shell": {
+      "streamerPhotoCaption": "Strimer fotosi"
+    },
+    "signIn": {
+      "title": "Hisobga kirish",
+      "loginLabel": "Login/Pochta",
+      "passwordLabel": "Parol",
+      "passwordPlaceholder": "Password",
+      "forgotPassword": "Parolni unutdingizmi?",
+      "rememberMe": "Meni eslab qolish",
+      "submit": "Kirish",
+      "bottomPrompt": "Hali ro‘yxatdan o‘tmaganmisiz?",
+      "bottomLink": "Ro‘yxatdan o‘tish",
+      "unexpectedError": "Kirish vaqtida kutilmagan xatolik yuz berdi."
+    },
+    "signUp": {
+      "title": "Ro’yxatdan o’tish",
+      "firstName": "Ism",
+      "firstNamePlaceholder": "Ism",
+      "lastName": "Familya",
+      "lastNamePlaceholder": "Familya",
+      "username": "Username",
+      "usernamePlaceholder": "Username",
+      "email": "Elektron pochta",
+      "emailPlaceholder": "example@email.com",
+      "channelName": "Kanalingiz nomi",
+      "channelPlaceholder": "Kanal nomi",
+      "channelLink": "Kanalingiz havolasi (ssilkasi)",
+      "channelLinkPlaceholder": "https://www.youtube.com/@your_channel",
+      "about": "Kanal haqida",
+      "aboutPlaceholder": "Kanal kontenti haqida qisqacha yozing",
+      "screenshotLabel": "Kanalingiz sozlamalaridan rasm (screenshot)",
+      "phone": "Telefon raqam",
+      "password": "Parol",
+      "confirmPassword": "Parol takrolang",
+      "passwordPlaceholder": "Password",
+      "acceptTermsPrefix": "Men",
+      "acceptTermsLink": "Anor Donate xizmat ko‘rsatish shartlari va maxfiylik siyosati",
+      "acceptTermsSuffix": " bilan tanishib, ularga rozilik bildiraman.",
+      "marketingConsent": "Men Anor Donate’dan maxsus takliflar, foydali maslahatlar va yangiliklarni olishga roziman.",
+      "submit": "Ro’yxatdan o’tish",
+      "bottomPrompt": "Hisobingiz mavjudmi?",
+      "bottomLink": "Kirish",
+      "unexpectedError": "Ro‘yxatdan o‘tishda kutilmagan xatolik yuz berdi."
+    },
+    "resetPassword": {
+      "title": "Parolni tiklash",
+      "phoneLabel": "Telefon raqam",
+      "submit": "Kodni olish",
+      "unexpectedError": "Kod yuborishda kutilmagan xatolik yuz berdi."
+    },
+    "otp": {
+      "title": "Raqamingizni tasdiqlang",
+      "codeLabel": "Kodni kiriting",
+      "resend": "Qayta yuborish",
+      "confirm": "Tasdiqlash",
+      "resendSuccess": "Tasdiqlash kodi qayta yuborildi",
+      "resendError": "Kodni qayta yuborib bo‘lmadi. Keyinroq urinib ko‘ring.",
+      "unexpectedError": "Tasdiqlash vaqtida kutilmagan xatolik yuz berdi."
+    },
+    "fileUpload": {
+      "chooseFile": "Faylni tanlash",
+      "hint": "PNG, JPG yoki WEBP formatidagi rasmni yuklang"
+    },
+    "validation": {
+      "loginRequired": "Login yoki pochtani kiriting",
+      "passwordRequired": "Parolni kiriting",
+      "passwordMinLength": "Parol kamida 8 ta belgidan iborat bo‘lsin",
+      "emailRequired": "Elektron pochtani kiriting",
+      "emailInvalid": "Yaroqli elektron pochta kiriting",
+      "channelLinkRequired": "Kanal havolasini kiriting",
+      "channelLinkInvalid": "Yaroqli kanal havolasini kiriting",
+      "phoneRequired": "Telefon raqamini kiriting",
+      "phoneInvalid": "Telefon raqami +998 (00) 000-00-00 formatida bo'lishi kerak",
+      "screenshotRequired": "Screenshot yuklash shart",
+      "firstNameRequired": "Ismni kiriting",
+      "lastNameRequired": "Familyani kiriting",
+      "usernameRequired": "Usernameni kiriting",
+      "usernameFormat": "Username faqat harf, raqam, nuqta va pastki chiziqdan iborat bo‘lishi kerak",
+      "channelNameRequired": "Kanal nomini kiriting",
+      "aboutRequired": "Kanal haqida qisqacha yozing",
+      "aboutMin": "Kanal tavsifi kamida 20 ta belgidan iborat bo‘lsin",
+      "aboutMax": "Kanal tavsifi 500 ta belgidan oshmasin",
+      "confirmPasswordRequired": "Parolni takrorlang",
+      "acceptTerms": "Davom etish uchun shartlarga rozilik bering",
+      "passwordsMismatch": "Parollar bir xil bo‘lishi kerak",
+      "otpDigit": "Faqat raqam kiriting",
+      "otpComplete": "6 xonali kodni kiriting"
+    },
+    "errors": {
+      "signIn": {
+        "dataInvalid": "Kiritilgan ma’lumot tekshirilmadi.",
+        "loginNotFound": "Bu login yoki pochta topilmadi",
+        "accountBlocked": "Bu akkaunt vaqtincha bloklangan. Qo‘llab-quvvatlash xizmati bilan bog‘laning.",
+        "wrongPassword": "Parol noto‘g‘ri. Qaytadan urinib ko‘ring."
+      },
+      "signUp": {
+        "retryFields": "Ayrim maydonlarni qayta tekshiring.",
+        "emailTaken": "Bu elektron pochta allaqachon ro‘yxatdan o‘tgan",
+        "usernameTaken": "Bu username band",
+        "phoneTaken": "Bu telefon raqami allaqachon ishlatilgan"
+      },
+      "reset": {
+        "phoneNotFound": "Bu telefon raqami bilan bog‘langan akkaunt topilmadi."
+      },
+      "otp": {
+        "verifyFailed": "Tasdiqlash amalga oshmadi.",
+        "wrongCode": "Kod noto‘g‘ri. Qaytadan urinib ko‘ring"
+      }
+    }
+  },
+  "common": {
+    "currencyUzs": "UZS",
+    "percent": "%",
+    "units": "ta"
+  },
+  "sidebar": {
+    "brandPlaceholder": "AndySmith",
+    "logoAlt": "Anor Donate logotipi",
+    "mainNavAria": "Asosiy navigatsiya",
+    "secondaryNavAria": "Qo'shimcha navigatsiya",
+    "primary": {
+      "dashboard": "Bosh menyu",
+      "donations": "Donatlar",
+      "donationHistory": "Donatlar Tarixi",
+      "widgets": "Vidjetlar",
+      "memes": "Memlar",
+      "streamStatistics": "Stream statistikasi",
+      "fundraising": "Pul yig'ish",
+      "settings": "Sozlamalar",
+      "profile": "Profil"
+    },
+    "secondary": {
+      "admin": "Admin Panel"
+    },
+    "logout": "Chiqish"
+  },
+  "dashboard": {
+    "title": "Boshqaruv paneli",
+    "subtitle": "Donatlar Statistikasi",
+    "dateFrom": "Dan",
+    "dateTo": "Gacha",
+    "totalDonationsAmount": "Jami donatlar summasi",
+    "totalDonationsCount": "Jami donatlar soni",
+    "lineChartAria": "Donatlar statistikasi chiziqli diagrammasi",
+    "statistics": "Statistika",
+    "tooltipYear": "{{day}} / {{year}}",
+    "seriesPrimary": "Asosiy chiziq",
+    "seriesSecondary": "Ikkinchi chiziq",
+    "donationsCount": "Donatlar soni",
+    "tooltipTotalDonations": "Jami donatlar",
+    "count": "Soni",
+    "donationShare": "Donat foizi",
+    "goal": "Maqsad",
+    "weeklyGoal": "Haftalik maqsad",
+    "done": "Bajarildi",
+    "remaining": "Qoldi",
+    "weekdays": {
+      "mon": "Dushanba",
+      "tue": "Seshanba",
+      "wed": "Chorshanba",
+      "thu": "Payshanba",
+      "fri": "Juma"
+    },
+    "weekdaysShort": {
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F"
+    },
+    "topDonorName": "Top Donater - {{index}}"
+  },
+  "donationsPage": {
+    "pageTitle": "Donatlar Tarixi",
+    "emptyText": "Hozircha donatlar tarixi mavjud emas",
+    "errorTitle": "Ma'lumotlarni yuklab bo'lmadi",
+    "errorText": "Donatlar tarixini olishda xatolik yuz berdi. Qayta urinib ko'ring.",
+    "emptyTitle": "Donatlar tarixi topilmadi",
+    "emptyHint": "Yangi donatlar kelgandan keyin ular shu yerda ko'rinadi.",
+    "retry": "Qayta urinish",
+    "colNo": "No",
+    "colName": "Ism",
+    "colPaymentAmount": "To'lov Summasi",
+    "colCommission": "Komissiya",
+    "colPaymentTime": "To'lov Vaqti",
+    "paginationAria": "Donatlar tarixi sahifalari"
+  },
+  "donationSettings": {
+    "pageTitle": "Donat Sozlamalari",
+    "linkForDonation": "Donat Uchun Havola",
+    "linkInputAria": "Donat havolasi",
+    "copyLinkAria": "Havolani nusxalash",
+    "minAmounts": "Minimal summalar",
+    "minTextDonation": "Min summa matnli donat uchun:",
+    "minVoiceDonation": "Min summa ovozli donat uchun:",
+    "voiceMessage": "Ovozli Xabar:",
+    "textDonationSettings": "Matnli donat sozlamalari",
+    "pageText": "Sahifa matni:",
+    "buttonText": "Donat uchun knopka matni:",
+    "colorSettings": "Ranglar sozlamalari",
+    "buttonColor": "Tugma rangi",
+    "buttonTextColor": "Tugmadagi matn rangi",
+    "buttonColorAria": "Tugma rangi",
+    "buttonTextColorAria": "Tugmadagi matn rangi",
+    "blurBackground": "Orqa fondagi rasm blur (%)",
+    "extraSettings": "Qo'shimcha sozlamalar",
+    "standardFilter": "Standart filterdan foydalanish:",
+    "uploadFileAria": "Fayl yuklash",
+    "removeFileAria": "Faylni olib tashlash",
+    "chooseFile": "Faylni tanlash",
+    "addWord": "So'z qo'shish",
+    "wordLabel": "So'zni kiriting:",
+    "wordPlaceholder": "So'zni yozing",
+    "bannedWordAria": "Taqiqlangan so'z",
+    "addWordButton": "Qo'shish",
+    "removeWordAria": "{{word}} ni olib tashlash",
+    "save": "O'zgarishlarni Saqlash",
+    "banDefault": "Ban"
+  },
+  "widgetsPage": {
+    "pageTitle": "Vidjetlar",
+    "pageSubtitle": "Barcha vidjetlar",
+    "createSubtitle": "Vidjetlar yaratish",
+    "editSubtitle": "Vidjetni tahrirlash",
+    "emptyTitle": "Vidjetlar hali yaratilmagan",
+    "emptyText": "Strimingiz uchun birinchi vidjetni yarating va sahifadan boshqaring.",
+    "emptyAction": "Vidjet yaratish",
+    "errorTitle": "Vidjetlarni yuklab bo'lmadi",
+    "errorText": "Ma'lumotlarni qayta yuklab ko'ring yoki vaqtinchalik xatoni keyinroq takrorlang.",
+    "retry": "Qayta yuklash",
+    "createAction": "Vidjet qoshish",
+    "copyStreamLink": "Strim havolasini nusxalash",
+    "streamLinkPrefix": "Strim uchun havola:",
+    "minimumAmount": "Minimal summa",
+    "volume": "Tovush balandligi",
+    "duration": "Davomiyligi",
+    "autoRead": "Avto o'qish",
+    "voiceTone": "Ovoz ohangi",
+    "appearance": "Tashqi ko'rinish",
+    "nameColor": "Ism rangi",
+    "textColor": "Matn rangi",
+    "font": "Shrift",
+    "edit": "Tahrirlash",
+    "notFoundTitle": "Vidjet topilmadi",
+    "notFoundText": "Bu vidjet topilmadi. O'chirilgan bo'lishi mumkin.",
+    "back": "Orqaga qaytarish",
+    "saving": "Saqlanmoqda…",
+    "save": "O'zgarishlarni Saqlash",
+    "voiceMale": "Erkak",
+    "voiceFemale": "Ayol",
+    "voiceRobot": "Robot"
+  },
+  "memesPage": {
+    "pageTitle": "Memlar",
+    "myMemes": "Mening Memlar",
+    "streamLinkPrefix": "Strim uchun havola:",
+    "copyDone": "Bajarildi",
+    "copyUpdating": "Yangilanmoqda…",
+    "createMeme": "Mem yaratish",
+    "deleteTitle": "Memni o'chirasizmi?",
+    "deleteConfirm": "O'chirish",
+    "deleteCancel": "Bekor qilish"
+  },
+  "fundraising": {
+    "pageTitle": "Pul yig'ish",
+    "pageSubtitle": "Strimda pul yig'ish",
+    "errorTitle": "Ma'lumotlarni yuklab bo'lmadi",
+    "errorText": "Ma'lumotlarni qayta yuklab ko'ring yoki vaqtinchalik xatoni keyinroq takrorlang.",
+    "retry": "Qayta yuklash",
+    "saveSuccess": "Pul yig'ish sozlamalari saqlandi",
+    "saved": "Saqlandi",
+    "saveError": "Saqlashda xato",
+    "saveErrorDetail": "Sozlamalarni saqlab bo'lmadi. Qayta urinib ko'ring.",
+    "copyOk": "Havola nusxalandi",
+    "copyFail": "Nusxalab bo'lmadi",
+    "streamLink": "Strim uchun havola",
+    "totalTop": "Umumiy top",
+    "name": "Nomi",
+    "volume": "Tovush balandligi",
+    "duration": "Donat davomiyligi",
+    "showAmount": "Summani ko'rsatish",
+    "pickAnimation": "Animatsiyani tanlang",
+    "select": "Tanlash",
+    "saving": "Saqlanmoqda…",
+    "save": "Saqlash",
+    "copyAria": "Havolani nusxalash",
+    "nameAria": "Nomi",
+    "volumeAria": "Tovush balandligi",
+    "durationAria": "Donat davomiyligi"
+  },
+  "streamStatistics": {
+    "pageTitle": "Stream statistikasi",
+    "pageSubtitle": "Statistika sozlamalari",
+    "errorTitle": "Sozlamalarni yuklab bo'lmadi",
+    "errorText": "Ma'lumotlarni qayta yuklab ko'ring yoki vaqtinchalik xatoni keyinroq takrorlang.",
+    "retry": "Qayta yuklash",
+    "saveSuccess": "Stream statistikasi sozlamalari saqlandi",
+    "saved": "Saqlandi",
+    "saveError": "Saqlashda xato",
+    "saveErrorDetail": "Sozlamalarni saqlab bo'lmadi. Qayta urinib ko'ring.",
+    "copyOk": "Havola nusxalandi",
+    "copyFail": "Nusxalab bo'lmadi",
+    "copyAria": "Strim havolasini nusxalash",
+    "streamLink": "Strim uchun havola",
+    "displayMethod": "Ko'rsatish usuli",
+    "font": "Shrift",
+    "elementCount": "Elementlar soni",
+    "unit": "Ta",
+    "saving": "Saqlanmoqda…",
+    "save": "Saqlash",
+    "sectionGeneral": "Umumiy top",
+    "sectionMonthly": "Oylik top",
+    "sectionRecent": "Oxirgi donatlar",
+    "displayRow": "Qator",
+    "displayColumn": "Ustun",
+    "displayGrid": "Tarmoq"
+  },
+  "notificationPanel": {
+    "pageTitle": "Bildirishnomalar",
+    "searchPlaceholder": "Qidiruv…",
+    "searchAria": "Bildirishnomalarni qidirish",
+    "refresh": "Yangilash",
+    "openNewWindow": "Yangi oynada ochish",
+    "playAria": "Ijro etish",
+    "pauseAria": "Pauza",
+    "likeAria": "Yoqtirish"
   }
 }

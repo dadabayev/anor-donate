@@ -5,15 +5,32 @@ import {
   parseDigitsFromInput,
 } from '../../lib/format-uzs-input'
 import {
-  donationFormSchema,
+  createDonationFormSchema,
   type DonationFormValues,
 } from '../../model/donation-form.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+
+function localeTagForI18n(language: string) {
+  if (language.startsWith('ru')) {
+    return 'ru-RU'
+  }
+  if (language.startsWith('uz')) {
+    return 'uz-UZ'
+  }
+  return 'en-US'
+}
 
 export const DonationCard = () => {
+  const { t, i18n } = useTranslation()
   const [submitted, setSubmitted] = useState(false)
+  const localeTag = localeTagForI18n(i18n.language)
+  const donationFormSchema = useMemo(
+    () => createDonationFormSchema(t, localeTag),
+    [t, localeTag],
+  )
 
   const {
     control,
@@ -37,18 +54,16 @@ export const DonationCard = () => {
         <div className={cn.donateCardWrap}>
           <div className={cn.donateCard}>
             <h2 id="donate-title" className={cn.donateTitle}>
-              Donat miqdori
+              {t('landing.donation.title')}
             </h2>
-            <p className={cn.donateLead}>
-              Summani kiriting — raqamlar avtomatik ajratiladi (so‘m).
-            </p>
+            <p className={cn.donateLead}>{t('landing.donation.lead')}</p>
             <form
               className={cn.donateForm}
               onSubmit={handleSubmit(onValid)}
               noValidate
             >
               <label className={cn.fieldLabel} htmlFor="donate-amount">
-                Summa
+                {t('landing.donation.amountLabel')}
               </label>
               <div className={cn.inputWrap}>
                 <Controller
@@ -77,7 +92,7 @@ export const DonationCard = () => {
                   )}
                 />
                 <span className={cn.inputSuffix} aria-hidden>
-                  so‘m
+                  {t('landing.donation.currencySuffix')}
                 </span>
               </div>
               {errors.amountDisplay ? (
@@ -90,19 +105,19 @@ export const DonationCard = () => {
                 </p>
               ) : (
                 <p id="donate-amount-hint" className={cn.fieldHint}>
-                  Minimal va maksimal cheklovlar tekshiriladi.
+                  {t('landing.donation.hint')}
                 </p>
               )}
               <button
                 type="submit"
                 className={`${cn.btnPrimary} ${cn.donateSubmit}`}
               >
-                Davom etish
+                {t('landing.donation.submit')}
               </button>
             </form>
             {submitted ? (
               <p className={cn.donateSuccess} role="status">
-                Summa qabul qilindi. Keyingi qadam uchun akkauntingizga kiring.
+                {t('landing.donation.success')}
               </p>
             ) : null}
           </div>

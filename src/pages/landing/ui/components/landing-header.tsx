@@ -2,7 +2,8 @@ import cn from '../landing-page.module.css'
 
 import { useLandingHashNav } from '../../lib/use-landing-hash-nav'
 import { LANDING_ASSETS } from '../landing-assets'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 interface LandingHeaderProps {
@@ -11,11 +12,11 @@ interface LandingHeaderProps {
   onCloseDrawer: () => void
 }
 
-const NAV_ITEMS = [
-  { href: '#top', label: 'Bosh menyu' },
-  { href: '#how', label: 'Bu qanday ishlaydi' },
-  { href: '#faq', label: 'Savollar' },
-  { href: '#bloggers', label: 'Blogerlar' },
+const NAV_HREFS = [
+  { href: '#top', labelKey: 'landing.header.nav.home' as const },
+  { href: '#how', labelKey: 'landing.header.nav.howItWorks' as const },
+  { href: '#faq', labelKey: 'landing.header.nav.faq' as const },
+  { href: '#bloggers', labelKey: 'landing.header.nav.bloggers' as const },
 ] as const
 
 export const LandingHeader = ({
@@ -23,6 +24,15 @@ export const LandingHeader = ({
   onToggleDrawer,
   onCloseDrawer,
 }: LandingHeaderProps) => {
+  const { t } = useTranslation()
+  const navItems = useMemo(
+    () =>
+      NAV_HREFS.map((item) => ({
+        href: item.href,
+        label: t(item.labelKey),
+      })),
+    [t],
+  )
   const onNavClick = useLandingHashNav(onCloseDrawer)
   const [activeHash, setActiveHash] = useState<string>('#top')
   const [isScrolled, setIsScrolled] = useState(false)
@@ -59,9 +69,9 @@ export const LandingHeader = ({
   }, [onCloseDrawer])
 
   useEffect(() => {
-    const sections = NAV_ITEMS.map((item) =>
-      document.getElementById(item.href.slice(1)),
-    ).filter((section): section is HTMLElement => section !== null)
+    const sections = navItems
+      .map((item) => document.getElementById(item.href.slice(1)))
+      .filter((section): section is HTMLElement => section !== null)
 
     if (!sections.length) {
       return
@@ -86,7 +96,7 @@ export const LandingHeader = ({
     sections.forEach((section) => observer.observe(section))
 
     return () => observer.disconnect()
-  }, [])
+  }, [navItems])
 
   return (
     <>
@@ -111,7 +121,9 @@ export const LandingHeader = ({
                   className={cn.menuIcon}
                   decoding="async"
                 />
-                <span className={cn.srOnly}>Menyu</span>
+                <span className={cn.srOnly}>
+                  {t('landing.header.menuButtonSrOnly')}
+                </span>
               </button>
               <Link to="/" className={cn.logoRow}>
                 <img
@@ -122,11 +134,14 @@ export const LandingHeader = ({
                   height={48}
                   decoding="async"
                 />
-                <span className={cn.logoText}>Anor Donate</span>
+                <span className={cn.logoText}>{t('landing.brandName')}</span>
               </Link>
 
-              <nav className={cn.nav} aria-label="Asosiy">
-                {NAV_ITEMS.map((item) => {
+              <nav
+                className={cn.nav}
+                aria-label={t('landing.header.mainNavAriaLabel')}
+              >
+                {navItems.map((item) => {
                   const active = activeHash === item.href
 
                   return (
@@ -151,7 +166,7 @@ export const LandingHeader = ({
                   to="/sign-in"
                   className={`${cn.btnPrimary} ${cn.btnPrimaryWide}`}
                 >
-                  Kirish
+                  {t('landing.header.signIn')}
                 </Link>
               </div>
             </div>
@@ -169,8 +184,11 @@ export const LandingHeader = ({
         className={`${cn.drawer} ${drawerOpen ? cn.open : ''}`}
         aria-hidden={!drawerOpen}
       >
-        <nav className={cn.drawerNav} aria-label="Mobil menyu">
-          {NAV_ITEMS.map((item) => {
+        <nav
+          className={cn.drawerNav}
+          aria-label={t('landing.header.mobileNavAriaLabel')}
+        >
+          {navItems.map((item) => {
             const active = activeHash === item.href
 
             return (
@@ -189,7 +207,7 @@ export const LandingHeader = ({
             )
           })}
           <Link to="/sign-in" onClick={onCloseDrawer}>
-            Kirish
+            {t('landing.header.signIn')}
           </Link>
         </nav>
       </aside>
