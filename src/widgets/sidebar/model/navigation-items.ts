@@ -25,8 +25,12 @@ export const PRIMARY_ITEMS: SidebarItem[] = [
   { icon: IconHistory, label: 'Donatlar Tarixi' },
   { icon: IconPhoto, label: 'Vidjetlar', path: '/widgets' },
   { icon: IconBrandYoutube, label: 'Memlar', path: '/memes' },
-  { icon: IconChartBar, label: 'Stream statistikasi' },
-  { icon: IconWallet, label: "Pul yig'ish" },
+  {
+    icon: IconChartBar,
+    label: 'Stream statistikasi',
+    path: '/stream-statistics',
+  },
+  { icon: IconWallet, label: "Pul yig'ish", path: '/fundraising' },
   { icon: IconSettings, label: 'Sozlamalar', path: '/donations/settings' },
   { icon: IconUserCircle, label: 'Profil', path: '/profile' },
 ]
