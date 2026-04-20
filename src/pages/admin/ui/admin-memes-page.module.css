@@ -1,0 +1,18 @@
+.thumb {
+  width: 96px;
+  height: 54px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #eaeaea;
+  vertical-align: middle;
+}
+
+.statusActive {
+  color: #0f7a45;
+  font-weight: 500;
+}
+
+.statusInactive {
+  color: rgba(30, 30, 30, 0.55);
+  font-weight: 500;
+}

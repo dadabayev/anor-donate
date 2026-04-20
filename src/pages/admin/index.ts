@@ -1,5 +1,8 @@
 export { AdminBloggersPage } from './ui/admin-bloggers-page'
 export { AdminDashboardPage } from './ui/admin-dashboard-page'
+export { AdminMemeCategoriesPage } from './ui/admin-meme-categories-page'
+export { AdminMemesPage } from './ui/admin-memes-page'
 export { AdminModerationPage } from './ui/admin-moderation-page'
+export { AdminNewsPage } from './ui/admin-news-page'
 export { AdminStubPage } from './ui/admin-stub-page'
 export { AdminTtsPage } from './ui/admin-tts-page'

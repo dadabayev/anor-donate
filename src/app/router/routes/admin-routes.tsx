@@ -15,8 +15,14 @@ const AdminModerationPage = lazy(() =>
 const AdminTtsPage = lazy(() =>
   import('@pages/admin').then((m) => ({ default: m.AdminTtsPage })),
 )
-const AdminStubPage = lazy(() =>
-  import('@pages/admin').then((m) => ({ default: m.AdminStubPage })),
+const AdminMemeCategoriesPage = lazy(() =>
+  import('@pages/admin').then((m) => ({ default: m.AdminMemeCategoriesPage })),
+)
+const AdminMemesPage = lazy(() =>
+  import('@pages/admin').then((m) => ({ default: m.AdminMemesPage })),
+)
+const AdminNewsPage = lazy(() =>
+  import('@pages/admin').then((m) => ({ default: m.AdminNewsPage })),
 )
 
 export const adminRoutes: RouteObject = {
@@ -34,9 +40,9 @@ export const adminRoutes: RouteObject = {
         },
         { path: 'moderation', element: <AdminModerationPage /> },
         { path: 'tts', element: <AdminTtsPage /> },
-        { path: 'meme-categories', element: <AdminStubPage /> },
-        { path: 'memes', element: <AdminStubPage /> },
-        { path: 'news', element: <AdminStubPage /> },
+        { path: 'meme-categories', element: <AdminMemeCategoriesPage /> },
+        { path: 'memes', element: <AdminMemesPage /> },
+        { path: 'news', element: <AdminNewsPage /> },
       ],
     },
   ],

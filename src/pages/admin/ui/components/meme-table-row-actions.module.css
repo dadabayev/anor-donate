@@ -1,0 +1,61 @@
+.row {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.btn {
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    background-color 150ms ease,
+    opacity 150ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.edit {
+  background: #ea580c;
+  color: #ffffff;
+}
+
+.edit:hover:not(:disabled) {
+  background: #c2410c;
+}
+
+.muted {
+  background: #e8eaf6;
+  color: #434347;
+}
+
+.muted:hover:not(:disabled) {
+  background: #dde1f5;
+}
+
+.danger {
+  background: #8b0037;
+  color: #ffffff;
+}
+
+.danger:hover:not(:disabled) {
+  background: #75002e;
+}

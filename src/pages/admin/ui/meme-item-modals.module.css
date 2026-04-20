@@ -1,0 +1,210 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 400;
+  color: #111111;
+}
+
+.inputShell {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-radius: 16px;
+  background: #eaeaea;
+  transition:
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.inputShellInvalid {
+  box-shadow: 0 0 0 2px rgba(180, 35, 24, 0.45);
+  background: rgba(180, 35, 24, 0.06);
+}
+
+.input,
+.select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+  padding: 14px 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  color: #1b1b1e;
+}
+
+.select {
+  cursor: pointer;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.toggleLabel {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.errorText {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #b42318;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.secondaryButton {
+  min-height: 48px;
+  padding: 0 28px;
+  border: 1px solid #d5d5d8;
+  border-radius: 12px;
+  background: #f4f4f6;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #1e1e1e;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: #eaeaea;
+  transform: translateY(-1px);
+}
+
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.primaryButton {
+  min-height: 48px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b0037;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(139, 0, 55, 0.18);
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: #75002e;
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.viewGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.thumb {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #eaeaea;
+}
+
+.viewRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.viewCaption {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: rgba(30, 30, 30, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.viewValue {
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  color: #1e1e1e;
+}
+
+.statusActive {
+  color: #0f7a45;
+  font-weight: 600;
+}
+
+.statusInactive {
+  color: rgba(30, 30, 30, 0.55);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
