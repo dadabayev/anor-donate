@@ -27,6 +27,9 @@ const isNavItemActive = (path: string, pathname: string) => {
   if (path === '/dashboard') {
     return pathname === '/dashboard' || pathname === '/'
   }
+  if (path === '/admin') {
+    return pathname === '/admin' || pathname.startsWith('/admin/')
+  }
   return pathname === path || pathname.startsWith(`${path}/`)
 }
 
@@ -89,6 +92,26 @@ export const Sidebar = () => {
       <nav className={cn.nav} aria-label={t('sidebar.secondaryNavAria')}>
         {SECONDARY_NAV_KEYS.map((item) => {
           const Icon = item.icon
+
+          if (item.path) {
+            const active = isNavItemActive(item.path, pathname)
+
+            return (
+              <Link
+                key={item.labelKey}
+                to={item.path}
+                className={classNames(
+                  cn.item,
+                  active && cn.itemActive,
+                  cn.link,
+                )}
+                aria-current={active ? 'page' : undefined}
+              >
+                <Icon className={cn.icon} size={16} stroke={2} />
+                <span>{t(item.labelKey)}</span>
+              </Link>
+            )
+          }
 
           return (
             <button key={item.labelKey} className={cn.item} type={'button'}>

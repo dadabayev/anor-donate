@@ -1,0 +1,33 @@
+.page {
+  padding: 40px 20px 48px 0;
+  background-color: #f4f4f6;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.hint {
+  margin: 12px 0 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 400;
+  color: rgba(30, 30, 30, 0.65);
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding: 24px 0 40px;
+  }
+
+  .title {
+    font-size: 32px;
+    line-height: 38px;
+  }
+}

@@ -295,6 +295,45 @@
     },
     "logout": "Выйти"
   },
+  "admin": {
+    "nav": {
+      "mainAria": "Админ-навигация",
+      "footerAria": "Действия в админ-панели",
+      "dashboard": "Панель управления",
+      "bloggers": "Блогеры",
+      "moderation": "Модерация",
+      "tts": "Слова (TTS)",
+      "memeCategories": "Категории мемов",
+      "memes": "Мемы",
+      "news": "Новости",
+      "goToSite": "На сайт"
+    },
+    "dashboardPage": {
+      "title": "Панель управления",
+      "subtitle": "Статистика донатов",
+      "kpi": {
+        "successfulDonations": "Сумма успешных донатов",
+        "failedDonations": "Сумма неуспешных донатов",
+        "totalDonations": "Всего донатов",
+        "profit": "Прибыль",
+        "ttsCharacters": "Символов через TTS",
+        "ttsRequests": "Обработано TTS-запросов"
+      },
+      "sample": {
+        "ttsRequests": "896 запросов"
+      }
+    },
+    "sections": {
+      "bloggers": "Блогеры",
+      "moderation": "Модерация",
+      "tts": "Слова (TTS)",
+      "memeCategories": "Категории мемов",
+      "memes": "Мемы",
+      "news": "Новости",
+      "comingSoon": "Раздел в разработке.",
+      "unknown": "Страница админки не найдена"
+    }
+  },
   "dashboard": {
     "title": "Панель управления",
     "subtitle": "Статистика донатов",

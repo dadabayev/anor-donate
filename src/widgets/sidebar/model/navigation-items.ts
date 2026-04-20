@@ -67,10 +67,11 @@ export const PRIMARY_NAV_KEYS: SidebarNavKey[] = [
 export interface SidebarSecondaryKey {
   icon: ComponentType<{ className?: string; size?: number; stroke?: number }>
   labelKey: 'sidebar.secondary.admin'
+  path?: string
 }
 
 export const SECONDARY_NAV_KEYS: SidebarSecondaryKey[] = [
-  { icon: IconEdit, labelKey: 'sidebar.secondary.admin' },
+  { icon: IconEdit, labelKey: 'sidebar.secondary.admin', path: '/admin' },
 ]
 
 export const LOGOUT_NAV_KEY = {

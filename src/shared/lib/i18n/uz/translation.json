@@ -295,6 +295,45 @@
     },
     "logout": "Chiqish"
   },
+  "admin": {
+    "nav": {
+      "mainAria": "Admin navigatsiyasi",
+      "footerAria": "Admin akkaunt harakatlari",
+      "dashboard": "Boshqaruv paneli",
+      "bloggers": "Blogerlar",
+      "moderation": "Moderatsiya",
+      "tts": "So'zlar (TTS)",
+      "memeCategories": "Mem kategoriyalari",
+      "memes": "Memlar",
+      "news": "Yangiliklar",
+      "goToSite": "Saytga o'tish"
+    },
+    "dashboardPage": {
+      "title": "Boshqaruv paneli",
+      "subtitle": "Donatlar statistikasi",
+      "kpi": {
+        "successfulDonations": "Muvaffaqiyatli donatlar summasi",
+        "failedDonations": "Muvaffaqiyatsiz donatlar summasi",
+        "totalDonations": "Jami donatlar",
+        "profit": "Foyda",
+        "ttsCharacters": "TTS orqali iste'mol qilingan belgilar",
+        "ttsRequests": "TTS so'rovlari qayta ishlangan"
+      },
+      "sample": {
+        "ttsRequests": "896 ta"
+      }
+    },
+    "sections": {
+      "bloggers": "Blogerlar",
+      "moderation": "Moderatsiya",
+      "tts": "So'zlar (TTS)",
+      "memeCategories": "Mem kategoriyalari",
+      "memes": "Memlar",
+      "news": "Yangiliklar",
+      "comingSoon": "Bu bo'lim tayyorlanmoqda.",
+      "unknown": "Admin sahifasi topilmadi"
+    }
+  },
   "dashboard": {
     "title": "Boshqaruv paneli",
     "subtitle": "Donatlar Statistikasi",

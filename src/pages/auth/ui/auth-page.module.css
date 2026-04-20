@@ -213,6 +213,29 @@
   gap: 8px;
 }
 
+.rememberForgotRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  flex-wrap: wrap;
+}
+
+.rememberForgotRow .checkboxGroup {
+  flex: 1;
+  min-width: 0;
+}
+
+.rememberForgotRow .checkbox {
+  align-items: center;
+}
+
+.rememberForgotLink {
+  flex-shrink: 0;
+  align-self: center;
+  white-space: nowrap;
+}
+
 .checkbox {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);

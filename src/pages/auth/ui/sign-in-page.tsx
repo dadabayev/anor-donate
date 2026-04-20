@@ -9,6 +9,7 @@ import {
   AuthSubmitButton,
 } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import classNames from 'classnames'
 import { startTransition, useId, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -88,27 +89,30 @@ export const SignInPage = () => {
           placeholder={t('auth.signIn.passwordPlaceholder')}
           autoComplete="current-password"
           error={errors.password?.message}
-          footer={
-            <Link to="/reset-password" className={cn.footerLink}>
-              {t('auth.signIn.forgotPassword')}
-            </Link>
-          }
         />
 
-        <Controller
-          name="rememberMe"
-          control={control}
-          render={({ field }) => (
-            <AuthCheckboxField
-              id={rememberId}
-              checked={field.value}
-              name={field.name}
-              label={t('auth.signIn.rememberMe')}
-              onBlur={field.onBlur}
-              onChange={(event) => field.onChange(event.target.checked)}
-            />
-          )}
-        />
+        <div className={cn.rememberForgotRow}>
+          <Controller
+            name="rememberMe"
+            control={control}
+            render={({ field }) => (
+              <AuthCheckboxField
+                id={rememberId}
+                checked={field.value}
+                name={field.name}
+                label={t('auth.signIn.rememberMe')}
+                onBlur={field.onBlur}
+                onChange={(event) => field.onChange(event.target.checked)}
+              />
+            )}
+          />
+          <Link
+            to="/reset-password"
+            className={classNames(cn.footerLink, cn.rememberForgotLink)}
+          >
+            {t('auth.signIn.forgotPassword')}
+          </Link>
+        </div>
 
         <AuthSubmitButton loading={isSubmitting}>
           {t('auth.signIn.submit')}

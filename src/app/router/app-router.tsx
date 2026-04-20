@@ -1,4 +1,5 @@
 import { MainLayout } from '../layouts/main-layout'
+import { adminRoutes } from './routes/admin-routes'
 import { authRoutes } from './routes/auth-routes'
 import { donationSettingsRoutes } from './routes/donation-settings-routes'
 import { donationsRoutes } from './routes/donations-routes'
@@ -44,6 +45,7 @@ export const appRouter: RouteObject[] = [
       ...widgetsRoutes,
     ],
   },
+  adminRoutes,
   {
     path: '*',
     element: <Navigate to={'/dashboard'} replace />,

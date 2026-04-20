@@ -295,6 +295,45 @@
     },
     "logout": "Log out"
   },
+  "admin": {
+    "nav": {
+      "mainAria": "Admin navigation",
+      "footerAria": "Admin account actions",
+      "dashboard": "Control panel",
+      "bloggers": "Bloggers",
+      "moderation": "Moderation",
+      "tts": "Words (TTS)",
+      "memeCategories": "Meme categories",
+      "memes": "Memes",
+      "news": "News",
+      "goToSite": "Go to site"
+    },
+    "dashboardPage": {
+      "title": "Control panel",
+      "subtitle": "Donation statistics",
+      "kpi": {
+        "successfulDonations": "Successful donations total",
+        "failedDonations": "Failed donations total",
+        "totalDonations": "Total donations",
+        "profit": "Profit",
+        "ttsCharacters": "Characters consumed via TTS",
+        "ttsRequests": "TTS requests processed"
+      },
+      "sample": {
+        "ttsRequests": "896 requests"
+      }
+    },
+    "sections": {
+      "bloggers": "Bloggers",
+      "moderation": "Moderation",
+      "tts": "Words (TTS)",
+      "memeCategories": "Meme categories",
+      "memes": "Memes",
+      "news": "News",
+      "comingSoon": "This section is under construction.",
+      "unknown": "Admin page not found"
+    }
+  },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Donation statistics",
