@@ -8,6 +8,7 @@
   username: string
   channelName: string
   channelLink: string
+  channelAbout: string
 }
 
 export interface ProfileSocialLink {
@@ -38,6 +39,7 @@ export const DEFAULT_PROFILE: ProfileData = {
   username: 'Andy',
   channelName: 'Andy',
   channelLink: '123',
+  channelAbout: 'Short description of the channel.',
   socialLinks: [
     {
       id: 'youtube',
@@ -65,6 +67,7 @@ export const EMPTY_PROFILE: ProfileData = {
   username: '',
   channelName: '',
   channelLink: '',
+  channelAbout: '',
 }
 
 export const readProfile = (): ProfileData | null => {

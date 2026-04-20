@@ -19,8 +19,11 @@
 }
 
 .scrollArea {
+  box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
@@ -32,8 +35,9 @@
 
 .tableHistory {
   width: 100%;
-  min-width: 0;
-  table-layout: auto;
+  /* Horizontal scroll stays inside .scrollArea; padding reduced so typical laptop widths need less panning */
+  min-width: 880px;
+  table-layout: fixed;
 }
 
 /* History variant: exclude from default thead/td so .headCellHistory / .bodyCellHistory win */
@@ -50,9 +54,9 @@
 
 .tableHistory thead tr th {
   padding-top: 14px !important;
-  padding-right: 48px !important;
+  padding-right: 20px !important;
   padding-bottom: 14px !important;
-  padding-left: 48px !important;
+  padding-left: 20px !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
   background-color: #800020 !important;
   color: #ffffff !important;
@@ -86,7 +90,7 @@
 }
 
 .bodyCellHistory {
-  padding: 24px 48px;
+  padding: 18px 20px;
   border-bottom: 1px solid #e5e5e5;
   background: #ffffff;
   font-size: 12px;

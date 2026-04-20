@@ -19,7 +19,7 @@ const isNavItemActive = (path: string, pathname: string) => {
     return pathname === '/donations' || pathname === '/donations/settings'
   }
   if (path === '/profile') {
-    return pathname === '/profile'
+    return pathname === '/profile' || pathname.startsWith('/profile/')
   }
   if (path === '/widgets') {
     return pathname === '/widgets' || pathname.startsWith('/widgets/')

@@ -1,0 +1,96 @@
+.message {
+  margin: 0;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgba(30, 30, 30, 0.85);
+}
+
+.footerActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  width: 100%;
+}
+
+.cancelButton {
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: 1px solid rgba(30, 30, 30, 0.18);
+  background: #ffffff;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #1e1e1e;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #f6f6f8;
+  border-color: rgba(30, 30, 30, 0.28);
+}
+
+.cancelButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 0, 55, 0.18);
+}
+
+.cancelButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.confirmButton {
+  min-height: 48px;
+  min-width: 120px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b0037;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(139, 0, 55, 0.2);
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background: #75002e;
+  transform: translateY(-1px);
+}
+
+.confirmButton:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(139, 0, 55, 0.25),
+    0 12px 28px rgba(139, 0, 55, 0.2);
+}
+
+.confirmButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+.confirmButtonMuted {
+  background: #6b6f76;
+  box-shadow: 0 8px 20px rgba(30, 30, 30, 0.12);
+}
+
+.confirmButtonMuted:hover:not(:disabled) {
+  background: #5a5e64;
+}

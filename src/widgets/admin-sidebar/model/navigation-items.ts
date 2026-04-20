@@ -15,7 +15,7 @@ export interface AdminNavItem {
   icon: ComponentType<{ className?: string; size?: number; stroke?: number }>
   labelKey:
     | 'admin.nav.dashboard'
-    | 'admin.nav.bloggers'
+    | 'admin.nav.customers'
     | 'admin.nav.moderation'
     | 'admin.nav.tts'
     | 'admin.nav.memeCategories'
@@ -32,8 +32,8 @@ export const ADMIN_PRIMARY_NAV: AdminNavItem[] = [
   },
   {
     icon: IconUsers,
-    labelKey: 'admin.nav.bloggers',
-    path: '/admin/bloggers',
+    labelKey: 'admin.nav.customers',
+    path: '/admin/customers',
   },
   {
     icon: IconShieldCheck,

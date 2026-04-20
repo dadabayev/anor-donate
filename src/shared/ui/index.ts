@@ -3,6 +3,7 @@ export {
   ChartTooltip,
   type ChartTooltipItem,
 } from './chart-tooltip/chart-tooltip'
+export { ConfirmModal, type ConfirmModalProps } from './confirm-modal'
 export { ErrorMessage } from './error-message/error-message'
 export { InputField, type InputFieldProps } from './input-field/input-field'
 export { Loader } from './loader/loader'
@@ -14,3 +15,4 @@ export {
   type TableColumn,
   type TableProps,
 } from './table'
+export { TableRowActions, type TableRowActionsProps } from './table-row-actions'

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 
 const slugToSectionKey = {
-  bloggers: 'bloggers',
   moderation: 'moderation',
   tts: 'tts',
   'meme-categories': 'memeCategories',

@@ -10,6 +10,29 @@
   composes: header from '../../profile-page.module.css';
 }
 
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.backToView {
+  flex-shrink: 0;
+  padding-top: 8px;
+  font-family: 'Roboto Flex', sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #8b0037;
+  text-decoration: none;
+}
+
+.backToView:hover {
+  text-decoration: underline;
+}
+
 .title {
   composes: title from '../../profile-page.module.css';
 }

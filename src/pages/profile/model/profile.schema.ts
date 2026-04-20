@@ -28,4 +28,5 @@ export const profileSchema = z.object({
     .string()
     .trim()
     .min(1, { message: 'Asosiy kanal havolasi kiritish shart' }),
+  channelAbout: z.string().trim(),
 })

@@ -24,6 +24,7 @@ interface ProfileMainInfoSectionProps {
     username: string
     channelName: string
     channelLink: string
+    channelAbout: string
   }
   placeholders: {
     firstName: string
@@ -35,6 +36,7 @@ interface ProfileMainInfoSectionProps {
     username: string
     channelName: string
     channelLink: string
+    channelAbout: string
   }
 }
 
@@ -139,8 +141,16 @@ export const ProfileMainInfoSection = ({
           error={errors.channelLink?.message}
           placeholder={placeholders.channelLink}
           disabled={isBusy}
-          className={cn.gridFullWidth}
           {...register('channelLink')}
+        />
+
+        <InputField
+          label={labels.channelAbout}
+          error={errors.channelAbout?.message}
+          placeholder={placeholders.channelAbout}
+          disabled={isBusy}
+          className={cn.gridFullWidth}
+          {...register('channelAbout')}
         />
       </div>
     </section>

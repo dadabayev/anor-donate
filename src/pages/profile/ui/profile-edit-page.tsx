@@ -5,8 +5,7 @@ import {
   readProfile,
   writeProfile,
 } from '../model/profile'
-import { ProfileLoading, ProfileState } from './components'
-import { ProfileFigmaView } from './profile-figma-view'
+import { ProfileEditor, ProfileLoading, ProfileState } from './components'
 import { IconAlertTriangle } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +15,7 @@ const loadProfile = async (): Promise<ProfileData | null> => {
   return readProfile()
 }
 
-export const ProfilePage = () => {
+export const ProfileEditPage = () => {
   const { t } = useTranslation()
   const query = useQuery({
     queryKey: ['profile-page'],
@@ -60,5 +59,5 @@ export const ProfilePage = () => {
     )
   }
 
-  return <ProfileFigmaView profile={query.data ?? DEFAULT_PROFILE} />
+  return <ProfileEditor initialProfile={query.data ?? DEFAULT_PROFILE} />
 }

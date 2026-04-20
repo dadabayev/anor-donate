@@ -24,6 +24,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 type SecurityModalType = 'email' | 'phone' | 'password' | 'verify' | null
 type VerificationTarget = 'email' | 'phone' | null
@@ -415,7 +416,12 @@ export const ProfileEditor = ({
     <section className={cn.page}>
       <div className={cn.column}>
         <header className={cn.header}>
-          <h1 className={cn.title}>{t('profile.pageTitle')}</h1>
+          <div className={cn.headerRow}>
+            <h1 className={cn.title}>{t('profile.pageTitle')}</h1>
+            <Link className={cn.backToView} to="/profile">
+              {t('profile.backToProfile')}
+            </Link>
+          </div>
         </header>
 
         <div className={cn.card}>
@@ -452,6 +458,7 @@ export const ProfileEditor = ({
                 username: t('profile.username'),
                 channelName: t('profile.channelName'),
                 channelLink: t('profile.channelLink'),
+                channelAbout: t('profile.channelAbout'),
               }}
               placeholders={{
                 firstName: t('profile.firstNamePlaceholder'),
@@ -463,6 +470,7 @@ export const ProfileEditor = ({
                 username: t('profile.usernamePlaceholder'),
                 channelName: t('profile.channelNamePlaceholder'),
                 channelLink: t('profile.channelLinkPlaceholder'),
+                channelAbout: t('profile.channelAboutPlaceholder'),
               }}
             />
 
