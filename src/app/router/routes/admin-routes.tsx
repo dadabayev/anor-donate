@@ -12,6 +12,9 @@ const AdminBloggersPage = lazy(() =>
 const AdminModerationPage = lazy(() =>
   import('@pages/admin').then((m) => ({ default: m.AdminModerationPage })),
 )
+const AdminTtsPage = lazy(() =>
+  import('@pages/admin').then((m) => ({ default: m.AdminTtsPage })),
+)
 const AdminStubPage = lazy(() =>
   import('@pages/admin').then((m) => ({ default: m.AdminStubPage })),
 )
@@ -30,7 +33,7 @@ export const adminRoutes: RouteObject = {
           element: <Navigate to="/admin/customers" replace />,
         },
         { path: 'moderation', element: <AdminModerationPage /> },
-        { path: 'tts', element: <AdminStubPage /> },
+        { path: 'tts', element: <AdminTtsPage /> },
         { path: 'meme-categories', element: <AdminStubPage /> },
         { path: 'memes', element: <AdminStubPage /> },
         { path: 'news', element: <AdminStubPage /> },
