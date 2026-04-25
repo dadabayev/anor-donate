@@ -80,7 +80,7 @@ export const OtpSmsPage = () => {
   }
 
   return (
-    <AuthShell title={t('auth.otp.title')}>
+    <AuthShell title={t('auth.otp.title')} variant="otp">
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}

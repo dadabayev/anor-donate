@@ -6,7 +6,7 @@
 .layout {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 674px) minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   background: #ffffff;
 }
 
@@ -420,6 +420,10 @@
   color: #434347;
 }
 
+.signUpPage .fileHint {
+  display: none;
+}
+
 .visuallyHidden {
   position: absolute;
   width: 1px;
@@ -481,11 +485,59 @@
   color: #1f6e43;
 }
 
-@media (max-width: 1199px) {
-  .layout {
-    grid-template-columns: minmax(0, 56%) minmax(0, 44%);
+@media (min-width: 1024px) {
+  .signInPage .panelCenter {
+    padding-top: clamp(180px, 24.52vh, 251px);
   }
 
+  .resetPasswordPage .panelCenter {
+    padding-top: clamp(260px, 35.25vh, 361px);
+  }
+
+  .otpPage .panelCenter {
+    padding-top: clamp(240px, 32.62vh, 334px);
+  }
+
+  .signInPage .panelInner,
+  .signUpPage .panelInner,
+  .resetPasswordPage .panelInner,
+  .otpPage .panelInner {
+    gap: 16px;
+  }
+
+  .signInPage .section,
+  .signUpPage .section,
+  .resetPasswordPage .section,
+  .otpPage .section {
+    gap: 24px;
+  }
+
+  .signInPage .title,
+  .signUpPage .title,
+  .resetPasswordPage .title,
+  .otpPage .title {
+    text-align: center;
+  }
+
+  .signInPage .form,
+  .resetPasswordPage .form {
+    gap: 32px;
+  }
+
+  .signUpPage .form {
+    gap: 24px;
+  }
+
+  .signUpPage .formGrid {
+    gap: 16px;
+  }
+
+  .signUpPage .textarea {
+    min-height: 132px;
+  }
+}
+
+@media (max-width: 1199px) {
   .panelCenter,
   .panelTop {
     padding-left: 48px;
@@ -528,29 +580,85 @@
 @media (max-width: 639px) {
   .panelCenter,
   .panelTop {
-    padding: 32px 20px 40px;
+    padding: 64px 24px;
   }
 
   .panelInner {
+    width: min(366px, 100%);
+    min-height: calc(100svh - 128px);
     gap: 32px;
   }
 
   .section {
-    gap: 28px;
+    gap: 32px;
   }
 
   .title {
     font-size: 32px;
-    line-height: 38px;
+    line-height: 32px;
+    text-align: center;
   }
 
   .formGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 12px;
   }
 
   .wideField {
-    grid-column: auto;
+    grid-column: 1 / -1;
+  }
+
+  .brand {
+    align-self: center;
+  }
+
+  .form {
+    gap: 24px;
+  }
+
+  .signInPage .section,
+  .resetPasswordPage .section,
+  .otpPage .section {
+    gap: 24px;
+  }
+
+  .signInPage .form {
+    min-height: calc(100svh - 310px);
+  }
+
+  .resetPasswordPage .form,
+  .otpPage .form {
+    min-height: calc(100svh - 272px);
+  }
+
+  .signInPage .submitButton,
+  .resetPasswordPage .submitButton,
+  .otpPage .submitButton {
+    margin-top: auto;
+  }
+
+  .signUpPage .form {
+    gap: 16px;
+  }
+
+  .signUpPage .submitButton {
+    margin-top: 12px;
+  }
+
+  .control {
+    min-height: 48px;
+  }
+
+  .textarea {
+    min-height: 132px;
+  }
+
+  .fileArea {
+    min-height: 128px;
+  }
+
+  .fileHint {
+    display: none;
   }
 
   .footerRow {
@@ -562,17 +670,27 @@
     margin-left: 0;
   }
 
+  .signInPage .footerRow {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .signInPage .footerMeta {
+    margin-left: auto;
+  }
+
   .bottomRow {
-    flex-wrap: wrap;
-    gap: 12px 18px;
-    justify-content: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 0;
+    white-space: nowrap;
   }
 
   .otpInput {
-    width: 44px;
-    height: 60px;
-    font-size: 34px;
-    line-height: 40px;
+    width: 48px;
+    height: 64px;
+    font-size: 40px;
+    line-height: 48px;
   }
 
   .otpRow {

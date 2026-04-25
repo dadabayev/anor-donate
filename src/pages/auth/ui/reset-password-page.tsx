@@ -65,7 +65,7 @@ export const ResetPasswordPage = () => {
   })
 
   return (
-    <AuthShell title={t('auth.resetPassword.title')}>
+    <AuthShell title={t('auth.resetPassword.title')} variant="resetPassword">
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}

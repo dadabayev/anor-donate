@@ -64,7 +64,7 @@ export const SignInPage = () => {
   })
 
   return (
-    <AuthShell title={t('auth.signIn.title')}>
+    <AuthShell title={t('auth.signIn.title')} variant="signIn">
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}
@@ -89,6 +89,14 @@ export const SignInPage = () => {
           placeholder={t('auth.signIn.passwordPlaceholder')}
           autoComplete="current-password"
           error={errors.password?.message}
+          footer={
+            <Link
+              to="/reset-password"
+              className={classNames(cn.footerLink, cn.rememberForgotLink)}
+            >
+              {t('auth.signIn.forgotPassword')}
+            </Link>
+          }
         />
 
         <div className={cn.rememberForgotRow}>
@@ -106,12 +114,6 @@ export const SignInPage = () => {
               />
             )}
           />
-          <Link
-            to="/reset-password"
-            className={classNames(cn.footerLink, cn.rememberForgotLink)}
-          >
-            {t('auth.signIn.forgotPassword')}
-          </Link>
         </div>
 
         <AuthSubmitButton loading={isSubmitting}>

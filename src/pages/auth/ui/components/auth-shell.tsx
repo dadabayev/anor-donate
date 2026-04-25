@@ -9,17 +9,28 @@ interface AuthShellProps {
   title: string
   children: ReactNode
   align?: 'center' | 'top'
+  variant?: 'signIn' | 'signUp' | 'resetPassword' | 'otp'
 }
+
+const pageVariantClassNames = {
+  signIn: cn.signInPage,
+  signUp: cn.signUpPage,
+  resetPassword: cn.resetPasswordPage,
+  otp: cn.otpPage,
+} as const
 
 export const AuthShell = ({
   title,
   children,
   align = 'center',
+  variant,
 }: Readonly<AuthShellProps>) => {
   const { t } = useTranslation()
 
   return (
-    <div className={cn.page}>
+    <div
+      className={classNames(cn.page, variant && pageVariantClassNames[variant])}
+    >
       <div className={cn.layout}>
         <section
           className={classNames(

@@ -94,7 +94,7 @@ export const SignUpPage = () => {
   })
 
   return (
-    <AuthShell title={t('auth.signUp.title')} align="top">
+    <AuthShell title={t('auth.signUp.title')} align="top" variant="signUp">
       {submitError ? (
         <div className={cn.alert} role="alert">
           {submitError}
