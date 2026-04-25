@@ -46,7 +46,11 @@ export const ResetPasswordPage = () => {
 
       startTransition(() => {
         navigate(result.redirectTo, {
-          state: { phone: values.phone, flow: 'reset-password' },
+          state: {
+            phone: values.phone,
+            phoneE164: result.phoneE164,
+            flow: 'reset-password',
+          },
         })
       })
     } catch (error) {

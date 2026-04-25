@@ -19,6 +19,7 @@ import {
   AuthTextareaField,
 } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { startTransition, useId, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -41,6 +42,9 @@ export const SignUpPage = () => {
   const marketingConsentId = useId()
   const [submitError, setSubmitError] = useState<string | null>(null)
   const signUpSchema = useMemo(() => createSignUpSchema(t), [t])
+  const signUpMutation = useMutation({
+    mutationFn: submitSignUp,
+  })
   const {
     register,
     control,
@@ -71,11 +75,15 @@ export const SignUpPage = () => {
     setSubmitError(null)
 
     try {
-      const result = await submitSignUp(values)
+      const result = await signUpMutation.mutateAsync(values)
 
       startTransition(() => {
         navigate(result.redirectTo, {
-          state: { phone: values.phone, flow: 'sign-up' },
+          state: {
+            phone: values.phone,
+            phoneE164: result.phoneE164,
+            flow: 'sign-up',
+          },
         })
       })
     } catch (error) {

@@ -7,23 +7,40 @@ import {
 } from '../model/auth-schema'
 import {
   AuthSubmissionError,
-  resendOtpCode,
-  verifyOtpCode,
+  resendVerificationCode,
+  verifyRegistrationOtp,
 } from '../model/auth-service'
 import { AuthOtpField, AuthShell, AuthSubmitButton } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { getRoleHomePath, setAuthSession } from '@shared/lib'
+import { useMutation } from '@tanstack/react-query'
 import { startTransition, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+interface OtpPageLocationState {
+  phone?: string
+  phoneE164?: string
+  flow?: 'sign-up' | 'reset-password'
+}
 
 export const OtpSmsPage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
+  const locationState = (location.state ?? {}) as OtpPageLocationState
+  const normalizedPhoneE164 = locationState.phoneE164 ?? null
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [resendMessage, setResendMessage] = useState<string | null>(null)
   const [isResending, setIsResending] = useState(false)
   const otpSmsSchema = useMemo(() => createOtpSmsSchema(t), [t])
+  const verifyMutation = useMutation({
+    mutationFn: verifyRegistrationOtp,
+  })
+  const resendMutation = useMutation({
+    mutationFn: resendVerificationCode,
+  })
   const {
     control,
     handleSubmit,
@@ -43,10 +60,19 @@ export const OtpSmsPage = () => {
     setResendMessage(null)
 
     try {
-      const result = await verifyOtpCode(values)
+      if (!normalizedPhoneE164) {
+        throw new AuthSubmissionError(t('auth.otp.unexpectedError'))
+      }
+
+      const result = await verifyMutation.mutateAsync({
+        phoneE164: normalizedPhoneE164,
+        code: values.code.join(''),
+      })
+      setAuthSession(result.session)
+      const redirectTo = getRoleHomePath(result.session.role)
 
       startTransition(() => {
-        navigate(result.redirectTo)
+        navigate(redirectTo, { replace: true })
       })
     } catch (error) {
       if (error instanceof AuthSubmissionError) {
@@ -69,9 +95,15 @@ export const OtpSmsPage = () => {
     setIsResending(true)
 
     try {
-      await resendOtpCode()
+      if (!normalizedPhoneE164) {
+        throw new AuthSubmissionError(t('auth.otp.resendError'))
+      }
+
+      const resendResult = await resendMutation.mutateAsync({
+        phoneE164: normalizedPhoneE164,
+      })
       setValue('code', [...EMPTY_OTP_CODE], { shouldValidate: true })
-      setResendMessage(t('auth.otp.resendSuccess'))
+      setResendMessage(resendResult.message || t('auth.otp.resendSuccess'))
     } catch {
       setSubmitError(t('auth.otp.resendError'))
     } finally {
@@ -106,7 +138,7 @@ export const OtpSmsPage = () => {
           <button
             type="button"
             className={cn.textButton}
-            disabled={isSubmitting || isResending}
+            disabled={isSubmitting || isResending || !normalizedPhoneE164}
             onClick={handleResend}
           >
             {t('auth.otp.resend')}

@@ -9,6 +9,8 @@ import {
   AuthSubmitButton,
 } from './components'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { getRoleHomePath, setAuthSession } from '@shared/lib'
+import { useMutation } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { startTransition, useId, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -23,6 +25,9 @@ export const SignInPage = () => {
   const rememberId = useId()
   const [submitError, setSubmitError] = useState<string | null>(null)
   const signInSchema = useMemo(() => createSignInSchema(t), [t])
+  const signInMutation = useMutation({
+    mutationFn: submitSignIn,
+  })
   const {
     register,
     control,
@@ -43,10 +48,12 @@ export const SignInPage = () => {
     setSubmitError(null)
 
     try {
-      const result = await submitSignIn(values)
+      const result = await signInMutation.mutateAsync(values)
+      setAuthSession(result.session)
+      const redirectTo = getRoleHomePath(result.session.role)
 
       startTransition(() => {
-        navigate(result.redirectTo)
+        navigate(redirectTo)
       })
     } catch (error) {
       if (error instanceof AuthSubmissionError) {

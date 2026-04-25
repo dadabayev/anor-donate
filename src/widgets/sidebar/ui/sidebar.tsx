@@ -6,10 +6,12 @@ import {
   SECONDARY_NAV_KEYS,
 } from '../model/navigation-items'
 import { Image } from '@mantine/core'
+import { performLogout } from '@shared/api'
 import { ASSETS } from '@shared/constants'
+import { clearAuthSession, getCurrentUserRole } from '@shared/lib'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const isNavItemActive = (path: string, pathname: string) => {
   if (path === '/donations/settings') {
@@ -35,7 +37,14 @@ const isNavItemActive = (path: string, pathname: string) => {
 
 export const Sidebar = () => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const { t } = useTranslation()
+  const currentRole = getCurrentUserRole()
+  const handleLogout = async () => {
+    await performLogout()
+    clearAuthSession()
+    navigate('/sign-in', { replace: true })
+  }
 
   return (
     <aside className={cn.container}>
@@ -89,43 +98,51 @@ export const Sidebar = () => {
 
       <div className={cn.spacer} />
 
-      <nav className={cn.nav} aria-label={t('sidebar.secondaryNavAria')}>
-        {SECONDARY_NAV_KEYS.map((item) => {
-          const Icon = item.icon
+      {currentRole === 'ADMIN' ? (
+        <>
+          <nav className={cn.nav} aria-label={t('sidebar.secondaryNavAria')}>
+            {SECONDARY_NAV_KEYS.map((item) => {
+              const Icon = item.icon
 
-          if (item.path) {
-            const active = isNavItemActive(item.path, pathname)
+              if (item.path) {
+                const active = isNavItemActive(item.path, pathname)
 
-            return (
-              <Link
-                key={item.labelKey}
-                to={item.path}
-                className={classNames(
-                  cn.item,
-                  active && cn.itemActive,
-                  cn.link,
-                )}
-                aria-current={active ? 'page' : undefined}
-              >
-                <Icon className={cn.icon} size={16} stroke={2} />
-                <span>{t(item.labelKey)}</span>
-              </Link>
-            )
-          }
+                return (
+                  <Link
+                    key={item.labelKey}
+                    to={item.path}
+                    className={classNames(
+                      cn.item,
+                      active && cn.itemActive,
+                      cn.link,
+                    )}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    <Icon className={cn.icon} size={16} stroke={2} />
+                    <span>{t(item.labelKey)}</span>
+                  </Link>
+                )
+              }
 
-          return (
-            <button key={item.labelKey} className={cn.item} type={'button'}>
-              <Icon className={cn.icon} size={16} stroke={2} />
-              <span>{t(item.labelKey)}</span>
-            </button>
-          )
-        })}
-      </nav>
+              return (
+                <button key={item.labelKey} className={cn.item} type={'button'}>
+                  <Icon className={cn.icon} size={16} stroke={2} />
+                  <span>{t(item.labelKey)}</span>
+                </button>
+              )
+            })}
+          </nav>
 
-      <hr className={cn.divider} />
+          <hr className={cn.divider} />
+        </>
+      ) : null}
 
       <footer className={cn.footer}>
-        <button className={classNames(cn.item, cn.logout)} type={'button'}>
+        <button
+          className={classNames(cn.item, cn.logout)}
+          type={'button'}
+          onClick={handleLogout}
+        >
           <LOGOUT_NAV_KEY.icon className={cn.icon} size={16} stroke={2} />
           <span>{t(LOGOUT_NAV_KEY.labelKey)}</span>
         </button>

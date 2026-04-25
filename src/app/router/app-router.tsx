@@ -10,6 +10,7 @@ import { notificationPanelRoutes } from './routes/notification-panel-routes'
 import { profileRoutes } from './routes/profile-routes'
 import { streamStatisticsRoutes } from './routes/stream-statistics-routes'
 import { widgetsRoutes } from './routes/widgets-routes'
+import { AuthRouteGuard } from '@features/auth-access'
 import { lazy, Suspense } from 'react'
 import { Navigate, type RouteObject } from 'react-router-dom'
 
@@ -28,21 +29,22 @@ export const appRouter: RouteObject[] = [
   },
   ...authRoutes,
   {
-    element: <MainLayout />,
+    element: <AuthRouteGuard />,
     children: [
-      homeRoutes,
-      donationsRoutes,
-      donationSettingsRoutes,
-      notificationPanelRoutes,
-      profileRoutes,
-      streamStatisticsRoutes,
-      fundraisingRoutes,
       {
-        path: '/pul-yigish',
-        element: <Navigate to="/fundraising" replace />,
+        element: <MainLayout />,
+        children: [
+          homeRoutes,
+          donationsRoutes,
+          donationSettingsRoutes,
+          notificationPanelRoutes,
+          profileRoutes,
+          streamStatisticsRoutes,
+          fundraisingRoutes,
+          ...memesRoutes,
+          ...widgetsRoutes,
+        ],
       },
-      ...memesRoutes,
-      ...widgetsRoutes,
     ],
   },
   adminRoutes,

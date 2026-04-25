@@ -1,3 +1,4 @@
+import { GuestRouteGuard } from '@features/guest-access'
 import type { ComponentType, LazyExoticComponent } from 'react'
 import { lazy, Suspense } from 'react'
 import type { RouteObject } from 'react-router-dom'
@@ -30,19 +31,24 @@ const withSuspense = (Component: LazyExoticComponent<ComponentType>) => {
 
 export const authRoutes: RouteObject[] = [
   {
-    path: '/sign-in',
-    element: withSuspense(SignInPage),
-  },
-  {
-    path: '/sign-up',
-    element: withSuspense(SignUpPage),
-  },
-  {
-    path: '/reset-password',
-    element: withSuspense(ResetPasswordPage),
-  },
-  {
-    path: '/otp-sms',
-    element: withSuspense(OtpSmsPage),
+    element: <GuestRouteGuard />,
+    children: [
+      {
+        path: '/sign-in',
+        element: withSuspense(SignInPage),
+      },
+      {
+        path: '/sign-up',
+        element: withSuspense(SignUpPage),
+      },
+      {
+        path: '/reset-password',
+        element: withSuspense(ResetPasswordPage),
+      },
+      {
+        path: '/otp-sms',
+        element: withSuspense(OtpSmsPage),
+      },
+    ],
   },
 ]
