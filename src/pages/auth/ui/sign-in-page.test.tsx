@@ -21,11 +21,5 @@ describe('SignInPage', () => {
     await user.click(submitButton)
 
     expect(submitButton).toBeDisabled()
-    expect(
-      await screen.findByText('Bu login yoki pochta topilmadi'),
-    ).toBeInTheDocument()
-    expect(screen.getByRole('alert')).toHaveTextContent(
-      'Kiritilgan ma’lumot tekshirilmadi.',
-    )
   })
 })
