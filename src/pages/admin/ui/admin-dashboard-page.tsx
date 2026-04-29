@@ -3,7 +3,7 @@ import cn from './admin-dashboard-page.module.css'
 import { ChartTooltip } from '@shared/ui'
 import { IconCalendar } from '@tabler/icons-react'
 import type { PointerEvent } from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface LinePoint {
@@ -14,6 +14,12 @@ interface LinePoint {
 interface LineSeries {
   colorClass: string
   points: LinePoint[]
+}
+
+interface BarDatum {
+  label: string
+  value: number
+  fullLabel: string
 }
 
 const lineChartWidth = 900
@@ -172,7 +178,48 @@ const buildPath = (points: LinePoint[]) => {
 
 export const AdminDashboardPage = () => {
   const { t } = useTranslation()
+  const barData: BarDatum[] = useMemo(
+    () => [
+      {
+        label: t('dashboard.weekdaysShort.mon'),
+        value: 70,
+        fullLabel: t('dashboard.weekdays.mon'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.tue'),
+        value: 47,
+        fullLabel: t('dashboard.weekdays.tue'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.wed'),
+        value: 28,
+        fullLabel: t('dashboard.weekdays.wed'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.thu'),
+        value: 74,
+        fullLabel: t('dashboard.weekdays.thu'),
+      },
+      {
+        label: t('dashboard.weekdaysShort.fri'),
+        value: 46,
+        fullLabel: t('dashboard.weekdays.fri'),
+      },
+    ],
+    [t],
+  )
+  const topDonors = useMemo(
+    () =>
+      [1, 2, 3].map((i) => ({
+        name: t('dashboard.topDonorName', { index: i }),
+        amount: `1 200 000 ${t('common.currencyUzs')}`,
+      })),
+    [t],
+  )
   const [hoveredTickIndex, setHoveredTickIndex] = useState<number | null>(null)
+  const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null)
+  const [isGoalChartHovered, setIsGoalChartHovered] = useState(false)
+  const [isBadgeHovered, setIsBadgeHovered] = useState(false)
   const innerWidth = lineChartWidth - chartPadding.left - chartPadding.right
   const tickStep = innerWidth / (chartLabels.length - 1)
   const tickPositions = chartLabels.map((label, index) => ({
@@ -211,8 +258,6 @@ export const AdminDashboardPage = () => {
     setHoveredTickIndex(getNearestTickIndex(x, tickPositions))
   }
 
-  const sampleAmount = `999 000 000 ${t('common.currencyUzs')}`
-
   return (
     <section className={cn.page}>
       <div className={cn.column}>
@@ -239,30 +284,14 @@ export const AdminDashboardPage = () => {
           </div>
         </header>
 
-        <section className={cn.kpiGrid}>
-          <article className={cn.kpiCard}>
-            <p>{t('admin.dashboardPage.kpi.successfulDonations')}</p>
-            <strong>{sampleAmount}</strong>
+        <section className={cn.summaryGrid}>
+          <article className={cn.summaryCard}>
+            <p>{t('dashboard.totalDonationsAmount')}</p>
+            <strong>99 999 999 {t('common.currencyUzs')}</strong>
           </article>
-          <article className={cn.kpiCard}>
-            <p>{t('admin.dashboardPage.kpi.failedDonations')}</p>
-            <strong>{sampleAmount}</strong>
-          </article>
-          <article className={cn.kpiCard}>
-            <p>{t('admin.dashboardPage.kpi.totalDonations')}</p>
-            <strong>{sampleAmount}</strong>
-          </article>
-          <article className={cn.kpiCard}>
-            <p>{t('admin.dashboardPage.kpi.profit')}</p>
-            <strong>{sampleAmount}</strong>
-          </article>
-          <article className={cn.kpiCard}>
-            <p>{t('admin.dashboardPage.kpi.ttsCharacters')}</p>
-            <strong>26 233</strong>
-          </article>
-          <article className={cn.kpiCard}>
-            <p>{t('admin.dashboardPage.kpi.ttsRequests')}</p>
-            <strong>{t('admin.dashboardPage.sample.ttsRequests')}</strong>
+          <article className={cn.summaryCard}>
+            <p>{t('dashboard.totalDonationsCount')}</p>
+            <strong>25 000 000 {t('common.currencyUzs')}</strong>
           </article>
         </section>
 
@@ -351,6 +380,135 @@ export const AdminDashboardPage = () => {
               ))}
             </div>
           </div>
+        </section>
+
+        <section className={cn.bottomGrid}>
+          <article className={cn.donationCard}>
+            <div className={cn.donationHeader}>
+              <h2>{t('dashboard.donationsCount')}</h2>
+              <span
+                className={cn.badge}
+                onMouseEnter={() => setIsBadgeHovered(true)}
+                onMouseLeave={() => setIsBadgeHovered(false)}
+                onFocus={() => setIsBadgeHovered(true)}
+                onBlur={() => setIsBadgeHovered(false)}
+                tabIndex={0}
+              >
+                85
+                <ChartTooltip
+                  visible={isBadgeHovered}
+                  title={t('dashboard.tooltipTotalDonations')}
+                  left={50}
+                  top={0}
+                  align="center"
+                  className={cn.donationTooltip}
+                  items={[
+                    {
+                      label: t('dashboard.count'),
+                      value: '85',
+                      color: '#8b0037',
+                    },
+                  ]}
+                />
+              </span>
+            </div>
+            <div className={cn.donationBody}>
+              <div className={cn.bars}>
+                {barData.map((bar, index) => (
+                  <div
+                    key={`${bar.label}-${index}`}
+                    className={cn.barItem}
+                    onMouseEnter={() => setHoveredBarIndex(index)}
+                    onMouseLeave={() => setHoveredBarIndex(null)}
+                    onFocus={() => setHoveredBarIndex(index)}
+                    onBlur={() => setHoveredBarIndex(null)}
+                    tabIndex={0}
+                  >
+                    <ChartTooltip
+                      visible={hoveredBarIndex === index}
+                      title={bar.fullLabel}
+                      left={
+                        index === 0
+                          ? 0
+                          : index === barData.length - 1
+                            ? 100
+                            : 50
+                      }
+                      top={0}
+                      align={
+                        index === 0
+                          ? 'start'
+                          : index === barData.length - 1
+                            ? 'end'
+                            : 'center'
+                      }
+                      className={cn.donationTooltip}
+                      items={[
+                        {
+                          label: t('dashboard.donationShare'),
+                          value: `${bar.value}%`,
+                          color: '#8b0037',
+                        },
+                      ]}
+                    />
+                    <div className={cn.barTrack}>
+                      <div
+                        className={cn.barFill}
+                        style={{ height: `${bar.value}%` }}
+                      />
+                    </div>
+                    <span>{bar.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div
+                className={cn.goalChart}
+                onMouseEnter={() => setIsGoalChartHovered(true)}
+                onMouseLeave={() => setIsGoalChartHovered(false)}
+                onFocus={() => setIsGoalChartHovered(true)}
+                onBlur={() => setIsGoalChartHovered(false)}
+                tabIndex={0}
+              >
+                <div className={cn.goalRing} />
+                <div className={cn.goalLabels}>
+                  <span className={cn.goalTitle}>{t('dashboard.goal')}</span>
+                  <span className={cn.goalPercent}>65%</span>
+                </div>
+                <ChartTooltip
+                  visible={isGoalChartHovered}
+                  title={t('dashboard.weeklyGoal')}
+                  left={50}
+                  top={16}
+                  align="center"
+                  className={cn.donationTooltip}
+                  items={[
+                    {
+                      label: t('dashboard.done'),
+                      value: '65%',
+                      color: '#8b0037',
+                    },
+                    {
+                      label: t('dashboard.remaining'),
+                      value: '35%',
+                      color: '#fceef4',
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          </article>
+
+          <aside className={cn.topDonors}>
+            {topDonors.map((donor, index) => (
+              <article
+                key={`${donor.name}-${index}`}
+                className={cn.topDonorCard}
+              >
+                <h3>{donor.name}</h3>
+                <p>{donor.amount}</p>
+              </article>
+            ))}
+          </aside>
         </section>
       </div>
     </section>
