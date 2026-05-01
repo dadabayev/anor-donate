@@ -5,10 +5,12 @@ import {
   ADMIN_LOGOUT,
   ADMIN_PRIMARY_NAV,
 } from '../model/navigation-items'
-import { Image } from '@mantine/core'
+import { Image, Skeleton } from '@mantine/core'
 import { performLogout } from '@shared/api'
 import { ASSETS } from '@shared/constants'
 import { clearAuthSession } from '@shared/lib'
+import { getSidebarBrandFromProfile } from '@shared/lib/sidebar-profile-brand'
+import { useUserMeProfileQuery } from '@shared/lib/use-user-me-profile-query'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -30,6 +32,10 @@ export const AdminSidebar = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const meQuery = useUserMeProfileQuery()
+  const brandFallback = t('sidebar.brandPlaceholder')
+  const brandLabel = getSidebarBrandFromProfile(meQuery.data, brandFallback)
+  const showBrandSkeleton = meQuery.isPending && !meQuery.data
   const handleLogout = async () => {
     await performLogout()
     clearAuthSession()
@@ -44,7 +50,11 @@ export const AdminSidebar = () => {
           src={ASSETS.LOGO}
           alt={t('sidebar.logoAlt')}
         />
-        <p className={cn.brand}>{t('sidebar.brandPlaceholder')}</p>
+        {showBrandSkeleton ? (
+          <Skeleton className={cn.brand} height={16} radius="sm" />
+        ) : (
+          <p className={cn.brand}>{brandLabel}</p>
+        )}
       </header>
 
       <hr className={cn.divider} />

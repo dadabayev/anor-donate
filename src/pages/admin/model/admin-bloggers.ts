@@ -1,3 +1,7 @@
+import { $api } from '@shared/api'
+import { API_ENDPOINTS } from '@shared/constants'
+import { formatUzbekistanPhoneInput } from '@shared/lib'
+
 export type BloggerStatus = 'active' | 'blocked'
 
 export interface AdminBloggerRow {
@@ -13,74 +17,106 @@ export interface AdminBloggerRow {
   channelUrl: string
   email: string
   channelAbout: string
-  /** Plain value for admin “view” modal (mock). */
   passwordDisplay: string
 }
 
-export const ADMIN_BLOGGERS_PAGE_SIZE = 10
+interface ApiEnvelope<T> {
+  data: T
+  message: string
+  success: boolean
+}
 
-/** Set to `1` in sessionStorage before load to force one failed fetch (QA). */
-export const ADMIN_BLOGGERS_FAIL_ONCE_KEY = 'admin-bloggers-fail-once'
+interface AdminUsersItemDto {
+  userId: number
+  username: string
+  name: string
+  channel: string | null
+  phone: string | null
+  status: number
+}
 
-const delay = (ms: number) =>
-  new Promise<void>((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
+interface AdminUsersListDto {
+  items: AdminUsersItemDto[]
+  page: number
+  size: number
+  totalElements: number
+  totalPages: number
+  hasNext: boolean
+}
 
-const buildRow = (index: number): AdminBloggerRow => {
-  const n = index + 1
-  const blocked = index % 11 === 0
+export interface AdminBloggersResponse {
+  items: AdminBloggerRow[]
+  page: number
+  size: number
+  totalElements: number
+  totalPages: number
+  hasNext: boolean
+}
 
+export const ADMIN_BLOGGERS_PAGE_SIZE = 20
+
+const mapPhone = (value: string | null) => {
+  if (!value?.trim()) {
+    return '—'
+  }
+  return formatUzbekistanPhoneInput(value)
+}
+
+const mapRow = (
+  item: AdminUsersItemDto,
+  index: number,
+  page: number,
+  size: number,
+): AdminBloggerRow => {
+  const channelUrl = item.channel ?? ''
+  const displayName = item.name?.trim() || item.username
   return {
-    id: `blogger-${n}`,
-    number: n,
-    nickname: `user_${n}`,
-    fullName: `Ism Familiya ${n}`,
-    channel: `youtube.com/c/channel${n}`,
-    phone: '+998 (90) 123-45-67',
-    status: blocked ? 'blocked' : 'active',
-    username: `user_${n}`,
-    channelName: `Kanal ${n}`,
-    channelUrl: `https://youtube.com/c/channel${n}`,
-    email: `user${n}@example.com`,
-    channelAbout: `Kanal haqida qisqacha matn ${n}.`,
-    /* eslint-disable-next-line sonarjs/no-hardcoded-passwords -- Figma mock; replace with API */
-    passwordDisplay: 'admin',
+    id: String(item.userId),
+    number: page * size + index + 1,
+    nickname: item.username,
+    fullName: displayName,
+    channel: channelUrl,
+    phone: mapPhone(item.phone),
+    status: item.status === 1 ? 'active' : 'blocked',
+    username: item.username,
+    channelName: displayName,
+    channelUrl,
+    email: '',
+    channelAbout: '',
+    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+    passwordDisplay: '********',
   }
 }
 
-export const MOCK_ADMIN_BLOGGERS: AdminBloggerRow[] = Array.from(
-  { length: 330 },
-  (_, i) => buildRow(i),
-)
+export async function fetchAdminBloggers(params: {
+  page: number
+  size: number
+  name: string
+}): Promise<AdminBloggersResponse> {
+  const response = await $api.get<ApiEnvelope<AdminUsersListDto>>(
+    API_ENDPOINTS.admin.users,
+    {
+      params: {
+        page: params.page,
+        size: params.size,
+        name: params.name || undefined,
+      },
+    },
+  )
 
-export async function fetchAdminBloggers(): Promise<AdminBloggerRow[]> {
-  await delay(420)
-  if (
-    typeof window !== 'undefined' &&
-    window.sessionStorage.getItem(ADMIN_BLOGGERS_FAIL_ONCE_KEY) === '1'
-  ) {
-    window.sessionStorage.removeItem(ADMIN_BLOGGERS_FAIL_ONCE_KEY)
-    throw new Error('admin-bloggers-fetch-failed')
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Failed to load users')
   }
-  return MOCK_ADMIN_BLOGGERS
-}
 
-export function filterBloggers(
-  rows: AdminBloggerRow[],
-  query: string,
-): AdminBloggerRow[] {
-  const q = query.trim().toLowerCase()
-  if (!q) {
-    return rows
+  const payload = response.data.data
+  return {
+    items: payload.items.map((item, index) =>
+      mapRow(item, index, payload.page, payload.size),
+    ),
+    page: payload.page,
+    size: payload.size,
+    totalElements: payload.totalElements,
+    totalPages: payload.totalPages,
+    hasNext: payload.hasNext,
   }
-  return rows.filter((row) => {
-    return (
-      row.nickname.toLowerCase().includes(q) ||
-      row.fullName.toLowerCase().includes(q) ||
-      row.channel.toLowerCase().includes(q) ||
-      row.phone.toLowerCase().includes(q) ||
-      row.email.toLowerCase().includes(q)
-    )
-  })
 }

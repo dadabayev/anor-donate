@@ -1,27 +1,12 @@
-import {
-  DEFAULT_PROFILE,
-  PROFILE_MODE_KEY,
-  type ProfileData,
-  readProfile,
-  writeProfile,
-} from '../model/profile'
+import { useUserMeProfile } from '../model/use-user-me-profile'
 import { ProfileLoading, ProfileState } from './components'
 import { ProfileFigmaView } from './profile-figma-view'
 import { IconAlertTriangle } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-
-const loadProfile = async (): Promise<ProfileData | null> => {
-  await new Promise((resolve) => window.setTimeout(resolve, 450))
-  return readProfile()
-}
 
 export const ProfilePage = () => {
   const { t } = useTranslation()
-  const query = useQuery({
-    queryKey: ['profile-page'],
-    queryFn: loadProfile,
-  })
+  const query = useUserMeProfile()
 
   if (query.isLoading) {
     return <ProfileLoading title={t('profile.pageTitle')} />
@@ -34,7 +19,6 @@ export const ProfilePage = () => {
         actionLabel={t('profile.retry')}
         image={null}
         onAction={() => {
-          window.localStorage.removeItem(PROFILE_MODE_KEY)
           void query.refetch()
         }}
         text={t('profile.errorText')}
@@ -44,21 +28,9 @@ export const ProfilePage = () => {
     )
   }
 
-  if (query.data === null) {
-    return (
-      <ProfileState
-        title={t('profile.pageTitle')}
-        actionLabel={t('profile.createProfile')}
-        image="/assets/empty-item.svg"
-        onAction={() => {
-          writeProfile(DEFAULT_PROFILE)
-          void query.refetch()
-        }}
-        text={t('profile.emptyText')}
-        stateTitle={t('profile.emptyTitle')}
-      />
-    )
+  if (!query.data) {
+    return null
   }
 
-  return <ProfileFigmaView profile={query.data ?? DEFAULT_PROFILE} />
+  return <ProfileFigmaView profile={query.data} />
 }

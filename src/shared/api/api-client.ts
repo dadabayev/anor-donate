@@ -28,7 +28,7 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const $api = axios.create({
-  baseURL: import.meta.env.VITE_APP_API_URL,
+  baseURL: 'https://api.a-d.theuzsoft.uz',
 })
 
 let refreshPromise: Promise<string | null> | null = null

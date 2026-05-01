@@ -78,6 +78,11 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  transition: opacity 120ms ease;
+}
+
+.tableWrapBusy {
+  opacity: 0.7;
 }
 
 .headerLabel {

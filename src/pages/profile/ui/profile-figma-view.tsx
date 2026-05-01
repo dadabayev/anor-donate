@@ -13,8 +13,11 @@ export const ProfileFigmaView = ({
 }: Readonly<ProfileFigmaViewProps>) => {
   const { t } = useTranslation()
   const displayName =
-    `${profile.firstName} ${profile.lastName}`.trim() || profile.username
+    profile.profileDisplayName?.trim() ||
+    `${profile.firstName} ${profile.lastName}`.trim() ||
+    profile.username
   const firstLetter =
+    profile.profileDisplayName?.trim().charAt(0) ||
     profile.firstName.trim().charAt(0) ||
     profile.username.trim().charAt(0) ||
     'A'

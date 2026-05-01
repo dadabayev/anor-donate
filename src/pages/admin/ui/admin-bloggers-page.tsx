@@ -4,7 +4,6 @@ import {
   ADMIN_BLOGGERS_PAGE_SIZE,
   type AdminBloggerRow,
   fetchAdminBloggers,
-  filterBloggers,
 } from '../model/admin-bloggers'
 import { AdminBloggersLoading } from './components/admin-bloggers-loading'
 import { AdminBloggersState } from './components/admin-bloggers-state'
@@ -23,9 +22,15 @@ import {
   IconArrowsUpDown,
   IconSearch,
 } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
-import { type ReactNode, useCallback, useMemo, useState } from 'react'
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 
 const headerLabel = (label: string) => (
@@ -39,6 +44,7 @@ export const AdminBloggersPage = () => {
   const { t } = useTranslation()
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [viewRow, setViewRow] = useState<AdminBloggerRow | null>(null)
   const [editRow, setEditRow] = useState<AdminBloggerRow | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<AdminBloggerRow | null>(null)
@@ -47,37 +53,36 @@ export const AdminBloggersPage = () => {
     Record<string, Partial<AdminBloggerRow>>
   >({})
 
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 400)
+
+    return () => {
+      window.clearTimeout(timeout)
+    }
+  }, [search])
+
   const query = useQuery({
-    queryKey: ['admin-bloggers'],
-    queryFn: fetchAdminBloggers,
+    queryKey: ['admin-bloggers', page, debouncedSearch],
+    queryFn: () =>
+      fetchAdminBloggers({
+        page: page - 1,
+        size: ADMIN_BLOGGERS_PAGE_SIZE,
+        name: debouncedSearch.trim(),
+      }),
+    placeholderData: keepPreviousData,
   })
 
   const baseRows = useMemo(() => {
-    const data = query.data ?? []
+    const data = query.data?.items ?? []
     return data
       .filter((row) => !removedIds.has(row.id))
       .map((row) => {
         const patch = rowPatches[row.id]
         return patch ? { ...row, ...patch } : row
       })
-  }, [query.data, removedIds, rowPatches])
-
-  const filteredRows = useMemo(
-    () => filterBloggers(baseRows, search),
-    [baseRows, search],
-  )
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredRows.length / ADMIN_BLOGGERS_PAGE_SIZE),
-  )
-
-  const safePage = Math.min(page, totalPages)
-
-  const pageRows = useMemo(() => {
-    const start = (safePage - 1) * ADMIN_BLOGGERS_PAGE_SIZE
-    return filteredRows.slice(start, start + ADMIN_BLOGGERS_PAGE_SIZE)
-  }, [filteredRows, safePage])
+  }, [query.data?.items, removedIds, rowPatches])
 
   const handleRequestDelete = useCallback((row: AdminBloggerRow) => {
     setDeleteTarget(row)
@@ -253,7 +258,7 @@ export const AdminBloggersPage = () => {
     )
   }
 
-  if (baseRows.length === 0) {
+  if (baseRows.length === 0 && !query.isFetching) {
     return (
       <AdminBloggersState
         title={t('admin.bloggers.pageTitle')}
@@ -289,25 +294,30 @@ export const AdminBloggersPage = () => {
         </div>
       </header>
 
-      <section className={cn.tableWrap}>
+      <section
+        className={classNames(
+          cn.tableWrap,
+          query.isFetching && cn.tableWrapBusy,
+        )}
+      >
         <Table
           variant="history"
           columns={columns}
-          rows={pageRows}
+          rows={baseRows}
           getRowKey={(row) => row.id}
           emptyState={t('admin.bloggers.noResults')}
         />
       </section>
 
-      {filteredRows.length > 0 ? (
+      {(query.data?.totalPages ?? 0) > 0 ? (
         <Pagination
           classNames={{
             root: cn.pagination,
             control: cn.paginationControl,
             dots: cn.paginationDots,
           }}
-          total={totalPages}
-          value={safePage}
+          total={Math.max(1, query.data?.totalPages ?? 1)}
+          value={page}
           onChange={setPage}
           siblings={1}
           boundaries={1}

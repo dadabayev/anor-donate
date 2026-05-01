@@ -20,6 +20,7 @@ import {
 import { ProfileSocialLinkModal } from '../profile-social-link-modal'
 import { ProfileSocialSection } from '../profile-social-section'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { USER_ME_QUERY_KEY } from '@shared/lib/use-user-me-profile-query'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -130,7 +131,7 @@ export const ProfileEditor = ({
       return payload
     },
     onSuccess: (saved) => {
-      queryClient.setQueryData(['profile-page'], saved)
+      queryClient.setQueryData(USER_ME_QUERY_KEY, saved)
       setSaveState('success')
       setSaveMessage(t('profile.saveSuccessMessage'))
     },
@@ -173,7 +174,7 @@ export const ProfileEditor = ({
           avatarUrl,
         )
         writeProfile(nextProfile)
-        queryClient.setQueryData(['profile-page'], nextProfile)
+        queryClient.setQueryData(USER_ME_QUERY_KEY, nextProfile)
         return nextSocialLinks
       })
       setActiveSocial(null)
@@ -311,7 +312,7 @@ export const ProfileEditor = ({
       avatarUrl,
     )
     writeProfile(nextProfile)
-    queryClient.setQueryData(['profile-page'], nextProfile)
+    queryClient.setQueryData(USER_ME_QUERY_KEY, nextProfile)
     setSaveState('success')
     setSaveMessage(t('profile.securityUpdateSuccess'))
   }

@@ -1,5 +1,6 @@
 import cn from './profile-loading.module.css'
 
+import { Skeleton } from '@mantine/core'
 import classNames from 'classnames'
 
 export const ProfileLoading = ({ title }: { title: string }) => {
@@ -11,25 +12,29 @@ export const ProfileLoading = ({ title }: { title: string }) => {
         </header>
         <div className={cn.card}>
           <div className={cn.skeleton}>
-            <div className={cn.skeletonHeader} />
+            <Skeleton height={104} radius={16} />
             <div className={cn.skeletonGrid}>
               {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className={cn.skeletonField} />
+                <Skeleton key={index} height={79} radius={16} />
               ))}
             </div>
             <div className={cn.sectionSpacer} />
             <div className={cn.skeletonRows}>
               {Array.from({ length: 5 }).map((_, index) => (
-                <div
+                <Skeleton
                   key={index}
-                  className={classNames(
-                    cn.skeletonRow,
-                    index === 4 && cn.skeletonRowFull,
-                  )}
+                  height={48}
+                  radius={16}
+                  className={classNames(index === 4 && cn.skeletonRowFull)}
                 />
               ))}
             </div>
-            <div className={cn.skeletonButton} />
+            <Skeleton
+              height={48}
+              width={265}
+              radius={16}
+              className={cn.skeletonButton}
+            />
           </div>
         </div>
       </div>

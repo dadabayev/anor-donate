@@ -21,6 +21,8 @@ export interface ProfileSocialLink {
 export type ProfileData = ProfileFormValues & {
   avatarUrl: string | null
   socialLinks: ProfileSocialLink[]
+  /** API `profile.displayName`; used for readonly name display when set. */
+  profileDisplayName?: string | null
 }
 
 export const PROFILE_STORAGE_KEY = 'anor-donate.profile'
@@ -30,6 +32,7 @@ const DEFAULT_PASSWORD = '*'.repeat(17)
 
 export const DEFAULT_PROFILE: ProfileData = {
   avatarUrl: null,
+  profileDisplayName: null,
   firstName: 'Andy',
   lastName: 'Smith',
   pnfl: '00000000000000',
@@ -97,6 +100,11 @@ export const readProfile = (): ProfileData | null => {
     return {
       ...DEFAULT_PROFILE,
       ...parsed,
+      profileDisplayName:
+        typeof parsed.profileDisplayName === 'string' ||
+        parsed.profileDisplayName === null
+          ? parsed.profileDisplayName
+          : DEFAULT_PROFILE.profileDisplayName,
       socialLinks: Array.isArray(parsed.socialLinks)
         ? DEFAULT_PROFILE.socialLinks.map((defaultSocial) => {
             const parsedSocial = parsed.socialLinks?.find(
