@@ -8,6 +8,7 @@ import {
   ADMIN_MEME_PAGE_SIZE,
   fetchAdminMemes,
   filterMemes,
+  memeThumbSrc,
   nextMemeNumber,
 } from '../model/admin-memes'
 import { AdminBloggersLoading } from './components/admin-bloggers-loading'
@@ -24,7 +25,7 @@ import {
   IconArrowsUpDown,
   IconSearch,
 } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { type ReactNode, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -46,19 +47,22 @@ export const AdminMemesPage = () => {
   const [viewRow, setViewRow] = useState<AdminMemeRow | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<AdminMemeRow | null>(null)
   const [removedIds, setRemovedIds] = useState(() => new Set<string>())
-  const [localExtras, setLocalExtras] = useState<AdminMemeRow[]>([])
-  const [rowPatches, setRowPatches] = useState<
-    Record<string, Partial<AdminMemeRow>>
-  >({})
-
-  const query = useQuery({
-    queryKey: ['admin-memes'],
-    queryFn: fetchAdminMemes,
-  })
+  const queryClient = useQueryClient()
 
   const categoriesQuery = useQuery({
     queryKey: ['admin-meme-categories'],
     queryFn: fetchAdminMemeCategories,
+  })
+
+  const query = useQuery({
+    queryKey: ['admin-memes', categoriesQuery.dataUpdatedAt],
+    queryFn: () =>
+      fetchAdminMemes(
+        new Map(
+          (categoriesQuery.data ?? []).map((c) => [c.id, c.name] as const),
+        ),
+      ),
+    enabled: categoriesQuery.isSuccess,
   })
 
   const categoryOptions: MemeItemOption[] = useMemo(() => {
@@ -69,14 +73,9 @@ export const AdminMemesPage = () => {
   }, [categoriesQuery.data])
 
   const baseRows = useMemo(() => {
-    const data = [...(query.data ?? []), ...localExtras]
-    return data
-      .filter((row) => !removedIds.has(row.id))
-      .map((row) => {
-        const patch = rowPatches[row.id]
-        return patch ? { ...row, ...patch } : row
-      })
-  }, [query.data, localExtras, removedIds, rowPatches])
+    const data = query.data ?? []
+    return data.filter((row) => !removedIds.has(row.id))
+  }, [query.data, removedIds])
 
   const nextRowNumber = useMemo(() => nextMemeNumber(baseRows), [baseRows])
 
@@ -132,27 +131,18 @@ export const AdminMemesPage = () => {
     [t],
   )
 
-  const handleCreated = useCallback(
-    (row: AdminMemeRow) => {
-      setLocalExtras((prev) => [...prev, row])
-      notifications.show({
-        title: t('admin.memes.createToastTitle'),
-        message: t('admin.memes.createToastMessage'),
-        color: 'green',
-      })
-    },
-    [t],
-  )
+  const handleCreated = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-memes'] })
+    notifications.show({
+      title: t('admin.memes.createToastTitle'),
+      message: t('admin.memes.createToastMessage'),
+      color: 'green',
+    })
+  }, [queryClient, t])
 
-  const handleUpdated = useCallback((row: AdminMemeRow) => {
-    setRowPatches((prev) => ({
-      ...prev,
-      [row.id]: {
-        ...prev[row.id],
-        ...row,
-      },
-    }))
-  }, [])
+  const handleUpdated = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-memes'] })
+  }, [queryClient])
 
   const handleRequestDelete = useCallback((row: AdminMemeRow) => {
     setDeleteTarget(row)
@@ -200,7 +190,7 @@ export const AdminMemesPage = () => {
         render: (row) => (
           <img
             className={mm.thumb}
-            src={row.videoThumbUrl}
+            src={memeThumbSrc(row)}
             alt=""
             loading="lazy"
             decoding="async"
@@ -321,8 +311,6 @@ export const AdminMemesPage = () => {
           image="/assets/empty-item.svg"
           onAction={() => {
             setRemovedIds(new Set())
-            setLocalExtras([])
-            setRowPatches({})
             void query.refetch()
           }}
         />
@@ -382,8 +370,8 @@ export const AdminMemesPage = () => {
         onClose={() => {
           setEditRow(null)
         }}
-        onUpdated={(r) => {
-          handleUpdated(r)
+        onUpdated={() => {
+          handleUpdated()
           notifications.show({
             title: t('admin.memes.editToastTitle'),
             message: t('admin.memes.editToastMessage'),

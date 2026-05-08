@@ -1,4 +1,10 @@
+import { $api } from '@shared/api'
+import type { ApiEnvelope } from '@shared/api/api-envelope'
+import { API_ENDPOINTS } from '@shared/constants'
+import { formatUzbekistanPhoneInput } from '@shared/lib'
+
 import type { AdminBloggerRow } from './admin-bloggers'
+import type { AdminUsersItemDto, AdminUsersListDto } from './admin-users-types'
 
 export interface AdminModerationRow extends AdminBloggerRow {
   channelThumbUrl: string | null
@@ -6,48 +12,54 @@ export interface AdminModerationRow extends AdminBloggerRow {
 
 export const ADMIN_MODERATION_PAGE_SIZE = 10
 
-export const ADMIN_MODERATION_FAIL_ONCE_KEY = 'admin-moderation-fail-once'
+const mapPhone = (value: string | null) => {
+  if (!value?.trim()) {
+    return '—'
+  }
+  return formatUzbekistanPhoneInput(value)
+}
 
-const delay = (ms: number) =>
-  new Promise<void>((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
-
-const buildRow = (index: number): AdminModerationRow => {
-  const n = index + 1
+const mapPendingRow = (
+  item: AdminUsersItemDto,
+  index: number,
+): AdminModerationRow => {
+  const channelUrl = item.channel ?? ''
+  const displayName = item.name?.trim() || item.username
   return {
-    id: `moderation-${n}`,
-    number: n,
-    nickname: `pending_${n}`,
-    fullName: `Nomzod ${n}`,
-    channel: `youtube.com/c/pending${n}`,
-    phone: '+998 (90) 555-12-34',
-    status: 'active',
-    username: `pending_${n}`,
-    channelName: `Kanal ${n}`,
-    channelUrl: `https://youtube.com/c/pending${n}`,
-    email: `pending${n}@example.com`,
-    channelAbout: `Kanal tavsifi ${n}.`,
-    passwordDisplay: '*'.repeat(8),
-    channelThumbUrl: `https://picsum.photos/seed/anor-mod-${n}/96/96`,
+    id: String(item.userId),
+    number: index + 1,
+    nickname: item.username,
+    fullName: displayName,
+    channel: channelUrl,
+    phone: mapPhone(item.phone),
+    status: item.status === 1 ? 'active' : 'blocked',
+    username: item.username,
+    channelName: displayName,
+    channelUrl,
+    email: '',
+    channelAbout: '',
+    // eslint-disable-next-line sonarjs/no-hardcoded-passwords
+    passwordDisplay: '********',
+    channelThumbUrl: null,
   }
 }
 
-export const MOCK_ADMIN_MODERATION: AdminModerationRow[] = Array.from(
-  { length: 42 },
-  (_, i) => buildRow(i),
-)
-
 export async function fetchAdminModeration(): Promise<AdminModerationRow[]> {
-  await delay(420)
-  if (
-    typeof window !== 'undefined' &&
-    window.sessionStorage.getItem(ADMIN_MODERATION_FAIL_ONCE_KEY) === '1'
-  ) {
-    window.sessionStorage.removeItem(ADMIN_MODERATION_FAIL_ONCE_KEY)
-    throw new Error('admin-moderation-fetch-failed')
+  const size = 500
+  const response = await $api.get<ApiEnvelope<AdminUsersListDto>>(
+    API_ENDPOINTS.admin.users,
+    {
+      params: { page: 0, size },
+    },
+  )
+
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Не удалось загрузить очередь')
   }
-  return MOCK_ADMIN_MODERATION
+
+  const pending = response.data.data.items.filter((u) => u.status !== 1)
+
+  return pending.map((item, index) => mapPendingRow(item, index))
 }
 
 export function filterModerationRows(

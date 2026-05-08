@@ -1,6 +1,7 @@
 import cn from './meme-category-modals.module.css'
 
 import type { AdminMemeCategoryRow } from '../model/admin-meme-categories'
+import { saveAdminMemeCategory } from '../model/admin-meme-categories'
 import { Loader } from '@mantine/core'
 import { Modal } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
@@ -37,32 +38,16 @@ const runSave = async (input: {
   row: AdminMemeCategoryRow | null
   nextNumber: number
 }): Promise<AdminMemeCategoryRow> => {
-  await new Promise((resolve) => window.setTimeout(resolve, 550))
-  const t = input.name.trim().toLowerCase()
-  if (t.includes('fail')) {
-    throw new Error('meme-category-save-failed')
-  }
   if (!input.name.trim()) {
     throw new Error('meme-category-empty')
   }
-  const pad = (x: number) => String(x).padStart(2, '0')
-  const d = new Date()
-  const createdAt = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
-  if (input.mode === 'create') {
-    return {
-      id: `meme-cat-local-${Date.now()}`,
-      number: input.nextNumber,
-      name: input.name.trim(),
-      createdAt,
-    }
-  }
-  if (!input.row) {
-    throw new Error('meme-category-no-row')
-  }
-  return {
-    ...input.row,
-    name: input.name.trim(),
-  }
+  return saveAdminMemeCategory({
+    mode: input.mode,
+    name: input.name,
+    rowId: input.row?.id ?? null,
+    rowNumber: input.row?.number,
+    nextNumber: input.nextNumber,
+  })
 }
 
 export const MemeCategoryFormModal = ({

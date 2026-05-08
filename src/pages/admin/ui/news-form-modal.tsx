@@ -1,6 +1,7 @@
 import cn from './news-modals.module.css'
 
-import type { AdminNewsRow, AdminNewsStatus } from '../model/admin-news'
+import type { AdminNewsRow } from '../model/admin-news'
+import { saveAdminNews } from '../model/admin-news'
 import { Loader, Switch } from '@mantine/core'
 import { Modal } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
@@ -27,7 +28,6 @@ interface NewsFormModalProps {
   mode: 'create' | 'edit'
   isOpen: boolean
   row: AdminNewsRow | null
-  nextNumber: number
   labels: NewsFormModalLabels
   onClose: () => void
   onCreated?: (row: AdminNewsRow) => void
@@ -39,52 +39,27 @@ const saveNews = async (input: {
   title: string
   coverImageUrl: string
   body: string
-  status: AdminNewsStatus
   row: AdminNewsRow | null
-  nextNumber: number
 }): Promise<AdminNewsRow> => {
-  await new Promise((resolve) => window.setTimeout(resolve, 560))
-  const blob = `${input.title}${input.body}`.toLowerCase()
-  if (blob.includes('fail')) {
-    throw new Error('news-save-failed')
-  }
   if (!input.title.trim() || !input.body.trim()) {
     throw new Error('news-validation')
   }
   const cover =
     input.coverImageUrl.trim() ||
-    `https://picsum.photos/seed/news-${Date.now()}/320/180`
-  if (input.mode === 'create') {
-    const d = new Date()
-    const pad = (n: number) => String(n).padStart(2, '0')
-    const createdAt = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
-    return {
-      id: `news-local-${Date.now()}`,
-      number: input.nextNumber,
-      title: input.title.trim(),
-      body: input.body.trim(),
-      coverImageUrl: cover,
-      createdAt,
-      status: input.status,
-    }
-  }
-  if (!input.row) {
-    throw new Error('news-no-row')
-  }
-  return {
-    ...input.row,
-    title: input.title.trim(),
-    body: input.body.trim(),
+    (input.mode === 'edit' && input.row ? input.row.coverImageUrl : '')
+  return saveAdminNews({
+    mode: input.mode,
+    title: input.title,
+    body: input.body,
     coverImageUrl: cover,
-    status: input.status,
-  }
+    rowId: input.row?.id ?? null,
+  })
 }
 
 export const NewsFormModal = ({
   mode,
   isOpen,
   row,
-  nextNumber,
   labels,
   onClose,
   onCreated,
@@ -147,12 +122,10 @@ export const NewsFormModal = ({
         title,
         coverImageUrl,
         body,
-        status: published ? 'published' : 'draft',
         row,
-        nextNumber,
       })
     },
-    [mode, title, coverImageUrl, body, published, row, nextNumber, mutate],
+    [mode, title, coverImageUrl, body, row, mutate],
   )
 
   return (

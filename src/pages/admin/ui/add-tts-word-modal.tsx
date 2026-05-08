@@ -1,6 +1,7 @@
 import cn from './add-tts-word-modal.module.css'
 
 import type { AdminTtsWordRow } from '../model/admin-tts-words'
+import { createAdminGlobalWord } from '../model/admin-tts-words'
 import { Loader, Switch } from '@mantine/core'
 import { Modal } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
@@ -31,23 +32,14 @@ const submitWord = async (payload: {
   fromWord: string
   toWord: string
   isStandardFilter: boolean
-  number: number
-  createdAt: string
-}): Promise<AdminTtsWordRow> => {
-  await new Promise((resolve) => window.setTimeout(resolve, 600))
-  const combined = `${payload.fromWord}${payload.toWord}`.toLowerCase()
-  if (combined.includes('fail')) {
-    throw new Error('tts-create-failed')
-  }
-  return {
-    id: `tts-local-${Date.now()}`,
-    number: payload.number,
-    fromWord: payload.fromWord.trim(),
-    toWord: payload.toWord.trim(),
+  nextRowNumber: number
+}): Promise<AdminTtsWordRow> =>
+  createAdminGlobalWord({
+    fromWord: payload.fromWord,
+    toWord: payload.toWord,
     isStandardFilter: payload.isStandardFilter,
-    createdAt: payload.createdAt,
-  }
-}
+    nextRowNumber: payload.nextRowNumber,
+  })
 
 export const AddTtsWordModal = ({
   isOpen,
@@ -93,15 +85,11 @@ export const AddTtsWordModal = ({
         setSubmitError(labels.validationRequired)
         return
       }
-      const pad = (n: number) => String(n).padStart(2, '0')
-      const d = new Date()
-      const createdAt = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
       mutate({
         fromWord,
         toWord,
         isStandardFilter,
-        number: nextRowNumber,
-        createdAt,
+        nextRowNumber,
       })
     },
     [

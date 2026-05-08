@@ -7,6 +7,7 @@ import {
   fetchAdminModeration,
   filterModerationRows,
 } from '../model/admin-moderation'
+import { verifyAdminUser } from '../model/admin-bloggers'
 import { AdminBloggersLoading } from './components/admin-bloggers-loading'
 import { AdminBloggersState } from './components/admin-bloggers-state'
 import { ModerationRowActions } from './components/moderation-row-actions'
@@ -19,7 +20,7 @@ import {
   IconArrowsUpDown,
   IconSearch,
 } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { type ReactNode, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -37,9 +38,30 @@ export const AdminModerationPage = () => {
   const [viewRow, setViewRow] = useState<AdminModerationRow | null>(null)
   const [removedIds, setRemovedIds] = useState(() => new Set<string>())
 
+  const queryClient = useQueryClient()
+
   const query = useQuery({
     queryKey: ['admin-moderation'],
     queryFn: fetchAdminModeration,
+  })
+
+  const verifyMutation = useMutation({
+    mutationFn: verifyAdminUser,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['admin-moderation'] })
+      notifications.show({
+        title: t('admin.moderation.approveToastTitle'),
+        message: t('admin.moderation.approveToastMessage'),
+        color: 'green',
+      })
+    },
+    onError: () => {
+      notifications.show({
+        title: t('admin.moderation.errorTitle'),
+        message: t('admin.moderation.errorText'),
+        color: 'red',
+      })
+    },
   })
 
   const baseRows = useMemo(() => {
@@ -66,14 +88,9 @@ export const AdminModerationPage = () => {
 
   const handleApprove = useCallback(
     (row: AdminModerationRow) => {
-      setRemovedIds((prev) => new Set(prev).add(row.id))
-      notifications.show({
-        title: t('admin.moderation.approveToastTitle'),
-        message: t('admin.moderation.approveToastMessage'),
-        color: 'green',
-      })
+      verifyMutation.mutate(row.id)
     },
-    [t],
+    [verifyMutation],
   )
 
   const handleReject = useCallback(

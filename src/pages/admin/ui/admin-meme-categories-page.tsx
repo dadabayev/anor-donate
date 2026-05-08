@@ -21,7 +21,7 @@ import {
   IconArrowsUpDown,
   IconSearch,
 } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { type ReactNode, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -45,10 +45,7 @@ export const AdminMemeCategoriesPage = () => {
     null,
   )
   const [removedIds, setRemovedIds] = useState(() => new Set<string>())
-  const [localExtras, setLocalExtras] = useState<AdminMemeCategoryRow[]>([])
-  const [rowPatches, setRowPatches] = useState<
-    Record<string, Partial<AdminMemeCategoryRow>>
-  >({})
+  const queryClient = useQueryClient()
 
   const query = useQuery({
     queryKey: ['admin-meme-categories'],
@@ -56,14 +53,9 @@ export const AdminMemeCategoriesPage = () => {
   })
 
   const baseRows = useMemo(() => {
-    const data = [...(query.data ?? []), ...localExtras]
-    return data
-      .filter((row) => !removedIds.has(row.id))
-      .map((row) => {
-        const patch = rowPatches[row.id]
-        return patch ? { ...row, ...patch } : row
-      })
-  }, [query.data, localExtras, removedIds, rowPatches])
+    const data = query.data ?? []
+    return data.filter((row) => !removedIds.has(row.id))
+  }, [query.data, removedIds])
 
   const nextRowNumber = useMemo(
     () => nextMemeCategoryNumber(baseRows),
@@ -115,27 +107,20 @@ export const AdminMemeCategoriesPage = () => {
     [t],
   )
 
-  const handleCreated = useCallback(
-    (row: AdminMemeCategoryRow) => {
-      setLocalExtras((prev) => [...prev, row])
-      notifications.show({
-        title: t('admin.memeCategories.createToastTitle'),
-        message: t('admin.memeCategories.createToastMessage'),
-        color: 'green',
-      })
-    },
-    [t],
-  )
+  const handleCreated = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-meme-categories'] })
+    void queryClient.invalidateQueries({ queryKey: ['admin-memes'] })
+    notifications.show({
+      title: t('admin.memeCategories.createToastTitle'),
+      message: t('admin.memeCategories.createToastMessage'),
+      color: 'green',
+    })
+  }, [queryClient, t])
 
-  const handleUpdated = useCallback((row: AdminMemeCategoryRow) => {
-    setRowPatches((prev) => ({
-      ...prev,
-      [row.id]: {
-        ...prev[row.id],
-        name: row.name,
-      },
-    }))
-  }, [])
+  const handleUpdated = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-meme-categories'] })
+    void queryClient.invalidateQueries({ queryKey: ['admin-memes'] })
+  }, [queryClient])
 
   const handleRequestDelete = useCallback((row: AdminMemeCategoryRow) => {
     setDeleteTarget(row)
@@ -263,8 +248,6 @@ export const AdminMemeCategoriesPage = () => {
           image="/assets/empty-item.svg"
           onAction={() => {
             setRemovedIds(new Set())
-            setLocalExtras([])
-            setRowPatches({})
             void query.refetch()
           }}
         />
@@ -322,8 +305,8 @@ export const AdminMemeCategoriesPage = () => {
         onClose={() => {
           setEditRow(null)
         }}
-        onUpdated={(r) => {
-          handleUpdated(r)
+        onUpdated={() => {
+          handleUpdated()
           notifications.show({
             title: t('admin.memeCategories.editToastTitle'),
             message: t('admin.memeCategories.editToastMessage'),

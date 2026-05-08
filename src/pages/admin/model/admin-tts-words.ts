@@ -1,56 +1,73 @@
+import { $api } from '@shared/api'
+import type { ApiEnvelope } from '@shared/api/api-envelope'
+import { API_ENDPOINTS } from '@shared/constants'
+import { formatAdminDateTime } from '@shared/lib/admin-format'
+
 export interface AdminTtsWordRow {
   id: string
   number: number
   fromWord: string
   toWord: string
   isStandardFilter: boolean
-  /** Displayed as in Figma, e.g. "2025-11-30 11:30" */
   createdAt: string
 }
 
 export const ADMIN_TTS_PAGE_SIZE = 10
 
-export const ADMIN_TTS_FAIL_ONCE_KEY = 'admin-tts-fail-once'
-
-const delay = (ms: number) =>
-  new Promise<void>((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
-
-const formatCreatedAt = (index: number): string => {
-  const day = 1 + (index % 28)
-  const hour = 8 + (index % 12)
-  const minute = (index * 7) % 60
-  return `2025-11-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+interface GlobalWordEntityDto {
+  id: number
+  wordFrom: string
+  wordTo: string | null
+  isStandard: boolean
+  createdAt: string
 }
 
-const buildRow = (index: number): AdminTtsWordRow => {
-  const n = index + 1
-  return {
-    id: `tts-${n}`,
-    number: n,
-    fromWord: `lorem_${n}`,
-    toWord: `ipsum_${n}`,
-    isStandardFilter: index % 3 !== 0,
-    createdAt: formatCreatedAt(index),
-  }
-}
-
-export const MOCK_ADMIN_TTS_WORDS: AdminTtsWordRow[] = Array.from(
-  { length: 330 },
-  (_, i) => buildRow(i),
-)
+const mapRow = (dto: GlobalWordEntityDto, index: number): AdminTtsWordRow => ({
+  id: String(dto.id),
+  number: index + 1,
+  fromWord: dto.wordFrom,
+  toWord: dto.wordTo?.trim() ?? '',
+  isStandardFilter: Boolean(dto.isStandard),
+  createdAt: formatAdminDateTime(dto.createdAt),
+})
 
 export async function fetchAdminTtsWords(): Promise<AdminTtsWordRow[]> {
-  await delay(420)
-  if (
-    typeof window !== 'undefined' &&
-    window.sessionStorage.getItem(ADMIN_TTS_FAIL_ONCE_KEY) === '1'
-  ) {
-    window.sessionStorage.removeItem(ADMIN_TTS_FAIL_ONCE_KEY)
-    throw new Error('admin-tts-fetch-failed')
+  const response = await $api.get<ApiEnvelope<GlobalWordEntityDto[]>>(
+    API_ENDPOINTS.moderation.globalWords,
+  )
+
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Не удалось загрузить слова')
   }
-  return MOCK_ADMIN_TTS_WORDS
+
+  const sorted = [...response.data.data].sort(
+    (a, b) => Number(b.id) - Number(a.id),
+  )
+
+  return sorted.map((dto, index) => mapRow(dto, index))
+}
+
+export async function createAdminGlobalWord(input: {
+  fromWord: string
+  toWord: string
+  isStandardFilter: boolean
+  nextRowNumber: number
+}): Promise<AdminTtsWordRow> {
+  const response = await $api.post<ApiEnvelope<GlobalWordEntityDto>>(
+    API_ENDPOINTS.moderation.globalWords,
+    {
+      wordFrom: input.fromWord.trim(),
+      wordTo: input.toWord.trim() || null,
+      isStandard: input.isStandardFilter,
+    },
+  )
+
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Не удалось создать запись')
+  }
+
+  const mapped = mapRow(response.data.data, 0)
+  return { ...mapped, number: input.nextRowNumber }
 }
 
 export function filterTtsWords(

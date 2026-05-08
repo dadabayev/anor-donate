@@ -20,7 +20,7 @@ import {
   IconSearch,
   IconTrash,
 } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { type ReactNode, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -39,7 +39,7 @@ export const AdminTtsPage = () => {
   const [addOpen, setAddOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<AdminTtsWordRow | null>(null)
   const [removedIds, setRemovedIds] = useState(() => new Set<string>())
-  const [localExtras, setLocalExtras] = useState<AdminTtsWordRow[]>([])
+  const queryClient = useQueryClient()
 
   const query = useQuery({
     queryKey: ['admin-tts-words'],
@@ -47,9 +47,9 @@ export const AdminTtsPage = () => {
   })
 
   const baseRows = useMemo(() => {
-    const data = [...(query.data ?? []), ...localExtras]
+    const data = query.data ?? []
     return data.filter((row) => !removedIds.has(row.id))
-  }, [query.data, localExtras, removedIds])
+  }, [query.data, removedIds])
 
   const nextRowNumber = useMemo(() => nextTtsWordNumber(baseRows), [baseRows])
 
@@ -70,17 +70,14 @@ export const AdminTtsPage = () => {
     return filteredRows.slice(start, start + ADMIN_TTS_PAGE_SIZE)
   }, [filteredRows, safePage])
 
-  const onCreatedFromModal = useCallback(
-    (row: AdminTtsWordRow) => {
-      setLocalExtras((prev) => [...prev, row])
-      notifications.show({
-        title: t('admin.tts.createToastTitle'),
-        message: t('admin.tts.createToastMessage'),
-        color: 'green',
-      })
-    },
-    [t],
-  )
+  const onCreatedFromModal = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-tts-words'] })
+    notifications.show({
+      title: t('admin.tts.createToastTitle'),
+      message: t('admin.tts.createToastMessage'),
+      color: 'green',
+    })
+  }, [queryClient, t])
 
   const handleRequestDelete = useCallback((row: AdminTtsWordRow) => {
     setDeleteTarget(row)
@@ -236,7 +233,6 @@ export const AdminTtsPage = () => {
           image="/assets/empty-item.svg"
           onAction={() => {
             setRemovedIds(new Set())
-            setLocalExtras([])
             void query.refetch()
           }}
         />

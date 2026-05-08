@@ -1,6 +1,9 @@
 import { $api } from '@shared/api'
+import type { ApiEnvelope } from '@shared/api/api-envelope'
 import { API_ENDPOINTS } from '@shared/constants'
 import { formatUzbekistanPhoneInput } from '@shared/lib'
+
+import type { AdminUsersItemDto, AdminUsersListDto } from './admin-users-types'
 
 export type BloggerStatus = 'active' | 'blocked'
 
@@ -18,30 +21,6 @@ export interface AdminBloggerRow {
   email: string
   channelAbout: string
   passwordDisplay: string
-}
-
-interface ApiEnvelope<T> {
-  data: T
-  message: string
-  success: boolean
-}
-
-interface AdminUsersItemDto {
-  userId: number
-  username: string
-  name: string
-  channel: string | null
-  phone: string | null
-  status: number
-}
-
-interface AdminUsersListDto {
-  items: AdminUsersItemDto[]
-  page: number
-  size: number
-  totalElements: number
-  totalPages: number
-  hasNext: boolean
 }
 
 export interface AdminBloggersResponse {
@@ -118,5 +97,14 @@ export async function fetchAdminBloggers(params: {
     totalElements: payload.totalElements,
     totalPages: payload.totalPages,
     hasNext: payload.hasNext,
+  }
+}
+
+export async function verifyAdminUser(userId: string): Promise<void> {
+  const response = await $api.post<ApiEnvelope<unknown>>(
+    `${API_ENDPOINTS.admin.users}/${userId}/verify`,
+  )
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Не удалось подтвердить пользователя')
   }
 }

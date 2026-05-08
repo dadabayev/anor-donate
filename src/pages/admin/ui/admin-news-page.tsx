@@ -7,7 +7,7 @@ import {
   ADMIN_NEWS_PAGE_SIZE,
   fetchAdminNews,
   filterAdminNews,
-  nextNewsNumber,
+  newsCoverSrc,
 } from '../model/admin-news'
 import { AdminBloggersLoading } from './components/admin-bloggers-loading'
 import { AdminBloggersState } from './components/admin-bloggers-state'
@@ -22,7 +22,7 @@ import {
   IconArrowsUpDown,
   IconSearch,
 } from '@tabler/icons-react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { type ReactNode, useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -44,10 +44,7 @@ export const AdminNewsPage = () => {
   const [viewRow, setViewRow] = useState<AdminNewsRow | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<AdminNewsRow | null>(null)
   const [removedIds, setRemovedIds] = useState(() => new Set<string>())
-  const [localExtras, setLocalExtras] = useState<AdminNewsRow[]>([])
-  const [rowPatches, setRowPatches] = useState<
-    Record<string, Partial<AdminNewsRow>>
-  >({})
+  const queryClient = useQueryClient()
 
   const query = useQuery({
     queryKey: ['admin-news'],
@@ -55,16 +52,9 @@ export const AdminNewsPage = () => {
   })
 
   const baseRows = useMemo(() => {
-    const data = [...(query.data ?? []), ...localExtras]
-    return data
-      .filter((row) => !removedIds.has(row.id))
-      .map((row) => {
-        const patch = rowPatches[row.id]
-        return patch ? { ...row, ...patch } : row
-      })
-  }, [query.data, localExtras, removedIds, rowPatches])
-
-  const nextRowNumber = useMemo(() => nextNewsNumber(baseRows), [baseRows])
+    const data = query.data ?? []
+    return data.filter((row) => !removedIds.has(row.id))
+  }, [query.data, removedIds])
 
   const filteredRows = useMemo(
     () => filterAdminNews(baseRows, search),
@@ -117,27 +107,18 @@ export const AdminNewsPage = () => {
     [t],
   )
 
-  const handleCreated = useCallback(
-    (row: AdminNewsRow) => {
-      setLocalExtras((prev) => [...prev, row])
-      notifications.show({
-        title: t('admin.news.createToastTitle'),
-        message: t('admin.news.createToastMessage'),
-        color: 'green',
-      })
-    },
-    [t],
-  )
+  const handleCreated = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-news'] })
+    notifications.show({
+      title: t('admin.news.createToastTitle'),
+      message: t('admin.news.createToastMessage'),
+      color: 'green',
+    })
+  }, [queryClient, t])
 
-  const handleUpdated = useCallback((row: AdminNewsRow) => {
-    setRowPatches((prev) => ({
-      ...prev,
-      [row.id]: {
-        ...prev[row.id],
-        ...row,
-      },
-    }))
-  }, [])
+  const handleUpdated = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['admin-news'] })
+  }, [queryClient])
 
   const handleRequestDelete = useCallback((row: AdminNewsRow) => {
     setDeleteTarget(row)
@@ -179,7 +160,7 @@ export const AdminNewsPage = () => {
         render: (row) => (
           <img
             className={nm.thumb}
-            src={row.coverImageUrl}
+            src={newsCoverSrc(row)}
             alt=""
             loading="lazy"
             decoding="async"
@@ -296,8 +277,6 @@ export const AdminNewsPage = () => {
           image="/assets/empty-item.svg"
           onAction={() => {
             setRemovedIds(new Set())
-            setLocalExtras([])
-            setRowPatches({})
             void query.refetch()
           }}
         />
@@ -337,7 +316,6 @@ export const AdminNewsPage = () => {
         mode="create"
         isOpen={createOpen}
         row={null}
-        nextNumber={nextRowNumber}
         labels={formLabels}
         onClose={() => {
           setCreateOpen(false)
@@ -350,13 +328,12 @@ export const AdminNewsPage = () => {
         mode="edit"
         isOpen={editRow !== null}
         row={editRow}
-        nextNumber={nextRowNumber}
         labels={formLabels}
         onClose={() => {
           setEditRow(null)
         }}
-        onUpdated={(r) => {
-          handleUpdated(r)
+        onUpdated={() => {
+          handleUpdated()
           notifications.show({
             title: t('admin.news.editToastTitle'),
             message: t('admin.news.editToastMessage'),

@@ -1,6 +1,7 @@
 import cn from './meme-item-modals.module.css'
 
 import type { AdminMemeRow, AdminMemeStatus } from '../model/admin-memes'
+import { saveAdminMeme } from '../model/admin-memes'
 import { Loader, Switch } from '@mantine/core'
 import { Modal } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
@@ -50,39 +51,10 @@ const saveMeme = async (input: {
   row: AdminMemeRow | null
   nextNumber: number
 }): Promise<AdminMemeRow> => {
-  await new Promise((resolve) => window.setTimeout(resolve, 580))
-  const blob = `${input.name}${input.duration}`.toLowerCase()
-  if (blob.includes('fail')) {
-    throw new Error('meme-save-failed')
-  }
   if (!input.name.trim() || !input.duration.trim() || !input.categoryId) {
     throw new Error('meme-validation')
   }
-  const thumb = `https://picsum.photos/seed/meme-${Date.now()}/160/90`
-  if (input.mode === 'create') {
-    return {
-      id: `meme-local-${Date.now()}`,
-      number: input.nextNumber,
-      categoryId: input.categoryId,
-      categoryName: input.categoryName,
-      name: input.name.trim(),
-      videoThumbUrl: thumb,
-      duration: input.duration.trim(),
-      status: input.status,
-    }
-  }
-  if (!input.row) {
-    throw new Error('meme-no-row')
-  }
-  return {
-    ...input.row,
-    categoryId: input.categoryId,
-    categoryName: input.categoryName,
-    name: input.name.trim(),
-    duration: input.duration.trim(),
-    status: input.status,
-    videoThumbUrl: input.row.videoThumbUrl,
-  }
+  return saveAdminMeme(input)
 }
 
 export const MemeItemFormModal = ({

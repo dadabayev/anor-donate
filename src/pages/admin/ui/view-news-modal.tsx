@@ -1,6 +1,7 @@
 import cn from './news-modals.module.css'
 
 import type { AdminNewsRow } from '../model/admin-news'
+import { newsCoverSrc } from '../model/admin-news'
 import { Modal } from '@shared/ui'
 import classNames from 'classnames'
 
@@ -51,7 +52,7 @@ export const ViewNewsModal = ({
         <div className={cn.viewGrid}>
           <img
             className={cn.thumb}
-            src={news.coverImageUrl}
+            src={newsCoverSrc(news)}
             alt=""
             loading="lazy"
             decoding="async"

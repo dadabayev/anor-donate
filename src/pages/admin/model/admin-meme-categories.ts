@@ -1,3 +1,8 @@
+import { $api } from '@shared/api'
+import type { ApiEnvelope } from '@shared/api/api-envelope'
+import { API_ENDPOINTS } from '@shared/constants'
+import { formatAdminDateTime } from '@shared/lib/admin-format'
+
 export interface AdminMemeCategoryRow {
   id: string
   number: number
@@ -7,48 +12,64 @@ export interface AdminMemeCategoryRow {
 
 export const ADMIN_MEME_CATEGORY_PAGE_SIZE = 10
 
-export const ADMIN_MEME_CATEGORIES_FAIL_ONCE_KEY =
-  'admin-meme-categories-fail-once'
-
-const delay = (ms: number) =>
-  new Promise<void>((resolve) => {
-    window.setTimeout(resolve, ms)
-  })
-
-const formatCreatedAt = (index: number): string => {
-  const day = 1 + (index % 28)
-  const hour = 9 + (index % 10)
-  const minute = (index * 11) % 60
-  return `2025-11-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+interface MemeCategoryEntityDto {
+  id: number
+  name: string
+  createdAt: string
 }
 
-const buildRow = (index: number): AdminMemeCategoryRow => {
-  const n = index + 1
-  return {
-    id: `meme-cat-${n}`,
-    number: n,
-    name: `lorem_${n}`,
-    createdAt: formatCreatedAt(index),
+const mapRow = (dto: MemeCategoryEntityDto, index: number): AdminMemeCategoryRow => ({
+  id: String(dto.id),
+  number: index + 1,
+  name: dto.name,
+  createdAt: formatAdminDateTime(dto.createdAt),
+})
+
+export async function fetchAdminMemeCategories(): Promise<AdminMemeCategoryRow[]> {
+  const response = await $api.get<ApiEnvelope<MemeCategoryEntityDto[]>>(
+    API_ENDPOINTS.content.memeCategories,
+  )
+
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Не удалось загрузить категории')
   }
+
+  const sorted = [...response.data.data].sort(
+    (a, b) => Number(b.id) - Number(a.id),
+  )
+
+  return sorted.map((dto, index) => mapRow(dto, index))
 }
 
-export const MOCK_ADMIN_MEME_CATEGORIES: AdminMemeCategoryRow[] = Array.from(
-  { length: 220 },
-  (_, i) => buildRow(i),
-)
-
-export async function fetchAdminMemeCategories(): Promise<
-  AdminMemeCategoryRow[]
-> {
-  await delay(400)
-  if (
-    typeof window !== 'undefined' &&
-    window.sessionStorage.getItem(ADMIN_MEME_CATEGORIES_FAIL_ONCE_KEY) === '1'
-  ) {
-    window.sessionStorage.removeItem(ADMIN_MEME_CATEGORIES_FAIL_ONCE_KEY)
-    throw new Error('admin-meme-categories-fetch-failed')
+export async function saveAdminMemeCategory(input: {
+  mode: 'create' | 'edit'
+  name: string
+  rowId: string | null
+  rowNumber?: number
+  nextNumber?: number
+}): Promise<AdminMemeCategoryRow> {
+  const payload: { id?: number; name: string } = {
+    name: input.name.trim(),
   }
-  return MOCK_ADMIN_MEME_CATEGORIES
+  if (input.mode === 'edit' && input.rowId) {
+    payload.id = Number(input.rowId)
+  }
+
+  const response = await $api.post<ApiEnvelope<MemeCategoryEntityDto>>(
+    API_ENDPOINTS.content.memeCategories,
+    payload,
+  )
+
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Не удалось сохранить категорию')
+  }
+
+  const base = mapRow(response.data.data, 0)
+  const number =
+    input.mode === 'edit' && input.rowNumber != null
+      ? input.rowNumber
+      : (input.nextNumber ?? base.number)
+  return { ...base, number }
 }
 
 export function filterMemeCategories(
